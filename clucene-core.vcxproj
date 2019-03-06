@@ -1,0 +1,457 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{42321B80-E493-375A-84A4-EE39B282DC4A}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>clucene-core</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)build\bin\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">clucene-core.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">clucene-cored</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.lib</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\build\bin\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">clucene-core.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">clucene-core</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.lib</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>src\shared;build\src\shared;src\core;src\ext;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_REENTRANT;_UCS2;_CL_HAVE_WIN32_THREADS;_CL_HAVE_NAMESPACES;_CL_HAVE_IO_H;_CL_HAVE_DIRECT_H;_UNICODE;MAKE_CLUCENE_CORE_LIB;_DEBUG;CMAKE_INTDIR="Debug";_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_REENTRANT;_UCS2;_UNICODE;MAKE_CLUCENE_CORE_LIB;CMAKE_INTDIR=\"Debug\";clucene_core_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src\shared;build\src\shared;src\core;src\ext;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>src\shared;build\src\shared;src\core;src\ext;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>$(SolutionDir)\build\bin\Debug\clucene-sharedd.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>
+      </ImportLibrary>
+      <ProgramDataBaseFile>C:/work/github/clucene-core-2.3.3.4/build/bin/Debug/clucene-cored.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>src\shared;build\src\shared;src\core;src\ext</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Release/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_REENTRANT;_UCS2;_CL_HAVE_WIN32_THREADS;_CL_HAVE_NAMESPACES;_CL_HAVE_IO_H;_CL_HAVE_DIRECT_H;_UNICODE;_CL_HAVE_SAFE_CRT;MAKE_CLUCENE_CORE_LIB;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_REENTRANT;_UCS2;_UNICODE;MAKE_CLUCENE_CORE_LIB;CMAKE_INTDIR=\"Release\";clucene_core_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src\shared;build\src\shared;src\core;src\ext;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>src\shared;build\src\shared;src\core;src\ext;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>$(SolutionDir)\build\bin\Release\clucene-shared.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <AdditionalOptions>/machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>
+      </ImportLibrary>
+      <ProgramDataBaseFile>$(SolutionDir)/build/bin/Release/clucene-core.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\core\CLucene\StdHeader.cpp" />
+    <ClCompile Include="src\core\CLucene\debug\error.cpp" />
+    <ClCompile Include="src\core\CLucene\util\ThreadLocal.cpp" />
+    <ClCompile Include="src\core\CLucene\util\Reader.cpp" />
+    <ClCompile Include="src\core\CLucene\util\Equators.cpp" />
+    <ClCompile Include="src\core\CLucene\util\FastCharStream.cpp">
+      <ObjectFileName>$(IntDir)/CLucene/util/FastCharStream.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\core\CLucene\util\MD5Digester.cpp" />
+    <ClCompile Include="src\core\CLucene\util\StringIntern.cpp" />
+    <ClCompile Include="src\core\CLucene\util\BitSet.cpp" />
+    <ClCompile Include="src\core\CLucene\queryParser\FastCharStream.cpp">
+      <ObjectFileName>$(IntDir)/CLucene/queryParser/FastCharStream.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\core\CLucene\queryParser\MultiFieldQueryParser.cpp">
+      <ObjectFileName>$(IntDir)/CLucene/queryParser/MultiFieldQueryParser.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\core\CLucene\queryParser\QueryParser.cpp">
+      <ObjectFileName>$(IntDir)/CLucene/queryParser/QueryParser.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\core\CLucene\queryParser\QueryParserTokenManager.cpp" />
+    <ClCompile Include="src\core\CLucene\queryParser\QueryToken.cpp">
+      <ObjectFileName>$(IntDir)/CLucene/queryParser/QueryToken.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\core\CLucene\queryParser\legacy\Lexer.cpp" />
+    <ClCompile Include="src\core\CLucene\queryParser\legacy\MultiFieldQueryParser.cpp">
+      <ObjectFileName>$(IntDir)/CLucene/queryParser/legacy/MultiFieldQueryParser.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\core\CLucene\queryParser\legacy\QueryParser.cpp">
+      <ObjectFileName>$(IntDir)/CLucene/queryParser/legacy/QueryParser.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\core\CLucene\queryParser\legacy\QueryParserBase.cpp" />
+    <ClCompile Include="src\core\CLucene\queryParser\legacy\QueryToken.cpp">
+      <ObjectFileName>$(IntDir)/CLucene/queryParser/legacy/QueryToken.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\core\CLucene\queryParser\legacy\TokenList.cpp" />
+    <ClCompile Include="src\core\CLucene\analysis\standard\StandardAnalyzer.cpp" />
+    <ClCompile Include="src\core\CLucene\analysis\standard\StandardFilter.cpp" />
+    <ClCompile Include="src\core\CLucene\analysis\standard\StandardTokenizer.cpp" />
+    <ClCompile Include="src\core\CLucene\analysis\Analyzers.cpp" />
+    <ClCompile Include="src\core\CLucene\analysis\AnalysisHeader.cpp" />
+    <ClCompile Include="src\core\CLucene\store\MMapInput.cpp" />
+    <ClCompile Include="src\core\CLucene\store\IndexInput.cpp" />
+    <ClCompile Include="src\core\CLucene\store\Lock.cpp" />
+    <ClCompile Include="src\core\CLucene\store\LockFactory.cpp" />
+    <ClCompile Include="src\core\CLucene\store\IndexOutput.cpp" />
+    <ClCompile Include="src\core\CLucene\store\Directory.cpp" />
+    <ClCompile Include="src\core\CLucene\store\FSDirectory.cpp" />
+    <ClCompile Include="src\core\CLucene\store\RAMDirectory.cpp" />
+    <ClCompile Include="src\core\CLucene\document\Document.cpp" />
+    <ClCompile Include="src\core\CLucene\document\DateField.cpp" />
+    <ClCompile Include="src\core\CLucene\document\DateTools.cpp" />
+    <ClCompile Include="src\core\CLucene\document\Field.cpp" />
+    <ClCompile Include="src\core\CLucene\document\FieldSelector.cpp" />
+    <ClCompile Include="src\core\CLucene\document\NumberTools.cpp" />
+    <ClCompile Include="src\core\CLucene\index\IndexFileNames.cpp" />
+    <ClCompile Include="src\core\CLucene\index\IndexFileNameFilter.cpp" />
+    <ClCompile Include="src\core\CLucene\index\IndexDeletionPolicy.cpp" />
+    <ClCompile Include="src\core\CLucene\index\SegmentMergeInfo.cpp" />
+    <ClCompile Include="src\core\CLucene\index\SegmentInfos.cpp" />
+    <ClCompile Include="src\core\CLucene\index\MergeScheduler.cpp" />
+    <ClCompile Include="src\core\CLucene\index\SegmentTermDocs.cpp" />
+    <ClCompile Include="src\core\CLucene\index\FieldsWriter.cpp" />
+    <ClCompile Include="src\core\CLucene\index\TermInfosWriter.cpp" />
+    <ClCompile Include="src\core\CLucene\index\Term.cpp" />
+    <ClCompile Include="src\core\CLucene\index\Terms.cpp" />
+    <ClCompile Include="src\core\CLucene\index\MergePolicy.cpp" />
+    <ClCompile Include="src\core\CLucene\index\DocumentsWriter.cpp" />
+    <ClCompile Include="src\core\CLucene\index\DocumentsWriterThreadState.cpp" />
+    <ClCompile Include="src\core\CLucene\index\SegmentTermVector.cpp" />
+    <ClCompile Include="src\core\CLucene\index\TermVectorReader.cpp" />
+    <ClCompile Include="src\core\CLucene\index\FieldInfos.cpp" />
+    <ClCompile Include="src\core\CLucene\index\CompoundFile.cpp" />
+    <ClCompile Include="src\core\CLucene\index\SkipListReader.cpp" />
+    <ClCompile Include="src\core\CLucene\index\SkipListWriter.cpp" />
+    <ClCompile Include="src\core\CLucene\index\IndexFileDeleter.cpp" />
+    <ClCompile Include="src\core\CLucene\index\SegmentReader.cpp" />
+    <ClCompile Include="src\core\CLucene\index\DirectoryIndexReader.cpp" />
+    <ClCompile Include="src\core\CLucene\index\TermVectorWriter.cpp" />
+    <ClCompile Include="src\core\CLucene\index\IndexReader.cpp" />
+    <ClCompile Include="src\core\CLucene\index\SegmentTermPositions.cpp" />
+    <ClCompile Include="src\core\CLucene\index\SegmentMerger.cpp" />
+    <ClCompile Include="src\core\CLucene\index\IndexWriter.cpp" />
+    <ClCompile Include="src\core\CLucene\index\MultiReader.cpp" />
+    <ClCompile Include="src\core\CLucene\index\MultiSegmentReader.cpp" />
+    <ClCompile Include="src\core\CLucene\index\Payload.cpp" />
+    <ClCompile Include="src\core\CLucene\index\SegmentTermEnum.cpp" />
+    <ClCompile Include="src\core\CLucene\index\TermInfo.cpp" />
+    <ClCompile Include="src\core\CLucene\index\IndexModifier.cpp" />
+    <ClCompile Include="src\core\CLucene\index\SegmentMergeQueue.cpp" />
+    <ClCompile Include="src\core\CLucene\index\FieldsReader.cpp" />
+    <ClCompile Include="src\core\CLucene\index\TermInfosReader.cpp" />
+    <ClCompile Include="src\core\CLucene\index\MultipleTermPositions.cpp" />
+    <ClCompile Include="src\core\CLucene\search\Compare.cpp" />
+    <ClCompile Include="src\core\CLucene\search\Scorer.cpp" />
+    <ClCompile Include="src\core\CLucene\search\ScorerDocQueue.cpp" />
+    <ClCompile Include="src\core\CLucene\search\PhraseScorer.cpp" />
+    <ClCompile Include="src\core\CLucene\search\SloppyPhraseScorer.cpp" />
+    <ClCompile Include="src\core\CLucene\search\DisjunctionSumScorer.cpp" />
+    <ClCompile Include="src\core\CLucene\search\ConjunctionScorer.cpp" />
+    <ClCompile Include="src\core\CLucene\search\PhraseQuery.cpp" />
+    <ClCompile Include="src\core\CLucene\search\PrefixQuery.cpp" />
+    <ClCompile Include="src\core\CLucene\search\ExactPhraseScorer.cpp" />
+    <ClCompile Include="src\core\CLucene\search\TermScorer.cpp" />
+    <ClCompile Include="src\core\CLucene\search\Similarity.cpp" />
+    <ClCompile Include="src\core\CLucene\search\BooleanScorer.cpp" />
+    <ClCompile Include="src\core\CLucene\search\BooleanScorer2.cpp" />
+    <ClCompile Include="src\core\CLucene\search\HitQueue.cpp" />
+    <ClCompile Include="src\core\CLucene\search\FieldCacheImpl.cpp" />
+    <ClCompile Include="src\core\CLucene\search\ChainedFilter.cpp" />
+    <ClCompile Include="src\core\CLucene\search\RangeFilter.cpp" />
+    <ClCompile Include="src\core\CLucene\search\CachingWrapperFilter.cpp" />
+    <ClCompile Include="src\core\CLucene\search\QueryFilter.cpp" />
+    <ClCompile Include="src\core\CLucene\search\TermQuery.cpp" />
+    <ClCompile Include="src\core\CLucene\search\FuzzyQuery.cpp" />
+    <ClCompile Include="src\core\CLucene\search\SearchHeader.cpp" />
+    <ClCompile Include="src\core\CLucene\search\RangeQuery.cpp" />
+    <ClCompile Include="src\core\CLucene\search\IndexSearcher.cpp" />
+    <ClCompile Include="src\core\CLucene\search\Sort.cpp" />
+    <ClCompile Include="src\core\CLucene\search\PhrasePositions.cpp" />
+    <ClCompile Include="src\core\CLucene\search\FieldDocSortedHitQueue.cpp" />
+    <ClCompile Include="src\core\CLucene\search\WildcardTermEnum.cpp" />
+    <ClCompile Include="src\core\CLucene\search\MultiSearcher.cpp" />
+    <ClCompile Include="src\core\CLucene\search\Hits.cpp" />
+    <ClCompile Include="src\core\CLucene\search\MultiTermQuery.cpp" />
+    <ClCompile Include="src\core\CLucene\search\FilteredTermEnum.cpp" />
+    <ClCompile Include="src\core\CLucene\search\FieldSortedHitQueue.cpp" />
+    <ClCompile Include="src\core\CLucene\search\WildcardQuery.cpp" />
+    <ClCompile Include="src\core\CLucene\search\Explanation.cpp" />
+    <ClCompile Include="src\core\CLucene\search\BooleanQuery.cpp" />
+    <ClCompile Include="src\core\CLucene\search\FieldCache.cpp" />
+    <ClCompile Include="src\core\CLucene\search\DateFilter.cpp" />
+    <ClCompile Include="src\core\CLucene\search\MatchAllDocsQuery.cpp" />
+    <ClCompile Include="src\core\CLucene\search\MultiPhraseQuery.cpp" />
+    <ClCompile Include="src\core\CLucene\search\ConstantScoreQuery.cpp" />
+    <ClCompile Include="src\core\CLucene\search\CachingSpanFilter.cpp" />
+    <ClInclude Include="src\core\CLucene\search\CachingSpanFilter.h" />
+    <ClInclude Include="src\core\CLucene\search\SpanFilter.h" />
+    <ClInclude Include="src\core\CLucene\search\SpanFilterResult.h" />
+    <ClCompile Include="src\core\CLucene\search\SpanQueryFilter.cpp" />
+    <ClInclude Include="src\core\CLucene\search\SpanQueryFilter.h" />
+    <ClInclude Include="src\core\CLucene\search\spans\_EmptySpans.h" />
+    <ClInclude Include="src\core\CLucene\search\spans\_NearSpansOrdered.h" />
+    <ClInclude Include="src\core\CLucene\search\spans\_NearSpansUnordered.h" />
+    <ClInclude Include="src\core\CLucene\search\spans\_TermSpans.h" />
+    <ClCompile Include="src\core\CLucene\search\spans\NearSpansOrdered.cpp" />
+    <ClCompile Include="src\core\CLucene\search\spans\NearSpansUnordered.cpp" />
+    <ClCompile Include="src\core\CLucene\search\spans\SpanFirstQuery.cpp" />
+    <ClInclude Include="src\core\CLucene\search\spans\SpanFirstQuery.h" />
+    <ClCompile Include="src\core\CLucene\search\spans\SpanNearQuery.cpp" />
+    <ClInclude Include="src\core\CLucene\search\spans\SpanNearQuery.h" />
+    <ClCompile Include="src\core\CLucene\search\spans\SpanNotQuery.cpp" />
+    <ClInclude Include="src\core\CLucene\search\spans\SpanNotQuery.h" />
+    <ClCompile Include="src\core\CLucene\search\spans\SpanOrQuery.cpp" />
+    <ClInclude Include="src\core\CLucene\search\spans\SpanOrQuery.h" />
+    <ClInclude Include="src\core\CLucene\search\spans\SpanQuery.h" />
+    <ClInclude Include="src\core\CLucene\search\spans\Spans.h" />
+    <ClCompile Include="src\core\CLucene\search\spans\SpanScorer.cpp" />
+    <ClInclude Include="src\core\CLucene\search\spans\SpanScorer.h" />
+    <ClCompile Include="src\core\CLucene\search\spans\SpanTermQuery.cpp" />
+    <ClInclude Include="src\core\CLucene\search\spans\SpanTermQuery.h" />
+    <ClCompile Include="src\core\CLucene\search\spans\SpanWeight.cpp" />
+    <ClInclude Include="src\core\CLucene\search\spans\SpanWeight.h" />
+    <ClCompile Include="src\core\CLucene\search\spans\TermSpans.cpp" />
+    <ClInclude Include="src\core\CLucene.h" />
+    <ClInclude Include="src\core\CLucene\CLConfig.h" />
+    <ClInclude Include="src\core\CLucene\StdHeader.h" />
+    <ClInclude Include="src\core\CLucene\_ApiHeader.h" />
+    <ClInclude Include="src\core\CLucene\analysis\AnalysisHeader.h" />
+    <ClInclude Include="src\core\CLucene\analysis\Analyzers.h" />
+    <ClInclude Include="src\core\CLucene\analysis\CachingTokenFilter.h" />
+    <ClInclude Include="src\core\CLucene\analysis\standard\StandardAnalyzer.h" />
+    <ClInclude Include="src\core\CLucene\analysis\standard\StandardFilter.h" />
+    <ClInclude Include="src\core\CLucene\analysis\standard\StandardTokenizer.h" />
+    <ClInclude Include="src\core\CLucene\analysis\standard\StandardTokenizerConstants.h" />
+    <ClInclude Include="src\core\CLucene\debug\error.h" />
+    <ClInclude Include="src\core\CLucene\debug\lucenebase.h" />
+    <ClInclude Include="src\core\CLucene\debug\mem.h" />
+    <ClInclude Include="src\core\CLucene\document\DateField.h" />
+    <ClInclude Include="src\core\CLucene\document\DateTools.h" />
+    <ClInclude Include="src\core\CLucene\document\Document.h" />
+    <ClInclude Include="src\core\CLucene\document\Field.h" />
+    <ClInclude Include="src\core\CLucene\document\FieldSelector.h" />
+    <ClInclude Include="src\core\CLucene\document\NumberTools.h" />
+    <ClInclude Include="src\core\CLucene\index\DirectoryIndexReader.h" />
+    <ClInclude Include="src\core\CLucene\index\IndexDeletionPolicy.h" />
+    <ClInclude Include="src\core\CLucene\index\IndexModifier.h" />
+    <ClInclude Include="src\core\CLucene\index\IndexReader.h" />
+    <ClInclude Include="src\core\CLucene\index\IndexWriter.h" />
+    <ClInclude Include="src\core\CLucene\index\MergePolicy.h" />
+    <ClInclude Include="src\core\CLucene\index\MergeScheduler.h" />
+    <ClInclude Include="src\core\CLucene\index\MultiReader.h" />
+    <ClInclude Include="src\core\CLucene\index\MultipleTermPositions.h" />
+    <ClInclude Include="src\core\CLucene\index\Payload.h" />
+    <ClInclude Include="src\core\CLucene\index\Term.h" />
+    <ClInclude Include="src\core\CLucene\index\TermVector.h" />
+    <ClInclude Include="src\core\CLucene\index\Terms.h" />
+    <ClInclude Include="src\core\CLucene\index\_CompoundFile.h" />
+    <ClInclude Include="src\core\CLucene\index\_DocumentsWriter.h" />
+    <ClInclude Include="src\core\CLucene\index\_FieldInfo.h" />
+    <ClInclude Include="src\core\CLucene\index\_FieldInfos.h" />
+    <ClInclude Include="src\core\CLucene\index\_FieldsReader.h" />
+    <ClInclude Include="src\core\CLucene\index\_FieldsWriter.h" />
+    <ClInclude Include="src\core\CLucene\index\_IndexFileDeleter.h" />
+    <ClInclude Include="src\core\CLucene\index\_IndexFileNameFilter.h" />
+    <ClInclude Include="src\core\CLucene\index\_IndexFileNames.h" />
+    <ClInclude Include="src\core\CLucene\index\_MultiSegmentReader.h" />
+    <ClInclude Include="src\core\CLucene\index\_SegmentHeader.h" />
+    <ClInclude Include="src\core\CLucene\index\_SegmentInfos.h" />
+    <ClInclude Include="src\core\CLucene\index\_SegmentMergeInfo.h" />
+    <ClInclude Include="src\core\CLucene\index\_SegmentMergeQueue.h" />
+    <ClInclude Include="src\core\CLucene\index\_SegmentMerger.h" />
+    <ClInclude Include="src\core\CLucene\index\_SegmentTermEnum.h" />
+    <ClInclude Include="src\core\CLucene\index\_SkipListReader.h" />
+    <ClInclude Include="src\core\CLucene\index\_SkipListWriter.h" />
+    <ClInclude Include="src\core\CLucene\index\_Term.h" />
+    <ClInclude Include="src\core\CLucene\index\_TermInfo.h" />
+    <ClInclude Include="src\core\CLucene\index\_TermInfosReader.h" />
+    <ClInclude Include="src\core\CLucene\index\_TermInfosWriter.h" />
+    <ClInclude Include="src\core\CLucene\index\_TermVector.h" />
+    <ClInclude Include="src\core\CLucene\queryParser\MultiFieldQueryParser.h" />
+    <ClInclude Include="src\core\CLucene\queryParser\QueryParser.h" />
+    <ClInclude Include="src\core\CLucene\queryParser\QueryParserConstants.h" />
+    <ClInclude Include="src\core\CLucene\queryParser\QueryParserTokenManager.h" />
+    <ClInclude Include="src\core\CLucene\queryParser\QueryToken.h" />
+    <ClInclude Include="src\core\CLucene\queryParser\_CharStream.h" />
+    <ClInclude Include="src\core\CLucene\queryParser\_FastCharStream.h" />
+    <ClInclude Include="src\core\CLucene\queryParser\legacy\MultiFieldQueryParser.h" />
+    <ClInclude Include="src\core\CLucene\queryParser\legacy\QueryParser.h" />
+    <ClInclude Include="src\core\CLucene\queryParser\legacy\QueryToken.h" />
+    <ClInclude Include="src\core\CLucene\queryParser\legacy\_Lexer.h" />
+    <ClInclude Include="src\core\CLucene\queryParser\legacy\_TokenList.h" />
+    <ClInclude Include="src\core\CLucene\search\BooleanClause.h" />
+    <ClInclude Include="src\core\CLucene\search\BooleanQuery.h" />
+    <ClInclude Include="src\core\CLucene\search\CachingWrapperFilter.h" />
+    <ClInclude Include="src\core\CLucene\search\ChainedFilter.h" />
+    <ClInclude Include="src\core\CLucene\search\Compare.h" />
+    <ClInclude Include="src\core\CLucene\search\ConstantScoreQuery.h" />
+    <ClInclude Include="src\core\CLucene\search\DateFilter.h" />
+    <ClInclude Include="src\core\CLucene\search\Explanation.h" />
+    <ClInclude Include="src\core\CLucene\search\FieldCache.h" />
+    <ClInclude Include="src\core\CLucene\search\FieldDoc.h" />
+    <ClInclude Include="src\core\CLucene\search\FieldSortedHitQueue.h" />
+    <ClInclude Include="src\core\CLucene\search\Filter.h" />
+    <ClInclude Include="src\core\CLucene\search\FilterResultCache.h" />
+    <ClInclude Include="src\core\CLucene\search\FilteredTermEnum.h" />
+    <ClInclude Include="src\core\CLucene\search\FuzzyQuery.h" />
+    <ClInclude Include="src\core\CLucene\search\Hits.h" />
+    <ClInclude Include="src\core\CLucene\search\IndexSearcher.h" />
+    <ClInclude Include="src\core\CLucene\search\MatchAllDocsQuery.h" />
+    <ClInclude Include="src\core\CLucene\search\MultiPhraseQuery.h" />
+    <ClInclude Include="src\core\CLucene\search\MultiSearcher.h" />
+    <ClInclude Include="src\core\CLucene\search\MultiTermQuery.h" />
+    <ClInclude Include="src\core\CLucene\search\PhraseQuery.h" />
+    <ClInclude Include="src\core\CLucene\search\PrefixQuery.h" />
+    <ClInclude Include="src\core\CLucene\search\Query.h" />
+    <ClInclude Include="src\core\CLucene\search\QueryFilter.h" />
+    <ClInclude Include="src\core\CLucene\search\RangeFilter.h" />
+    <ClInclude Include="src\core\CLucene\search\RangeQuery.h" />
+    <ClInclude Include="src\core\CLucene\search\Scorer.h" />
+    <ClInclude Include="src\core\CLucene\search\ScorerDocQueue.h" />
+    <ClInclude Include="src\core\CLucene\search\SearchHeader.h" />
+    <ClInclude Include="src\core\CLucene\search\Searchable.h" />
+    <ClInclude Include="src\core\CLucene\search\Similarity.h" />
+    <ClInclude Include="src\core\CLucene\search\Sort.h" />
+    <ClInclude Include="src\core\CLucene\search\TermQuery.h" />
+    <ClInclude Include="src\core\CLucene\search\WildcardQuery.h" />
+    <ClInclude Include="src\core\CLucene\search\WildcardTermEnum.h" />
+    <ClInclude Include="src\core\CLucene\search\_BooleanScorer.h" />
+    <ClInclude Include="src\core\CLucene\search\_BooleanScorer2.h" />
+    <ClInclude Include="src\core\CLucene\search\_ConjunctionScorer.h" />
+    <ClInclude Include="src\core\CLucene\search\_DisjunctionSumScorer.h" />
+    <ClInclude Include="src\core\CLucene\search\_ExactPhraseScorer.h" />
+    <ClInclude Include="src\core\CLucene\search\_FieldCacheImpl.h" />
+    <ClInclude Include="src\core\CLucene\search\_FieldDocSortedHitQueue.h" />
+    <ClInclude Include="src\core\CLucene\search\_HitQueue.h" />
+    <ClInclude Include="src\core\CLucene\search\_PhrasePositions.h" />
+    <ClInclude Include="src\core\CLucene\search\_PhraseQueue.h" />
+    <ClInclude Include="src\core\CLucene\search\_PhraseScorer.h" />
+    <ClInclude Include="src\core\CLucene\search\_SloppyPhraseScorer.h" />
+    <ClInclude Include="src\core\CLucene\search\_TermScorer.h" />
+    <ClInclude Include="src\core\CLucene\store\Directory.h" />
+    <ClInclude Include="src\core\CLucene\store\FSDirectory.h" />
+    <ClInclude Include="src\core\CLucene\store\IndexInput.h" />
+    <ClInclude Include="src\core\CLucene\store\IndexOutput.h" />
+    <ClInclude Include="src\core\CLucene\store\Lock.h" />
+    <ClInclude Include="src\core\CLucene\store\LockFactory.h" />
+    <ClInclude Include="src\core\CLucene\store\RAMDirectory.h" />
+    <ClInclude Include="src\core\CLucene\store\_Lock.h" />
+    <ClInclude Include="src\core\CLucene\store\_MMapIndexInput.h" />
+    <ClInclude Include="src\core\CLucene\store\_RAMDirectory.h" />
+    <ClInclude Include="src\core\CLucene\util\Array.h" />
+    <ClInclude Include="src\core\CLucene\util\BitSet.h" />
+    <ClInclude Include="src\core\CLucene\util\CLStreams.h" />
+    <ClInclude Include="src\core\CLucene\util\Equators.h" />
+    <ClInclude Include="src\core\CLucene\util\PriorityQueue.h" />
+    <ClInclude Include="src\core\CLucene\util\Reader.h" />
+    <ClInclude Include="src\core\CLucene\util\VoidList.h" />
+    <ClInclude Include="src\core\CLucene\util\VoidMap.h" />
+    <ClInclude Include="src\core\CLucene\util\_Arrays.h" />
+    <ClInclude Include="src\core\CLucene\util\_FastCharStream.h" />
+    <ClInclude Include="src\core\CLucene\util\_MD5Digester.h" />
+    <ClInclude Include="src\core\CLucene\util\_StringIntern.h" />
+    <ClInclude Include="src\core\CLucene\util\_ThreadLocal.h" />
+    <ClInclude Include="src\core\CLucene\util\_VoidList.h" />
+    <ClInclude Include="src\core\CLucene\util\_VoidMap.h" />
+    <ClInclude Include="src\core\CLucene\util\_bufferedstream.h" />
+    <ClInclude Include="src\core\CLucene\util\_streambase.h" />
+    <ClInclude Include="src\core\CLucene\util\_streambuffer.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

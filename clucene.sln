@@ -1,0 +1,43 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cl_test", "cl_test.vcxproj", "{FA2D282A-C597-330F-A78C-95E56E5C2550}"
+	ProjectSection(ProjectDependencies) = postProject
+		{59D4AF58-970E-376E-9F0C-766A874AA408} = {59D4AF58-970E-376E-9F0C-766A874AA408}
+		{42321B80-E493-375A-84A4-EE39B282DC4A} = {42321B80-E493-375A-84A4-EE39B282DC4A}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "clucene-core", "clucene-core.vcxproj", "{42321B80-E493-375A-84A4-EE39B282DC4A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{59D4AF58-970E-376E-9F0C-766A874AA408} = {59D4AF58-970E-376E-9F0C-766A874AA408}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "clucene-shared", "clucene-shared.vcxproj", "{59D4AF58-970E-376E-9F0C-766A874AA408}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FA2D282A-C597-330F-A78C-95E56E5C2550}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FA2D282A-C597-330F-A78C-95E56E5C2550}.Debug|Win32.Build.0 = Debug|Win32
+		{FA2D282A-C597-330F-A78C-95E56E5C2550}.Release|Win32.ActiveCfg = Release|Win32
+		{FA2D282A-C597-330F-A78C-95E56E5C2550}.Release|Win32.Build.0 = Release|Win32
+		{42321B80-E493-375A-84A4-EE39B282DC4A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{42321B80-E493-375A-84A4-EE39B282DC4A}.Debug|Win32.Build.0 = Debug|Win32
+		{42321B80-E493-375A-84A4-EE39B282DC4A}.Release|Win32.ActiveCfg = Release|Win32
+		{42321B80-E493-375A-84A4-EE39B282DC4A}.Release|Win32.Build.0 = Release|Win32
+		{59D4AF58-970E-376E-9F0C-766A874AA408}.Debug|Win32.ActiveCfg = Debug|Win32
+		{59D4AF58-970E-376E-9F0C-766A874AA408}.Debug|Win32.Build.0 = Debug|Win32
+		{59D4AF58-970E-376E-9F0C-766A874AA408}.Release|Win32.ActiveCfg = Release|Win32
+		{59D4AF58-970E-376E-9F0C-766A874AA408}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {87E09FF0-6A3C-3883-8F8C-11970D95EDFC}
+	EndGlobalSection
+EndGlobal

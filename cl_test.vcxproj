@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FA2D282A-C597-330F-A78C-95E56E5C2550}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>cl_test</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)bin\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl_test.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl_test</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">build\bin\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl_test.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl_test</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>src\shared;build\src\shared;src\core;src\ext;src\test;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NOMINMAX;_REENTRANT;_UCS2;_UNICODE;CMAKE_INTDIR="Debug";_CL_HAVE_WIN32_THREADS;_CL_HAVE_NAMESPACES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_REENTRANT;_UCS2;_UNICODE;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src\shared;build\src\shared;src\core;src\ext;src\test;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>src\shared;build\src\shared;src\core;src\ext;src\test;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>clucene-cored.lib;clucene-sharedd.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\build\bin\Debug</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>
+      </ImportLibrary>
+      <ProgramDataBaseFile>C:/work/github/clucene-core-2.3.3.4/build/bin/Debug/cl_test.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>src\shared;build\src\shared;src\core;src\ext;src\test;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Release/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NOMINMAX;NDEBUG;_REENTRANT;_UCS2;_UNICODE;CMAKE_INTDIR="Release";_CL_HAVE_WIN32_THREADS;_CL_HAVE_NAMESPACES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_REENTRANT;_UCS2;_UNICODE;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src\shared;build\src\shared;src\core;src\ext;src\test;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>src\shared;build\src\shared;src\core;src\ext;src\test;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>clucene-core.lib;clucene-shared.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\build\bin\Release</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/work/github/clucene-core-2.3.3.4/build/bin/Release/cl_test.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/work/github/clucene-core-2.3.3.4/build/bin/Release/cl_test.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\test\tests.cpp" />
+    <ClCompile Include="src\test\CuTest.cpp" />
+    <ClCompile Include="src\test\testall.cpp" />
+    <ClCompile Include="src\test\queryParser\TestQueryParser.cpp" />
+    <ClCompile Include="src\test\queryParser\TestMultiFieldQueryParser.cpp" />
+    <ClCompile Include="src\test\analysis\TestAnalysis.cpp" />
+    <ClCompile Include="src\test\analysis\TestAnalyzers.cpp" />
+    <ClCompile Include="src\test\debug\TestError.cpp" />
+    <ClCompile Include="src\test\document\TestDateTools.cpp" />
+    <ClCompile Include="src\test\document\TestDocument.cpp" />
+    <ClCompile Include="src\test\document\TestNumberTools.cpp" />
+    <ClCompile Include="src\test\document\TestField.cpp" />
+    <ClCompile Include="src\test\store\TestStore.cpp" />
+    <ClCompile Include="src\test\store\MockRAMDirectory.cpp" />
+    <ClCompile Include="src\test\store\TestRAMDirectory.cpp" />
+    <ClInclude Include="src\test\search\MockScorer.h" />
+    <ClInclude Include="src\test\search\MockHitCollector.h" />
+    <ClCompile Include="src\test\search\TestBoolean.cpp" />
+    <ClCompile Include="src\test\search\TestDateFilter.cpp" />
+    <ClCompile Include="src\test\search\TestForDuplicates.cpp" />
+    <ClCompile Include="src\test\search\TestQueries.cpp" />
+    <ClCompile Include="src\test\search\TestRangeFilter.cpp" />
+    <ClCompile Include="src\test\search\TestSearch.cpp" />
+    <ClCompile Include="src\test\search\TestSort.cpp" />
+    <ClCompile Include="src\test\search\TestWildcard.cpp" />
+    <ClCompile Include="src\test\search\TestTermVector.cpp" />
+    <ClCompile Include="src\test\search\TestExtractTerms.cpp" />
+    <ClCompile Include="src\test\search\TestConstantScoreRangeQuery.cpp" />
+    <ClCompile Include="src\test\search\TestIndexSearcher.cpp" />
+    <ClCompile Include="src\test\index\IndexWriter4Test.cpp" />
+    <ClInclude Include="src\test\search\BaseTestRangeFilter.h" />
+    <ClCompile Include="src\test\search\BaseTestRangeFilter.cpp" />
+    <ClInclude Include="src\test\search\QueryUtils.h" />
+    <ClCompile Include="src\test\search\QueryUtils.cpp" />
+    <ClInclude Include="src\test\search\CheckHits.h" />
+    <ClCompile Include="src\test\search\CheckHits.cpp" />
+    <ClCompile Include="src\test\search\TestExplanations.cpp" />
+    <ClInclude Include="src\test\search\TestExplanations.h" />
+    <ClInclude Include="src\test\search\spans\TestSpans.h" />
+    <ClCompile Include="src\test\search\spans\TestSpans.cpp" />
+    <ClCompile Include="src\test\search\spans\TestSpanQueries.cpp" />
+    <ClInclude Include="src\test\search\spans\TestBasics.h" />
+    <ClCompile Include="src\test\search\spans\TestBasics.cpp" />
+    <ClCompile Include="src\test\search\spans\TestSpansAdvanced.cpp" />
+    <ClInclude Include="src\test\search\spans\TestSpansAdvanced.h" />
+    <ClCompile Include="src\test\search\spans\TestSpansAdvanced2.cpp" />
+    <ClInclude Include="src\test\search\spans\TestSpansAdvanced2.h" />
+    <ClCompile Include="src\test\search\spans\TestNearSpansOrdered.cpp" />
+    <ClInclude Include="src\test\search\spans\TestNearSpansOrdered.h" />
+    <ClCompile Include="src\test\search\spans\TestSpanExplanations.cpp" />
+    <ClInclude Include="src\test\search\spans\TestSpanExplanations.h" />
+    <ClCompile Include="src\test\search\spans\TestSpanExplanationsOfNonMatches.cpp" />
+    <ClInclude Include="src\test\search\spans\TestSpanExplanationsOfNonMatches.h" />
+    <ClCompile Include="src\test\index\TestIndexModifier.cpp" />
+    <ClCompile Include="src\test\index\TestIndexWriter.cpp" />
+    <ClCompile Include="src\test\index\TestIndexReader.cpp" />
+    <ClCompile Include="src\test\index\TestThreading.cpp" />
+    <ClCompile Include="src\test\index\TestUtf8.cpp" />
+    <ClCompile Include="src\test\index\TestHighFreqTerms.cpp" />
+    <ClCompile Include="src\test\index\TestReuters.cpp" />
+    <ClCompile Include="src\test\index\TestAddIndexesNoOptimize.cpp" />
+    <ClCompile Include="src\test\index\TestTermVectorsReader.cpp" />
+    <ClCompile Include="src\test\util\TestPriorityQueue.cpp" />
+    <ClCompile Include="src\test\util\TestBitSet.cpp" />
+    <ClCompile Include="src\test\util\TestStringBuffer.cpp" />
+    <ClCompile Include="src\test\util\English.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="clucene-core.vcxproj">
+      <Project>{42321b80-e493-375a-84a4-ee39b282dc4a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="clucene-shared.vcxproj">
+      <Project>{59d4af58-970e-376e-9f0c-766a874aa408}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

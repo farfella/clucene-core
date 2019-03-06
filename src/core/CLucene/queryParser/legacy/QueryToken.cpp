@@ -1,0 +1,74 @@
+/*------------------------------------------------------------------------------
+* Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+* Updated by https://github.com/farfella/.
+ Updated by https://github.com/farfella/.
+* 
+* Distributable under the terms of either the Apache License (Version 2.0) or 
+* the GNU Lesser General Public License, as specified in the COPYING file.
+------------------------------------------------------------------------------*/
+#include "CLucene/_ApiHeader.h"
+#include "QueryToken.h"
+
+CL_NS_DEF2(queryParser,legacy)
+
+QueryToken::QueryToken():
+	Value(NULL)
+{
+    set(UNKNOWN_);
+}
+QueryToken::QueryToken(const wchar_t* value, const int32_t start, const int32_t end, const QueryToken::Types type):
+	Value(NULL)
+{
+  set(value,start,end,type);
+}
+
+QueryToken::~QueryToken(){
+//Func - Destructor
+//Pre  - true
+//Post - Instance has been destroyed
+
+   #ifndef LUCENE_TOKEN_WORD_LENGTH
+	_CLDELETE_CARRAY( Value );
+  #endif
+}
+
+// Initializes a new instance of the Token class LUCENE_EXPORT.
+//
+QueryToken::QueryToken(const wchar_t* value, const QueryToken::Types type):
+	Value(NULL)
+{
+    set(value,type);
+}
+
+// Initializes a new instance of the Token class LUCENE_EXPORT.
+//
+QueryToken::QueryToken(QueryToken::Types type):
+	Value(NULL)
+{
+  set(type);
+}
+
+
+void QueryToken::set(const wchar_t* value, const Types type){
+    set(value,0,-1,type);
+}
+void QueryToken::set(const wchar_t* value, const int32_t start, const int32_t end, const Types type){
+  #ifndef LUCENE_TOKEN_WORD_LENGTH
+	_CLDELETE_CARRAY(Value);
+    Value = _wcsdup(value);
+  #else
+    wcsncpy(Value,value,LUCENE_TOKEN_WORD_LENGTH);
+    Value[LUCENE_TOKEN_WORD_LENGTH];
+  #endif
+    this->Start = start;
+    this->End = end;
+	this->Type = type;
+    
+    if ( this->End < 0 )
+        this->End = wcslen(Value);
+}
+void QueryToken::set(Types type){
+    set(LUCENE_BLANK_STRING,0,0,type);
+}
+
+CL_NS_END2
