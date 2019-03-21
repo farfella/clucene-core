@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -144,7 +144,7 @@ public:
    * @throws CorruptIndexException if the index is corrupt
    * @throws IOException if there is a low-level IO error
    * @param path the path to the index directory */
-  static IndexReader* open(const char* path, bool closeDirectoryOnCleanup=true, IndexDeletionPolicy* deletionPolicy=NULL);
+  static IndexReader* open(const wchar_t * path, bool closeDirectoryOnCleanup=true, IndexDeletionPolicy* deletionPolicy=NULL);
 
   /** Expert: returns an IndexReader reading the index in the given
    * Directory, with a custom {@link IndexDeletionPolicy}.
@@ -306,7 +306,7 @@ public:
    * @throws CorruptIndexException if the index is corrupt
    * @throws IOException if there is a low-level IO error
 	*/
-	static uint64_t lastModified(const char* directory);
+	static uint64_t lastModified(const wchar_t * directory);
 
 	/**
 	* Returns the time the index in the named directory was last modified.
@@ -340,7 +340,7 @@ public:
    * @throws CorruptIndexException if the index is corrupt
    * @throws IOException if there is a low-level IO error
    */
-	static int64_t getCurrentVersion(const char* directory);
+	static int64_t getCurrentVersion(const wchar_t * directory);
 
   /**
    * Version number when this IndexReader was opened. Not implemented in the IndexReader base class.
@@ -458,7 +458,7 @@ public:
 	* @param  directory the directory to check for an index
 	* @return <code>true</code> if an index exists; <code>false</code> otherwise
 	*/
-	static bool indexExists(const char* directory);
+	static bool indexExists(const wchar_t * directory);
 
     /**
 	* Returns <code>true</code> if an index exists at the specified directory.
@@ -656,7 +656,7 @@ public:
    * @param directory the directory to check for a lock
    * @throws IOException if there is a low-level IO error
    */
-	static bool isLocked(const char* directory);
+	static bool isLocked(const wchar_t * directory);
 
 
 	///Forcibly unlocks the index in the named directory.
@@ -664,13 +664,13 @@ public:
 	///when it is known that no other process nor thread is in fact
 	///currently accessing this index.
 	static void unlock(CL_NS(store)::Directory* directory);
-	static void unlock(const char* path);
+	static void unlock(const wchar_t * path);
 
 	 /** Returns the directory this index resides in. */
 	_CL_DEPRECATED( directory() ) CL_NS(store)::Directory* getDirectory();
 
 	/** Returns true if the file is a lucene filename (based on extension or filename) */
-	static bool isLuceneFile(const char* filename);
+	static bool isLuceneFile(const wchar_t* filename);
 
 	/**
 	* For classes that need to know when the IndexReader closes (such as caches, etc),

@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
  * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
  *
  * Distributable under the terms of either the Apache License (Version 2.0) or
  * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -177,7 +177,7 @@ class SegmentReader: public DirectoryIndexReader {
     int32_t number;
     int64_t normSeek;
     SegmentReader* _this;
-    const char* segment; ///< pointer to segment name
+    const wchar_t * segment; ///< pointer to segment name
     volatile int32_t refCount;
     bool useSingleNormStream;
     bool rollbackDirty;
@@ -195,7 +195,7 @@ class SegmentReader: public DirectoryIndexReader {
     uint8_t* bytes;
     bool dirty;
     //Constructor
-    Norm(CL_NS(store)::IndexInput* instrm, bool useSingleNormStream, int32_t number, int64_t normSeek, SegmentReader* reader, const char* segment);
+    Norm(CL_NS(store)::IndexInput* instrm, bool useSingleNormStream, int32_t number, int64_t normSeek, SegmentReader* reader, const wchar_t * segment);
     //Destructor
     ~Norm();
 
@@ -210,7 +210,7 @@ class SegmentReader: public DirectoryIndexReader {
   friend class SegmentReader::Norm;
 
   //Holds the name of the segment that is being read
-  std::string segment;
+  std::wstring segment;
   SegmentInfo* si;
   int32_t readBufferSize;
 
@@ -321,7 +321,7 @@ public:
   bool hasNorms(const wchar_t* field);
 
   ///Returns all file names managed by this SegmentReader
-  void files(std::vector<std::string>& retarray);
+  void files(std::vector<std::wstring>& retarray);
   ///Returns an enumeration of all the Terms and TermInfos in the set.
   TermEnum* terms();
   ///Returns an enumeration of terms starting at or after the named term t
@@ -360,9 +360,9 @@ public:
   void norms(const wchar_t* field, uint8_t* bytes);
 
   ///concatenating segment with ext and x
-  std::string SegmentName(const char* ext, const int32_t x=-1);
+  std::wstring SegmentName(const wchar_t * ext, const int32_t x=-1);
   ///Creates a filename in buffer by concatenating segment with ext and x
-  void SegmentName(char* buffer,int32_t bufferLen,const char* ext, const int32_t x=-1 );
+  void SegmentName(wchar_t * buffer,int32_t bufferLen,const wchar_t * ext, const int32_t x=-1 );
 
   /**
    * @see IndexReader#getFieldNames(IndexReader.FieldOption fldOption)
@@ -391,8 +391,8 @@ public:
    */
   CL_NS(util)::ArrayBase<TermFreqVector*>* getTermFreqVectors(int32_t docNumber);
 
-  static const char* getClassName();
-  const char* getObjectName() const;
+  static const std::wstring getClassName();
+  const std::wstring getObjectName() const;
 
   // for testing only
   bool normsClosed();
@@ -424,7 +424,7 @@ private:
   /**
    * Return the name of the segment this reader is reading.
    */
-  const char* getSegmentName();
+  const wchar_t * getSegmentName();
 
   /**
    * Return the SegmentInfo of the segment this reader is reading.

@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -31,7 +31,7 @@ public:
   ConjunctionScorer(Similarity* similarity, ScorersType* scorers);
   ConjunctionScorer(Similarity* similarity, const CL_NS(util)::ArrayBase<Scorer*>* scorers);
   virtual ~ConjunctionScorer();
-  virtual wchar_t* toString();
+  virtual std::wstring toString();
   int32_t doc() const;
   bool next();
   bool skipTo(int32_t target);

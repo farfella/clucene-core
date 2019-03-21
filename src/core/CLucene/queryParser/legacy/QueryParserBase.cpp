@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -140,13 +140,13 @@ Query* QueryParserBase::GetFieldQuery(const wchar_t* field, wchar_t* queryText){
 //       queryText != NULL and contains the query
 //Post - A query instance has been returned for the specified field
 
-  CND_PRECONDITION(field != NULL, "field is NULL");
-  CND_PRECONDITION(queryText != NULL, "queryText is NULL");
+  CND_PRECONDITION(field != NULL, L"field is NULL");
+  CND_PRECONDITION(queryText != NULL, L"queryText is NULL");
 
   //Instantiate a stringReader for queryText
   StringReader reader(queryText);
   TokenStream* source = analyzer->tokenStream(field, &reader);
-  CND_CONDITION(source != NULL,"source is NULL");
+  CND_CONDITION(source != NULL,L"source is NULL");
 
   StringArrayWithDeletor v;
 
@@ -286,17 +286,17 @@ Query* QueryParserBase::GetPrefixQuery(const wchar_t* field, wchar_t* termStr){
 //       (WITH or WITHOUT a trailing '*' character!)
 //Post - A PrefixQuery instance has been returned
 
-  CND_PRECONDITION(field != NULL,"field is NULL");
-  CND_PRECONDITION(termStr != NULL,"termStr is NULL");
+  CND_PRECONDITION(field != NULL,L"field is NULL");
+  CND_PRECONDITION(termStr != NULL,L"termStr is NULL");
 
   if ( lowercaseExpandedTerms )
     _tcslwr(termStr);
 
   Term* t = _CLNEW Term(field, termStr);
-  CND_CONDITION(t != NULL,"Could not allocate memory for term t");
+  CND_CONDITION(t != NULL,L"Could not allocate memory for term t");
 
   Query *q = _CLNEW PrefixQuery(t);
-  CND_CONDITION(q != NULL,"Could not allocate memory for PrefixQuery q");
+  CND_CONDITION(q != NULL,L"Could not allocate memory for PrefixQuery q");
 
   _CLDECDELETE(t);
   return q;
@@ -310,17 +310,17 @@ Query* QueryParserBase::GetFuzzyQuery(const wchar_t* field, wchar_t* termStr){
 //       (WITH or WITHOUT a trailing '*' character!)
 //Post - A FuzzyQuery instance has been returned
 
-  CND_PRECONDITION(field != NULL,"field is NULL");
-  CND_PRECONDITION(termStr != NULL,"termStr is NULL");
+  CND_PRECONDITION(field != NULL,L"field is NULL");
+  CND_PRECONDITION(termStr != NULL,L"termStr is NULL");
 
   if ( lowercaseExpandedTerms )
     _tcslwr(termStr);
 
   Term* t = _CLNEW Term(field, termStr);
-  CND_CONDITION(t != NULL,"Could not allocate memory for term t");
+  CND_CONDITION(t != NULL,L"Could not allocate memory for term t");
 
   Query *q = _CLNEW FuzzyQuery(t);
-  CND_CONDITION(q != NULL,"Could not allocate memory for FuzzyQuery q");
+  CND_CONDITION(q != NULL,L"Could not allocate memory for FuzzyQuery q");
 
   _CLDECDELETE(t);
   return q;
@@ -328,14 +328,14 @@ Query* QueryParserBase::GetFuzzyQuery(const wchar_t* field, wchar_t* termStr){
 
 
 Query* QueryParserBase::GetWildcardQuery(const wchar_t* field, wchar_t* termStr){
-  CND_PRECONDITION(field != NULL,"field is NULL");
-  CND_PRECONDITION(termStr != NULL,"termStr is NULL");
+  CND_PRECONDITION(field != NULL,L"field is NULL");
+  CND_PRECONDITION(termStr != NULL,L"termStr is NULL");
 
   if ( lowercaseExpandedTerms )
     _tcslwr(termStr);
 
   Term* t = _CLNEW Term(field, termStr);
-  CND_CONDITION(t != NULL,"Could not allocate memory for term t");
+  CND_CONDITION(t != NULL,L"Could not allocate memory for term t");
   Query* q = _CLNEW WildcardQuery(t);
   _CLDECDELETE(t);
 
@@ -352,12 +352,12 @@ Query* QueryParserBase::GetBooleanQuery(std::vector<CL_NS(search)::BooleanClause
 
   BooleanQuery* query = _CLNEW BooleanQuery( disableCoord );
   //Condition check to see if query has been allocated properly
-  CND_CONDITION(query != NULL, "No memory could be allocated for query");
+  CND_CONDITION(query != NULL, L"No memory could be allocated for query");
 
   //iterate through all the clauses
   for( uint32_t i=0;i<clauses.size();i++ ){
     //Condition check to see if clauses[i] is valid
-    CND_CONDITION(clauses[i] != NULL, "clauses[i] is NULL");
+    CND_CONDITION(clauses[i] != NULL, L"clauses[i] is NULL");
     //Add it to query
     query->add(clauses[i]);
   }

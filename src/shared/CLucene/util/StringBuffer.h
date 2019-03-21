@@ -1,18 +1,26 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
 ------------------------------------------------------------------------------*/
 #pragma once
 
+#include <string>
+
+std::wstring float_to_wstring(const float_t value, const size_t digits);
+std::wstring boost_to_wstring(const float_t boost);
+std::wstring bool_to_wstring(const bool value);
+
+
+#if 0
 namespace lucene {
 
     namespace util {
 
-        class CLUCENE_SHARED_EXPORT StringBuffer {
+        class CLUCENE_SHARED_EXPORT StringBuffer
+        {
         public:
             ///Constructor. Allocates a buffer with the default length.
             StringBuffer();
@@ -101,3 +109,4 @@ namespace lucene {
         };
     }
 }
+#endif

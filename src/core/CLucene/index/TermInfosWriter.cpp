@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -21,7 +21,7 @@ CL_NS_USE(util)
 CL_NS_USE(store)
 CL_NS_DEF(index)
 
-	TermInfosWriter::TermInfosWriter(Directory* directory, const char* segment, FieldInfos* fis, int32_t interval):
+	TermInfosWriter::TermInfosWriter(Directory* directory, const wchar_t * segment, FieldInfos* fis, int32_t interval):
         fieldInfos(fis){
     //Func - Constructor
     //Pre  - directory contains a valid reference to a Directory
@@ -29,18 +29,18 @@ CL_NS_DEF(index)
     //       fis contains a valid reference to a reference FieldInfos
     //Post - The instance has been created
 
-    CND_PRECONDITION(segment != NULL, "segment is NULL");
+    CND_PRECONDITION(segment != NULL, L"segment is NULL");
     //Initialize instance
     initialise(directory,segment,interval, false);
 
 		other = _CLNEW TermInfosWriter(directory, segment,fieldInfos, interval, true);
 
-		CND_CONDITION(other != NULL, "other is NULL");
+		CND_CONDITION(other != NULL, L"other is NULL");
 
 		other->other = this;
 	}
 
-  TermInfosWriter::TermInfosWriter(Directory* directory, const char* segment, FieldInfos* fis, int32_t interval, bool isIndex):
+  TermInfosWriter::TermInfosWriter(Directory* directory, const wchar_t * segment, FieldInfos* fis, int32_t interval, bool isIndex):
 	    fieldInfos(fis){
     //Func - Constructor
     //Pre  - directory contains a valid reference to a Directory
@@ -49,11 +49,11 @@ CL_NS_DEF(index)
     //       isIndex is true or false
     //Post - The instance has been created
 
-      CND_PRECONDITION(segment != NULL, "segment is NULL");
+      CND_PRECONDITION(segment != NULL, L"segment is NULL");
       initialise(directory,segment,interval,isIndex);
   }
 
-  void TermInfosWriter::initialise(Directory* directory, const char* segment, int32_t interval, bool IsIndex){
+  void TermInfosWriter::initialise(Directory* directory, const wchar_t * segment, int32_t interval, bool IsIndex){
     //Func - Helps constructors to initialize Instance
     //Pre  - directory contains a valid reference to a Directory
     //       segment != NULL
@@ -67,7 +67,7 @@ CL_NS_DEF(index)
 
     lastTi  = _CLNEW TermInfo();
 
-    CND_CONDITION(lastTi != NULL, "Could not allocate memory for lastTi");
+    CND_CONDITION(lastTi != NULL, L"Could not allocate memory for lastTi");
 
     lastIndexPointer = 0;
     size             = 0;
@@ -75,7 +75,7 @@ CL_NS_DEF(index)
     indexInterval = interval;
     skipInterval = TermInfosWriter::DEFAULT_TERMDOCS_SKIP_INTERVAL;
 
-    output = directory->createOutput( Misc::segmentname(segment, (isIndex ? ".tii" : ".tis")).c_str() );
+    output = directory->createOutput( Misc::segmentname(segment, (isIndex ? L".tii" : L".tis")).c_str() );
 
     output->writeInt(FORMAT);                      // write format
     output->writeLong(0);                          // leave space for size
@@ -152,19 +152,18 @@ CL_NS_DEF(index)
         assert(compareToLastTerm(fieldNumber, termText, termTextLength) < 0 ||
             (isIndex && termTextLength == 0 && lastTermTextLength == 0));
 #else
+        std::wstring msg = (std::wstring(L"Terms are out of order: field=") + std::wstring(fieldInfos->fieldName(fieldNumber)) +
+            L" (number " + std::wstring(std::to_wstring(fieldNumber)) + L")" +
+            L" lastField=" + std::wstring(fieldInfos->fieldName(lastFieldNumber)) +
+            L" (number " + std::wstring(std::to_wstring(lastFieldNumber)) + L")" +
+            L" text=" + std::wstring(termText, termTextLength) +
+            L" lastText=" + std::wstring(lastTermText.values, lastTermTextLength));
     CND_PRECONDITION(compareToLastTerm(fieldNumber, termText, termTextLength) < 0 ||
-      (isIndex && termTextLength == 0 && lastTermTextLength == 0),
-      (string("Terms are out of order: field=") + Misc::toString(fieldInfos->fieldName(fieldNumber)) +
-      " (number " + Misc::toString(fieldNumber) + ")" +
-      " lastField=" + Misc::toString(fieldInfos->fieldName(lastFieldNumber)) +
-      " (number " + Misc::toString(lastFieldNumber) + ")" +
-      " text=" + Misc::toString(termText, termTextLength) +
-      " lastText=" + Misc::toString(lastTermText.values, lastTermTextLength)
-      ).c_str() );
+      (isIndex && termTextLength == 0 && lastTermTextLength == 0), msg.c_str());
 #endif
 
-    CND_PRECONDITION(ti->freqPointer >= lastTi->freqPointer, ("freqPointer out of order (" + Misc::toString(ti->freqPointer) + " < " + Misc::toString(lastTi->freqPointer) + ")").c_str());
-    CND_PRECONDITION(ti->proxPointer >= lastTi->proxPointer, ("proxPointer out of order (" + Misc::toString(ti->proxPointer) + " < " + Misc::toString(lastTi->proxPointer) + ")").c_str());
+    CND_PRECONDITION(ti->freqPointer >= lastTi->freqPointer, (L"freqPointer out of order (" + Misc::toString(ti->freqPointer) + L" < " + Misc::toString(lastTi->freqPointer) + L")").c_str());
+    CND_PRECONDITION(ti->proxPointer >= lastTi->proxPointer, (L"proxPointer out of order (" + Misc::toString(ti->proxPointer) + L" < " + Misc::toString(lastTi->proxPointer) + L")").c_str());
 
 		if (!isIndex && size % indexInterval == 0){
       //add an index term

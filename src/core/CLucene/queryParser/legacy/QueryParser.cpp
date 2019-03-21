@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -59,8 +59,8 @@ CL_NS_DEF2(queryParser,legacy)
 	//       find terms in the query text
 	//Post - query has been parsed and an instance of Query has been returned
 
-		CND_PRECONDITION(query != NULL, "query is NULL");
-        CND_PRECONDITION(field != NULL, "field is NULL");
+		CND_PRECONDITION(query != NULL, L"query is NULL");
+        CND_PRECONDITION(field != NULL, L"field is NULL");
 
 		QueryParser parser(field, analyzer);
 		return parser.parse(query);
@@ -71,13 +71,13 @@ CL_NS_DEF2(queryParser,legacy)
 	//Pre  - query != NULL and contains the query value to be parsed
 	//Post - Returns a parsed Query Instance
 
-        CND_PRECONDITION(query != NULL, "query is NULL");
+        CND_PRECONDITION(query != NULL, L"query is NULL");
 
 		//Instantie a Stringer that can read the query string
         BufferedReader* r = _CLNEW StringReader(query);
 
 		//Check to see if r has been created properly
-		CND_CONDITION(r != NULL, "Could not allocate memory for StringReader r");
+		CND_CONDITION(r != NULL, L"Could not allocate memory for StringReader r");
 
 		//Pointer for the return value
 		Query* ret = NULL;
@@ -132,7 +132,7 @@ CL_NS_DEF2(queryParser,legacy)
 	//       the token is extracted and deleted and CONJ_AND or CONJ_OR is returned
 	//       otherwise CONJ_NONE is returned
 
-        CND_PRECONDITION(tokens != NULL, "tokens is NULL");
+        CND_PRECONDITION(tokens != NULL, L"tokens is NULL");
 
 		switch(tokens->peek()->Type){
 			case QueryToken::AND_ :
@@ -155,7 +155,7 @@ CL_NS_DEF2(queryParser,legacy)
 	//Post - if the first token is a PLUS the token is extracted and deleted and MOD_REQ is returned
 	//       if the first token is a MINUS or NOT the token is extracted and deleted and MOD_NOT is returned
 	//       otherwise MOD_NONE is returned
-		CND_PRECONDITION(tokens != NULL, "tokens is NULL");
+		CND_PRECONDITION(tokens != NULL, L"tokens is NULL");
 
 		switch(tokens->peek()->Type){
 			case QueryToken::PLUS :
@@ -178,7 +178,7 @@ CL_NS_DEF2(queryParser,legacy)
 	//Pre  - field != NULL
 	//Post -
 
-		CND_PRECONDITION(tokens != NULL, "tokens is NULL");
+		CND_PRECONDITION(tokens != NULL, L"tokens is NULL");
 
 		vector<BooleanClause*> clauses;
 
@@ -224,7 +224,7 @@ CL_NS_DEF2(queryParser,legacy)
 			Query* q = c->getQuery();
 
 			//Condition check to be sure clauses[0] is valid
-			CND_CONDITION(c != NULL, "c is NULL");
+			CND_CONDITION(c != NULL, L"c is NULL");
 
 			//Tell the boolean clause not to delete its query
 			c->deleteQuery=false;
@@ -255,7 +255,7 @@ CL_NS_DEF2(queryParser,legacy)
 		if(term->Type == QueryToken::TERM && tokens->peek()->Type == QueryToken::COLON){
 			DelToken = MatchQueryToken(QueryToken::COLON);
 
-			CND_CONDITION(DelToken != NULL,"DelToken is NULL");
+			CND_CONDITION(DelToken != NULL,L"DelToken is NULL");
 			_CLDELETE(DelToken);
 
 			tmp = _wcsdup(term->Value);
@@ -272,7 +272,7 @@ CL_NS_DEF2(queryParser,legacy)
 		if(tokens->peek()->Type == QueryToken::LPAREN){
 			DelToken = MatchQueryToken(QueryToken::LPAREN);
 
-			CND_CONDITION(DelToken != NULL,"DelToken is NULL");
+			CND_CONDITION(DelToken != NULL,L"DelToken is NULL");
 			_CLDELETE(DelToken);
 
 			q = MatchQuery(sfield);
@@ -283,7 +283,7 @@ CL_NS_DEF2(queryParser,legacy)
 			try{
 			   DelToken = MatchQueryToken(QueryToken::RPAREN);
 
-			   CND_CONDITION(DelToken != NULL,"DelToken is NULL");
+			   CND_CONDITION(DelToken != NULL,L"DelToken is NULL");
 			   _CLDELETE(DelToken);
 
 			}catch(...) {
@@ -339,7 +339,7 @@ CL_NS_DEF2(queryParser,legacy)
 				if(tokens->peek()->Type == QueryToken::FUZZY){
 					DelToken = MatchQueryToken(QueryToken::FUZZY);
 
-					CND_CONDITION(DelToken !=NULL, "DelToken is NULL");
+					CND_CONDITION(DelToken !=NULL, L"DelToken is NULL");
 					_CLDELETE(DelToken);
 
 					fuzzy = true;
@@ -347,7 +347,7 @@ CL_NS_DEF2(queryParser,legacy)
 				if(tokens->peek()->Type == QueryToken::CARAT){
 					DelToken = MatchQueryToken(QueryToken::CARAT);
 
-					CND_CONDITION(DelToken !=NULL, "DelToken is NULL");
+					CND_CONDITION(DelToken !=NULL, L"DelToken is NULL");
 					_CLDELETE(DelToken);
 
 					boost = MatchQueryToken(QueryToken::NUMBER);
@@ -355,7 +355,7 @@ CL_NS_DEF2(queryParser,legacy)
 					if(tokens->peek()->Type == QueryToken::FUZZY){
 					   DelToken = MatchQueryToken(QueryToken::FUZZY);
 
-					   CND_CONDITION(DelToken !=NULL, "DelToken is NULL");
+					   CND_CONDITION(DelToken !=NULL, L"DelToken is NULL");
 					   _CLDELETE(DelToken);
 
 					   fuzzy = true;
@@ -398,7 +398,7 @@ CL_NS_DEF2(queryParser,legacy)
 				if(tokens->peek()->Type == QueryToken::CARAT){
 					DelToken = MatchQueryToken(QueryToken::CARAT);
 
-					CND_CONDITION(DelToken !=NULL, "DelToken is NULL");
+					CND_CONDITION(DelToken !=NULL, L"DelToken is NULL");
 					_CLDELETE(DelToken);
 
 					boost = MatchQueryToken(QueryToken::NUMBER);
@@ -419,7 +419,7 @@ CL_NS_DEF2(queryParser,legacy)
 				if(tokens->peek()->Type == QueryToken::CARAT){
 					DelToken = MatchQueryToken(QueryToken::CARAT);
 
-					CND_CONDITION(DelToken !=NULL, "DelToken is NULL");
+					CND_CONDITION(DelToken !=NULL, L"DelToken is NULL");
 					_CLDELETE(DelToken);
 
 					boost = MatchQueryToken(QueryToken::NUMBER);
@@ -470,7 +470,7 @@ CL_NS_DEF2(queryParser,legacy)
 	//Pre  - tokens != NULL
 	//Post -
 
-		CND_PRECONDITION(tokens != NULL,"tokens is NULL");
+		CND_PRECONDITION(tokens != NULL,L"tokens is NULL");
 
 		if(tokens->count() == 0){
 			throwParserException(L"Error: Unexpected end of program",' ',0,0);
@@ -496,12 +496,12 @@ CL_NS_DEF2(queryParser,legacy)
 	//Pre  - true
 	//Post - The first token has been extracted and destroyed
 
-		CND_PRECONDITION(tokens != NULL, "tokens is NULL");
+		CND_PRECONDITION(tokens != NULL, L"tokens is NULL");
 
 		//Extract the token from the TokenList tokens
 		QueryToken* t = tokens->extract();
 		//Condition Check Token may not be NULL
-		CND_CONDITION(t != NULL, "Token is NULL");
+		CND_CONDITION(t != NULL, L"Token is NULL");
 		//Delete Token
 		_CLDELETE(t);
 	}

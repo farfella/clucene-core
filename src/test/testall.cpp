@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -30,10 +30,10 @@
 	#include <io.h>
 #endif
 
-std::string cl_tempDirS;
-const char* cl_tempDir;
+std::wstring cl_tempDirS;
+const wchar_t * cl_tempDir;
 bool cl_quiet;
-char clucene_data_location[1024];
+wchar_t clucene_data_location[1024];
 
 int main(int argc, char *argv[])
 {
@@ -65,30 +65,30 @@ int main(int argc, char *argv[])
 	bool times = true;
 	uint64_t startTime=0;
 
-	if ( Misc::dir_Exists("/tmp") )
-		cl_tempDirS = "/tmp";
+	if ( Misc::dir_Exists(L"/tmp") )
+		cl_tempDirS = L"/tmp";
 	if ( getenv("TEMP") != NULL )
-		cl_tempDirS = getenv("TEMP");
+		cl_tempDirS = _wgetenv(L"TEMP");
 	else if ( getenv("TMP") != NULL )
-		cl_tempDirS = getenv("TMP");
+		cl_tempDirS = _wgetenv(L"TMP");
 
-  if ( Misc::dir_Exists( (cl_tempDirS + "/clucene").c_str() ) )
-		cl_tempDirS += "/clucene";
+  if ( Misc::dir_Exists( (cl_tempDirS + L"/clucene").c_str() ) )
+		cl_tempDirS += L"/clucene";
   cl_tempDir = cl_tempDirS.c_str();
 
 	clucene_data_location[0]=0;
-	if ( CL_NS(util)::Misc::dir_Exists(CLUCENE_DATA_LOCATION1 "/reuters-21578-index/segments") )
-		strcpy(clucene_data_location, CLUCENE_DATA_LOCATION1);
-	else if ( CL_NS(util)::Misc::dir_Exists(CLUCENE_DATA_LOCATION2 "/reuters-21578-index/segments") )
-		strcpy(clucene_data_location, CLUCENE_DATA_LOCATION2);
-	else if ( CL_NS(util)::Misc::dir_Exists(CLUCENE_DATA_LOCATION3 "/reuters-21578-index/segments") )
-		strcpy(clucene_data_location, CLUCENE_DATA_LOCATION3);
-	else if ( getenv(CLUCENE_DATA_LOCATIONENV) != NULL ){
-		strcpy(clucene_data_location,getenv(CLUCENE_DATA_LOCATIONENV));
-		strcat(clucene_data_location,"/data/reuters-21578-index/segments");
+	if ( CL_NS(util)::Misc::dir_Exists(CLUCENE_DATA_LOCATION1 L"/reuters-21578-index/segments") )
+		wcscpy(clucene_data_location, CLUCENE_DATA_LOCATION1);
+	else if ( CL_NS(util)::Misc::dir_Exists(CLUCENE_DATA_LOCATION2 L"/reuters-21578-index/segments") )
+		wcscpy(clucene_data_location, CLUCENE_DATA_LOCATION2);
+	else if ( CL_NS(util)::Misc::dir_Exists(CLUCENE_DATA_LOCATION3 L"/reuters-21578-index/segments") )
+		wcscpy(clucene_data_location, CLUCENE_DATA_LOCATION3);
+	else if ( _wgetenv(CLUCENE_DATA_LOCATIONENV) != NULL ){
+		wcscpy(clucene_data_location,_wgetenv(CLUCENE_DATA_LOCATIONENV));
+		wcscat(clucene_data_location,L"/data/reuters-21578-index/segments");
 		if ( CL_NS(util)::Misc::dir_Exists( clucene_data_location ) ){
-			strcpy(clucene_data_location, getenv(CLUCENE_DATA_LOCATIONENV));
-			strcat(clucene_data_location, "/data");
+			wcscpy(clucene_data_location, _wgetenv(CLUCENE_DATA_LOCATIONENV));
+			wcscat(clucene_data_location, L"/data");
 		}else
 			clucene_data_location[0]=0;
 	}
@@ -97,9 +97,9 @@ int main(int argc, char *argv[])
 	//todo: make this configurable
 	if ( !*clucene_data_location ){
 		fprintf(stderr,"%s must be run from a subdirectory of the application's root directory\n",argv[0]);
-		fprintf(stderr,"ensure that the test data exists in %s or %s or %s\n",CLUCENE_DATA_LOCATION1, CLUCENE_DATA_LOCATION2, CLUCENE_DATA_LOCATION3);
-		if ( getenv(CLUCENE_DATA_LOCATIONENV) != NULL )
-			fprintf(stderr,"%s/data was also checked because of the " CLUCENE_DATA_LOCATIONENV " environment variable", getenv(CLUCENE_DATA_LOCATIONENV));
+		fwprintf(stderr,L"ensure that the test data exists in %s or %s or %s\n",CLUCENE_DATA_LOCATION1, CLUCENE_DATA_LOCATION2, CLUCENE_DATA_LOCATION3);
+		if ( _wgetenv(CLUCENE_DATA_LOCATIONENV) != NULL )
+			fwprintf(stderr,L"%s/data was also checked because of the " CLUCENE_DATA_LOCATIONENV L" environment variable", _wgetenv(CLUCENE_DATA_LOCATIONENV));
 		ret_result = 1;
 		goto exit_point;
 	}

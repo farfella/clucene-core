@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -29,14 +29,14 @@ CL_NS_DEF(search)
 		TermQuery(CL_NS(index)::Term* t);
 		virtual ~TermQuery();
 
-		static const char* getClassName();
-		const char* getObjectName() const;
+		static const std::wstring getClassName();
+		const std::wstring getObjectName() const;
 
 		/** Returns the term of this query. */
 		CL_NS(index)::Term* getTerm(bool pointer=true) const;
 
 		/** Prints a user-readable version of this query. */
-		wchar_t* toString(const wchar_t* field) const;
+		std::wstring toString(const wchar_t* field) const;
 
 		/** Returns true if <code>o</code> is equal to this. */
 		bool equals(Query* other) const;

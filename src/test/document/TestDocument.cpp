@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -179,9 +179,9 @@ public:
   }
 
   void _TestDocumentWithOptions(CuTest *tc, int storeBit, FieldSelector::FieldSelectorResult fieldSelectorBit){
-    char factbook[1024];
-    strcpy(factbook, clucene_data_location);
-    strcat(factbook, "/reuters-21578/feldman-cia-worldfactbook-data.txt");
+    wchar_t factbook[1024];
+    wcscpy(factbook, clucene_data_location);
+    wcscat(factbook, L"/reuters-21578/feldman-cia-worldfactbook-data.txt");
     CuAssert(tc,_T("Factbook file does not exist"),Misc::dir_Exists(factbook));
 
     Document doc;

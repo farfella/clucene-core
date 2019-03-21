@@ -9,6 +9,7 @@
 /* #undef _CL_HAVE_FUNCTION__VSNWPRINTF */
 /* #undef _CL_HAVE_FUNCTION__SNWPRINTF */
 /* #undef _CL_HAVE_FUNCTION_WCSCASECMP */
+#define _CL_HAVE_SAFE_CRT 1
 #define _CL_HAVE_FUNCTION_WCSCAT  1 
 #define _CL_HAVE_FUNCTION_WCSCHR  1 
 #define _CL_HAVE_FUNCTION_WCSCMP  1 
@@ -89,10 +90,6 @@
 	#define LUCENE_USE_INTERNAL_CHAR_FUNCTIONS 1
 #endif
 
-/** fix ansi for loop scope */
-#if 1==0
- #define for if (0); else for
-#endif
 
 
 /* Compiler oddities */

@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -12,8 +12,8 @@
 
 //checks if a merged index finds phrases correctly
 void testIWmergePhraseSegments(CuTest *tc){
-	char fsdir[CL_MAX_PATH];
-	_snprintf(fsdir, CL_MAX_PATH, "%s/%s",cl_tempDir, "test.indexwriter");
+	wchar_t fsdir[CL_MAX_PATH];
+	_snwprintf(fsdir, CL_MAX_PATH, L"%s/%s",cl_tempDir, L"test.indexwriter");
 	SimpleAnalyzer a;
   Directory* dir = FSDirectory::getDirectory(fsdir);
 
@@ -109,8 +109,8 @@ void testIWmergeSegments1(CuTest *tc){
 
 //checks if appending to an index works correctly
 void testIWmergeSegments2(CuTest *tc){
-	char fsdir[CL_MAX_PATH];
-	_snprintf(fsdir, CL_MAX_PATH, "%s/%s",cl_tempDir, "test.indexwriter");
+	wchar_t fsdir[CL_MAX_PATH];
+	_snwprintf(fsdir, CL_MAX_PATH, L"%s/%s",cl_tempDir, L"test.indexwriter");
 	SimpleAnalyzer a;
   Directory* dir = FSDirectory::getDirectory(fsdir);
 
@@ -163,9 +163,9 @@ void testIWmergeSegments2(CuTest *tc){
 }
 
 void testAddIndexes(CuTest *tc){
-	char reuters_origdirectory[1024];
-  strcpy(reuters_origdirectory, clucene_data_location);
-  strcat(reuters_origdirectory, "/reuters-21578-index");
+	wchar_t reuters_origdirectory[1024];
+  wcscpy(reuters_origdirectory, clucene_data_location);
+  wcscat(reuters_origdirectory, L"/reuters-21578-index");
 
   {
     RAMDirectory dir;
@@ -359,8 +359,8 @@ void IWlargeScaleCorrectness_tester::invoke(
 }
 
 void testIWlargeScaleCorrectness(CuTest *tc){
-	char fsdir[CL_MAX_PATH];
-	_snprintf(fsdir,CL_MAX_PATH,"%s/%s",cl_tempDir, "test.search");
+	wchar_t fsdir[CL_MAX_PATH];
+	_snwprintf(fsdir,CL_MAX_PATH,L"%s/%s",cl_tempDir, L"test.search");
 	RAMDirectory ram;
 	FSDirectory* disk = FSDirectory::getDirectory(fsdir);
 	IWlargeScaleCorrectness_tester().invoke(ram, tc);

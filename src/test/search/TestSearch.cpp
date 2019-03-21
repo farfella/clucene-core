@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -29,13 +29,13 @@
 			    //check for explanation memory leaks...
           CL_NS(search)::Explanation expl1;
 					search->explain(q, h->id(0), &expl1);
-					wchar_t* tmp = expl1.toString();
-					_CLDELETE_CARRAY(tmp);
+					std::wstring tmp = expl1.toString();
+					
 					if ( h->length() > 1 ){ //do a second one just in case
 						CL_NS(search)::Explanation expl2;
 						search->explain(q, h->id(1), &expl2);
 						tmp = expl2.toString();
-						_CLDELETE_CARRAY(tmp);
+
 					}
 				}
 			}
@@ -49,9 +49,9 @@
 	}
 
 	void testSrchOpenIndex(CuTest *tc ){
-		char loc[1024];
-		strcpy(loc, clucene_data_location);
-		strcat(loc, "/reuters-21578-index");
+		wchar_t loc[1024];
+		wcscpy(loc, clucene_data_location);
+		wcscat(loc, L"/reuters-21578-index");
 
 		CuAssert(tc,_T("Index does not exist"), Misc::dir_Exists(loc));
 		s=_CLNEW IndexSearcher(loc);
@@ -231,8 +231,8 @@ void SearchTest(CuTest *tc, bool bram) {
 
 	SimpleAnalyzer analyzer;
 
-	char fsdir[CL_MAX_PATH];
-	_snprintf(fsdir,CL_MAX_PATH,"%s/%s",cl_tempDir, "test.search");
+	wchar_t fsdir[CL_MAX_PATH];
+	_snwprintf(fsdir,CL_MAX_PATH,L"%s/%s",cl_tempDir, L"test.search");
 	Directory* ram = (bram?(Directory*)_CLNEW RAMDirectory():(Directory*)FSDirectory::getDirectory(fsdir) );
 
 	IndexWriter writer( ram, &analyzer, true);
@@ -284,10 +284,9 @@ void SearchTest(CuTest *tc, bool bram) {
 	for (int k = 0; k < 8; k++) {
 		Query* query = parser.parse(queries[k]);
 
-		wchar_t* qryInfo = query->toString(_T("contents"));
+		std::wstring qryInfo = query->toString(_T("contents"));
 		hits = searcher.search(query);
 		CLUCENE_ASSERT( hits->length() == shouldbe[k] );
-		_CLDELETE_CARRAY(qryInfo);
 		_CLDELETE(hits);
 		_CLDELETE(query);
 	}
@@ -307,10 +306,9 @@ void SearchTest(CuTest *tc, bool bram) {
     query->add(&terms);
     terms.deleteValues();
 
-		wchar_t* qryInfo = query->toString(_T("contents"));
+		std::wstring qryInfo = query->toString(_T("contents"));
 		hits = searcher.search(query);
 		CLUCENE_ASSERT( hits->length() == 3 );
-		_CLDELETE_CARRAY(qryInfo);
 		_CLDELETE(hits);
 		_CLDELETE(query);
   }

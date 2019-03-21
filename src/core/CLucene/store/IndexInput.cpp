@@ -1,7 +1,7 @@
  /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -171,8 +171,8 @@ BufferedIndexInput::BufferedIndexInput(int32_t _bufferSize):
     }
   }
 
-	const char* BufferedIndexInput::getObjectName(){ return getClassName(); }
-	const char* BufferedIndexInput::getClassName(){ return "BufferedIndexInput"; }
+	const std::wstring BufferedIndexInput::getObjectName(){ return getClassName(); }
+	const std::wstring BufferedIndexInput::getClassName(){ return L"BufferedIndexInput"; }
 		
   void BufferedIndexInput::readBytes(uint8_t* b, const int32_t len){
     readBytes(b, len, true);

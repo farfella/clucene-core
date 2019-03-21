@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -31,13 +31,9 @@ QueryToken::~QueryToken()
 #endif
 }
 
-wchar_t* QueryToken::toString() const
+std::wstring QueryToken::toString() const
 {
-#ifndef LUCENE_TOKEN_WORD_LENGTH
 	return image;
-#else
-	return STRDUP_TtoT(image);
-#endif
 }
 
 /*static*/

@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -220,7 +220,7 @@ public:
 	* @param wordfile File containing the wordlist
 	* @return A HashSet with the file's words
 	*/
-	static CLTCSetList* getWordSet(const char* wordfilePath, const char* enc = NULL, CLTCSetList* stopTable = NULL);
+	static CLTCSetList* getWordSet(const wchar_t * wordfilePath, const wchar_t * enc = NULL, CLTCSetList* stopTable = NULL);
 
 	/**
 	* Reads lines from a Reader and adds every line as an entry to a HashSet (omitting
@@ -251,7 +251,7 @@ public:
 	/** Builds an analyzer with the stop words from the given file.
 	* @see WordlistLoader#getWordSet(File)
 	*/
-	StopAnalyzer(const char* stopwordsFile, const char* enc = NULL);
+	StopAnalyzer(const wchar_t * stopwordsFile, const wchar_t * enc = NULL);
 
 	/** Builds an analyzer with the stop words from the given reader.
 	* @see WordlistLoader#getWordSet(Reader)

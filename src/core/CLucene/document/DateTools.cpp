@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -73,7 +73,7 @@ int64_t DateTools::stringToTime(const wchar_t* dateString) {
   }
   case 6: // MONTH_FORMAT
   {
-    wchar_t* tmpDate = wcsdup(dateString);
+    wchar_t* tmpDate = _wcsdup(dateString);
     s_time.tm_mon = _wtoi(&tmpDate[4]) - 1;
     tmpDate[4] = 0;
     s_time.tm_year = _wtoi(tmpDate) - 1900;

@@ -27,7 +27,7 @@ CL_NS_USE(util);
   const wchar_t* testTerms_values[] = {_T("this"), _T("is"), _T("a"), _T("test")};
 
   CL_NS(store)::MockRAMDirectory dir;
-  std::string seg;
+  std::wstring seg;
   FieldInfos *fieldInfos = NULL;
   const int TERM_FREQ = 3;
 
@@ -161,8 +161,8 @@ CL_NS_USE(util);
     seg = writer.newestSegment()->name;
     writer.close();
 
-    std::string tmp = seg;
-    tmp.append(".");
+    std::wstring tmp = seg;
+    tmp.append(L".");
     tmp.append(IndexFileNames::FIELD_INFOS_EXTENSION);
     fieldInfos = _CLNEW FieldInfos(&dir, tmp.c_str());
   }
@@ -170,13 +170,13 @@ CL_NS_USE(util);
 
   void test(CuTest* tc) {
     //Check to see the files were created properly in setup
-    std::string tmp = seg;
-    tmp.append(".");
+    std::wstring tmp = seg;
+    tmp.append(L".");
     tmp.append(IndexFileNames::VECTORS_DOCUMENTS_EXTENSION);
     CuAssertTrue(tc, dir.fileExists(tmp.c_str()), _T("Missing file!"));
 
     tmp = seg;
-    tmp.append(".");
+    tmp.append(L".");
     tmp.append(IndexFileNames::VECTORS_INDEX_EXTENSION);
     CuAssertTrue(tc, dir.fileExists(tmp.c_str()), _T("Missing file!"));
   }

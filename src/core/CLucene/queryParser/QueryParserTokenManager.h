@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -107,7 +107,7 @@ public:
 	QueryToken* getNextToken();
 
 private:
-	static wchar_t* getLexicalError(bool EOFSeen, int32_t lexState, int32_t errorLine, int32_t errorColumn,
+	static std::wstring getLexicalError(bool EOFSeen, int32_t lexState, int32_t errorLine, int32_t errorColumn,
 		wchar_t* errorAfter, wchar_t curChar);
 };
 CL_NS_END

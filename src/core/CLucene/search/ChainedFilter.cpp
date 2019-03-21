@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -65,32 +65,31 @@ const wchar_t* ChainedFilter::getLogicString(int logic){
 	return L"";
 }
 
-wchar_t* ChainedFilter::toString()
+std::wstring ChainedFilter::toString()
 {
 
 	Filter** filter = filters;
 
-	StringBuffer buf(L"ChainedFilter: [");
+	std::wstring buf = L"ChainedFilter: [";
 	int* la = logicArray;
 	while(*filter )
 	{
 		if ( filter != filters )
-			buf.appendChar(' ');
+			buf.push_back(' ');
 		buf.append(getLogicString(logic==-1?*la:logic));
-		buf.appendChar(' ');
+		buf.push_back(' ');
 
-		wchar_t* filterstr = (*filter)->toString();
+		std::wstring filterstr = (*filter)->toString();
 		buf.append(filterstr);
-		_CLDELETE_ARRAY( filterstr );
 
 		filter++;
 		if ( logic == -1 )
 			la++;
 	}
 
-	buf.appendChar(']');
+	buf.push_back(']');
 
-	return buf.toString();
+	return buf;
 }
 
 

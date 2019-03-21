@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -268,8 +268,8 @@
 #else
            lucene::analysis::WhitespaceAnalyzer analyzer;
 #endif
-           char INDEX_PATH[CL_MAX_PATH];
-           sprintf(INDEX_PATH,"%s/%s",cl_tempDir, "test.analyzers");
+           wchar_t INDEX_PATH[CL_MAX_PATH];
+           swprintf(INDEX_PATH,L"%s/%s",cl_tempDir, L"test.analyzers");
            lucene::index::IndexWriter writer(INDEX_PATH, &analyzer, true);
            lucene::document::Document doc;
            int flags = lucene::document::Field::STORE_YES
@@ -427,9 +427,9 @@
   }
 
   void testWordlistLoader(CuTest *tc){
-	  char stopwordsfile[1024];
-	  strcpy(stopwordsfile, clucene_data_location);
-	  strcat(stopwordsfile, "/StopWords.test");
+	  wchar_t stopwordsfile[1024];
+	  wcscpy(stopwordsfile, clucene_data_location);
+	  wcscat(stopwordsfile, L"/StopWords.test");
 	  Analyzer* a = _CLNEW StopAnalyzer(stopwordsfile);
 	  assertAnalyzesTo(tc,a, _T("foo bar FOO BAR"), _T("foo;bar;foo;bar;"));
 	  assertAnalyzesTo(tc,a, _T("foo a bar such FOO THESE BAR"), _T("foo;bar;foo;bar;"));

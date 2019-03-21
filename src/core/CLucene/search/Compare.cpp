@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -56,8 +56,8 @@ ScoreDocComparators::String::String(FieldCache::StringIndex* index, int32_t len)
 }
 
 int32_t ScoreDocComparators::String::compare (struct ScoreDoc* i, struct ScoreDoc* j) {
-	CND_PRECONDITION(i->doc<length, "i->doc>=length")
-	CND_PRECONDITION(j->doc<length, "j->doc>=length")
+	CND_PRECONDITION(i->doc<length, L"i->doc>=length")
+	CND_PRECONDITION(j->doc<length, L"j->doc>=length")
 	if (index->order[i->doc] < index->order[j->doc]) return -1;
 	if (index->order[i->doc] > index->order[j->doc]) return 1;
 	return 0;
@@ -80,15 +80,15 @@ ScoreDocComparators::Int32::Int32(int32_t* fieldOrder, int32_t len)
 
 
 int32_t ScoreDocComparators::Int32::compare (struct ScoreDoc* i, struct ScoreDoc* j) {
-	CND_PRECONDITION(i->doc<length, "i->doc>=length")
-	CND_PRECONDITION(j->doc<length, "j->doc>=length")
+	CND_PRECONDITION(i->doc<length, L"i->doc>=length")
+	CND_PRECONDITION(j->doc<length, L"j->doc>=length")
 	if (fieldOrder[i->doc] < fieldOrder[j->doc]) return -1;
 	if (fieldOrder[i->doc] > fieldOrder[j->doc]) return 1;
 	return 0;
 }
 
 CL_NS(util)::Comparable* ScoreDocComparators::Int32::sortValue (struct ScoreDoc* i) {
-	CND_PRECONDITION(i->doc<length, "i->doc>=length")
+	CND_PRECONDITION(i->doc<length, L"i->doc>=length")
 	return _CLNEW CL_NS(util)::Compare::Int32(fieldOrder[i->doc]);
 }
 
@@ -103,15 +103,15 @@ ScoreDocComparators::Float::Float(float_t* fieldOrder, int32_t len)
 }
 
 int32_t ScoreDocComparators::Float::compare (struct ScoreDoc* i, struct ScoreDoc* j) {
-	CND_PRECONDITION(i->doc<length, "i->doc>=length")
-	CND_PRECONDITION(j->doc<length, "j->doc>=length")
+	CND_PRECONDITION(i->doc<length, L"i->doc>=length")
+	CND_PRECONDITION(j->doc<length, L"j->doc>=length")
 	if (fieldOrder[i->doc] < fieldOrder[j->doc]) return -1;
 	if (fieldOrder[i->doc] > fieldOrder[j->doc]) return 1;
 	return 0;
 }
 
 CL_NS(util)::Comparable* ScoreDocComparators::Float::sortValue (struct ScoreDoc* i) {
-	CND_PRECONDITION(i->doc<length, "i->doc>=length")
+	CND_PRECONDITION(i->doc<length, L"i->doc>=length")
 	return _CLNEW CL_NS(util)::Compare::Float(fieldOrder[i->doc]);
 }
 

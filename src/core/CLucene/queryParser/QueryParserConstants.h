@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -64,7 +64,7 @@ protected:
 	* string literal, while formatting an error message.
 	* Called internally only by error reporting tools.
 	*/
-	static wchar_t* addEscapes(wchar_t* str);
+	static std::wstring addEscapes(wchar_t* str);
 };
 CL_NS_END
 #endif

@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -29,7 +29,7 @@ public:
     MatchAllDocsWeight(MatchAllDocsQuery* enclosingInstance, Searcher* searcher);
     virtual ~MatchAllDocsWeight(){}
 
-    virtual wchar_t* toString();
+    virtual std::wstring toString();
 
     Query* getQuery();
 
@@ -64,7 +64,7 @@ public:
 
     bool skipTo(int32_t target);
 
-    virtual wchar_t* toString();
+    virtual std::wstring toString();
 };
 
 MatchAllDocsQuery::MatchAllScorer::MatchAllScorer(CL_NS(index)::IndexReader* _reader, Similarity* similarity, Weight* w)
@@ -102,8 +102,8 @@ bool MatchAllDocsQuery::MatchAllScorer::skipTo(int32_t target) {
 	return next();
 }
 
-wchar_t* MatchAllDocsQuery::MatchAllScorer::toString(){
-	return _wcsdup( L"MatchAllScorer");
+std::wstring MatchAllDocsQuery::MatchAllScorer::toString(){
+	return L"MatchAllScorer";
 }
 
 MatchAllDocsQuery::MatchAllDocsWeight::MatchAllDocsWeight(MatchAllDocsQuery* enclosingInstance, Searcher* searcher):
@@ -111,16 +111,14 @@ MatchAllDocsQuery::MatchAllDocsWeight::MatchAllDocsWeight(MatchAllDocsQuery* enc
 	this->similarity = searcher->getSimilarity();
 }
 
-wchar_t* MatchAllDocsQuery::MatchAllDocsWeight::toString() {
-	CL_NS(util)::StringBuffer buf(50);
-	buf.append( L"weight(");
+std::wstring MatchAllDocsQuery::MatchAllDocsWeight::toString() {
+	std::wstring buf = L"weight(";
 
-	wchar_t* t = parentQuery->toString();
+	std::wstring t = parentQuery->toString();
 	buf.append(t);
-	_CLDELETE_LCARRAY(t);
 
-	buf.appendChar( L')');
-	return buf.giveBuffer();
+	buf.push_back( L')');
+	return buf;
 }
 
 Query* MatchAllDocsQuery::MatchAllDocsWeight::getQuery() {
@@ -162,18 +160,17 @@ Weight* MatchAllDocsQuery::_createWeight(Searcher* searcher){
 	return _CLNEW MatchAllDocsWeight(this, searcher);
 }
 
-const char* MatchAllDocsQuery::getClassName() {
-	return "MatchAllDocsQuery";
+const std::wstring MatchAllDocsQuery::getClassName() {
+	return L"MatchAllDocsQuery";
 }
-const char* MatchAllDocsQuery::getObjectName() const{
+const std::wstring MatchAllDocsQuery::getObjectName() const{
 	return getClassName();
 }
 
-wchar_t* MatchAllDocsQuery::toString(const wchar_t* /*field*/) const{
-	CL_NS(util)::StringBuffer buffer(25);
-    buffer.append( L"MatchAllDocsQuery");
-    buffer.appendBoost(getBoost());
-    return buffer.giveBuffer();
+std::wstring MatchAllDocsQuery::toString(const wchar_t* /*field*/) const{
+	std::wstring buffer = L"MatchAllDocsQuery";
+    buffer.append(boost_to_wstring(getBoost()));
+    return buffer;
 }
 
 MatchAllDocsQuery::MatchAllDocsQuery(const MatchAllDocsQuery& clone):

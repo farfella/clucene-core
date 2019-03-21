@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -26,7 +26,7 @@ Lexer::Lexer(QueryParserBase* queryparser, const wchar_t* query) {
 
 	this->queryparser = queryparser;
 
-   CND_PRECONDITION(query != NULL, "query is NULL");
+   CND_PRECONDITION(query != NULL, L"query is NULL");
 
    //The InputStream of Reader must be destroyed in the destructor
    delSR = true;
@@ -34,13 +34,13 @@ Lexer::Lexer(QueryParserBase* queryparser, const wchar_t* query) {
    StringReader *r = _CLNEW StringReader(query);
 
    //Check to see if r has been created properly
-   CND_CONDITION(r != NULL, "Could not allocate memory for StringReader r");
+   CND_CONDITION(r != NULL, L"Could not allocate memory for StringReader r");
 
    //Instantie a Faswchar_tStream instance using r and assign it to reader
    reader = _CLNEW FastCharStream(r);
 
    //Check to see if reader has been created properly
-   CND_CONDITION(reader != NULL, "Could not allocate memory for Faswchar_tStream reader");
+   CND_CONDITION(reader != NULL, L"Could not allocate memory for Faswchar_tStream reader");
 
    //The InputStream of Reader must be destroyed in the destructor
    delSR = true;
@@ -61,7 +61,7 @@ Lexer::Lexer(QueryParserBase* queryparser, BufferedReader* source) {
    reader = _CLNEW FastCharStream(source);
 
    //Check to see if reader has been created properly
-   CND_CONDITION(reader != NULL, "Could not allocate memory for Faswchar_tStream reader");
+   CND_CONDITION(reader != NULL, L"Could not allocate memory for Faswchar_tStream reader");
 
    //The InputStream of Reader must not be destroyed in the destructor
    delSR  = false;
@@ -87,7 +87,7 @@ void Lexer::Lex(TokenList *tokenList) {
    //Pre  - tokens != NULL and contains a TokenList in which the tokens can be stored
    //Post - The tokens have been added to the TokenList tokens
 
-   CND_PRECONDITION(tokenList != NULL, "tokens is NULL");
+   CND_PRECONDITION(tokenList != NULL, L"tokens is NULL");
 
    //Get all the tokens
    while(true) {
@@ -191,17 +191,17 @@ void Lexer::ReadIntegerNumber(const wchar_t ch, wchar_t* buf, int buflen) {
 
 bool Lexer::ReadInclusiveRange(const wchar_t prev, QueryToken* token) {
    int ch = prev;
-   StringBuffer range;
-   range.appendChar(ch);
+   std::wstring range;
+   range.push_back(ch);
 
    while(!reader->Eos()) {
       ch = reader->GetNext();
 	  if ( ch == -1 )
 		break;
-      range.appendChar(ch);
+      range.push_back(ch);
 
       if(ch == ']'){
-         token->set(range.getBuffer(), QueryToken::RANGEIN);
+         token->set(range.c_str(), QueryToken::RANGEIN);
          return true;
       }
    }
@@ -213,18 +213,18 @@ bool Lexer::ReadInclusiveRange(const wchar_t prev, QueryToken* token) {
 
 bool Lexer::ReadExclusiveRange(const wchar_t prev, QueryToken* token) {
    int ch = prev;
-   StringBuffer range;
-   range.appendChar(ch);
+   std::wstring range;
+   range.push_back(ch);
 
    while(!reader->Eos()) {
       ch = reader->GetNext();
 
 	  if (ch==-1)
 		break;
-	  range.appendChar(ch);
+	  range.push_back(ch);
 
       if(ch == '}'){
-         token->set(range.getBuffer(), QueryToken::RANGEEX);
+         token->set(range.c_str(), QueryToken::RANGEEX);
         return true;
       }
    }
@@ -235,8 +235,8 @@ bool Lexer::ReadExclusiveRange(const wchar_t prev, QueryToken* token) {
 
 bool Lexer::ReadQuoted(const wchar_t prev, QueryToken* token) {
    int ch = prev;
-   StringBuffer quoted;
-   quoted.appendChar(ch);
+   std::wstring quoted;
+   quoted.push_back(ch);
 
    while(!reader->Eos()) {
       ch = reader->GetNext();
@@ -244,10 +244,10 @@ bool Lexer::ReadQuoted(const wchar_t prev, QueryToken* token) {
 	  if (ch==-1)
 		break;
 
-      quoted.appendChar(ch);
+      quoted.push_back(ch);
 
       if(ch == '"'){
-         token->set(quoted.getBuffer(), QueryToken::QUOTED);
+         token->set(quoted.c_str(), QueryToken::QUOTED);
          return true;
       }
    }
@@ -263,7 +263,7 @@ bool Lexer::ReadTerm(const wchar_t prev, QueryToken* token) {
    int32_t asteriskCount = 0;
    bool hasQuestion = false;
 
-   StringBuffer val;
+   std::wstring val;
    wchar_t buf[3]; //used for readescaped
 
    while(true) {
@@ -281,11 +281,11 @@ bool Lexer::ReadTerm(const wchar_t prev, QueryToken* token) {
 
          case LUCENE_WILDCARDTERMENUM_WILDCARD_STRING:
             asteriskCount++;
-            val.appendChar(ch);
+            val.push_back(ch);
             break;
          case LUCENE_WILDCARDTERMENUM_WILDCARD_CHAR:
             hasQuestion = true;
-            val.appendChar(ch);
+            val.push_back(ch);
             break;
          case '\n':
          case '\t':
@@ -308,7 +308,7 @@ bool Lexer::ReadTerm(const wchar_t prev, QueryToken* token) {
             completed = true;
             break;
          default:
-            val.appendChar(ch);
+            val.push_back(ch);
             break;
    // end of switch
       }
@@ -321,22 +321,22 @@ bool Lexer::ReadTerm(const wchar_t prev, QueryToken* token) {
 
    // create new QueryToken
    if(hasQuestion)
-      token->set(val.getBuffer(), QueryToken::WILDTERM);
-   else if(asteriskCount == 1 && val.getBuffer()[val.length() - 1] == '*')
-      token->set(val.getBuffer(), QueryToken::PREFIXTERM);
+      token->set(val.c_str(), QueryToken::WILDTERM);
+   else if(asteriskCount == 1 && val.c_str()[val.length() - 1] == '*')
+      token->set(val.c_str(), QueryToken::PREFIXTERM);
    else if(asteriskCount > 0)
-      token->set(val.getBuffer(), QueryToken::WILDTERM);
-   else if( _tcsicmp(val.getBuffer(), L"AND")==0 || wcscmp(val.getBuffer(), L"&&")==0 )
-      token->set(val.getBuffer(), QueryToken::AND_);
-   else if( _tcsicmp(val.getBuffer(), L"OR")==0 || wcscmp(val.getBuffer(), L"||")==0)
-      token->set(val.getBuffer(), QueryToken::OR);
-   else if( _tcsicmp(val.getBuffer(), L"NOT")==0 )
-      token->set(val.getBuffer(), QueryToken::NOT);
+      token->set(val.c_str(), QueryToken::WILDTERM);
+   else if( _tcsicmp(val.c_str(), L"AND")==0 || wcscmp(val.c_str(), L"&&")==0 )
+      token->set(val.c_str(), QueryToken::AND_);
+   else if( _tcsicmp(val.c_str(), L"OR")==0 || wcscmp(val.c_str(), L"||")==0)
+      token->set(val.c_str(), QueryToken::OR);
+   else if( _tcsicmp(val.c_str(), L"NOT")==0 )
+      token->set(val.c_str(), QueryToken::NOT);
    else {
       bool isnum = true;
       int32_t nlen=val.length();
       for (int32_t i=0;i<nlen;++i) {
-         wchar_t ch=val.getBuffer()[i];
+         wchar_t ch=val.c_str()[i];
          if ( _istalpha(ch) ) {
             isnum=false;
             break;
@@ -344,9 +344,9 @@ bool Lexer::ReadTerm(const wchar_t prev, QueryToken* token) {
       }
 
       if ( isnum )
-         token->set(val.getBuffer(), QueryToken::NUMBER);
+         token->set(val.c_str(), QueryToken::NUMBER);
       else
-         token->set(val.getBuffer(), QueryToken::TERM);
+         token->set(val.c_str(), QueryToken::TERM);
    }
    return true;
 }

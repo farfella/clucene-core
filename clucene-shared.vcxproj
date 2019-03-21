@@ -93,6 +93,9 @@
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
+    <Lib>
+      <AdditionalDependencies>shlwapi.lib</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -136,6 +139,9 @@
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
+    <Lib>
+      <AdditionalDependencies>shlwapi.lib</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\shared\CLucene\SharedHeader.cpp" />
@@ -143,13 +149,11 @@
     <ClCompile Include="src\shared\CLucene\config\repl_tcslwr.cpp" />
     <ClCompile Include="src\shared\CLucene\config\repl_tcstoll.cpp" />
     <ClCompile Include="src\shared\CLucene\config\repl_tcscasecmp.cpp" />
-    <ClCompile Include="src\shared\CLucene\config\repl_tprintf.cpp" />
     <ClCompile Include="src\shared\CLucene\config\repl_lltot.cpp" />
     <ClCompile Include="src\shared\CLucene\config\repl_tcstod.cpp" />
     <ClCompile Include="src\shared\CLucene\config\utf8.cpp" />
     <ClCompile Include="src\shared\CLucene\config\threads.cpp" />
     <ClCompile Include="src\shared\CLucene\debug\condition.cpp" />
-    <ClCompile Include="src\shared\CLucene\util\StringBuffer.cpp" />
     <ClCompile Include="src\shared\CLucene\util\Misc.cpp" />
     <ClCompile Include="src\shared\CLucene\util\dirent.cpp" />
     <ClCompile Include="src\ext\zlib\adler32.c">
@@ -192,6 +196,7 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
     </ClCompile>
+    <ClCompile Include="src\shared\CLucene\util\StringBuffer.cpp" />
     <ClInclude Include="src\shared\CLucene\LuceneThreads.h" />
     <ClInclude Include="src\shared\CLucene\SharedHeader.h" />
     <ClInclude Include="src\shared\CLucene\_SharedHeader.h" />
@@ -202,7 +207,6 @@
     <ClInclude Include="src\shared\CLucene\config\repl_wctype.h" />
     <ClInclude Include="src\shared\CLucene\debug\_condition.h" />
     <ClInclude Include="src\shared\CLucene\util\Misc.h" />
-    <ClInclude Include="src\shared\CLucene\util\StringBuffer.h" />
     <ClInclude Include="src\shared\CLucene\util\dirent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

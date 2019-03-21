@@ -1,13 +1,11 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
 ------------------------------------------------------------------------------*/
-#ifndef __CONDITION_H
-#define __CONDITION_H
+#pragma once
 
 //todo: this is a hack
 #undef CND_PRECONDITION
@@ -37,9 +35,9 @@ To enable condition debugging uncomment _CND_DEBUG in CLConfig.h
 	//this routine in the client application. The debug callback can then
 	//be better customised to the host application.
 	//Here is the default implementation:
-	void _Cnd_OutDebug( const char* FormattedMsg, const char* StrTitle, const char* File, int32_t Line, int32_t Title, const char* Mes2, int32_t fatal );
+	void _Cnd_OutDebug( const wchar_t * FormattedMsg, const wchar_t * StrTitle, const char * File, int32_t Line, int32_t Title, const wchar_t * Mes2, int32_t fatal );
 
-	void CLUCENE_SHARED_EXPORT __cnd_FormatDebug( const char* File, int32_t Line, int32_t Title, const char* Mes2, int32_t fatal );
+	void CLUCENE_SHARED_EXPORT __cnd_FormatDebug( const char * File, int32_t Line, int32_t Title, const wchar_t * Mes2, int32_t fatal );
 	#define CND__EXIT(file,line,title,mes2)						{__cnd_FormatDebug(file,line,title,mes2,1);}
 	#define CND__EXITCONDITION(cond,file,line,title,mes2)		{if(!(cond)){__cnd_FormatDebug(file,line,title,mes2,1);}}
 	#define CND__CONDITION(cond,file,line,title,mes2)			{if(!(cond)){__cnd_FormatDebug(file,line,title,mes2,0);}}
@@ -67,5 +65,3 @@ To enable condition debugging uncomment _CND_DEBUG in CLConfig.h
  #define debugFatalExit(ret) exit(ret)
 #endif
 
-
-#endif

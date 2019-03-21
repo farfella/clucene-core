@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -86,9 +86,9 @@ CuSuite *testGermanAnalyzer(void);
 
 class English{
 public:
-    static void IntToEnglish(int32_t i, CL_NS(util)::StringBuffer* result);
-    static TCHAR* IntToEnglish(int32_t i);
-    static void IntToEnglish(int32_t i, TCHAR* buf, int32_t buflen);
+    static void IntToEnglish(int32_t i, std::wstring & result);
+    static std::wstring IntToEnglish(int32_t i);
+    static void IntToEnglish(int32_t i, wchar_t * buf, int32_t buflen);
 };
 
 
@@ -149,11 +149,11 @@ void TestAssertIndexReaderEquals(CuTest *tc,  IndexReader* reader1, IndexReader*
 
 extern unittest tests[];
 
-#define CLUCENE_DATA_LOCATION1 "../../src/test/data/"
-#define CLUCENE_DATA_LOCATION2 "../src/test/data/"
-#define CLUCENE_DATA_LOCATION3 "../../../src/test/data/"
-#define CLUCENE_DATA_LOCATIONENV "srcdir"
+#define CLUCENE_DATA_LOCATION1 L"../../src/test/data/"
+#define CLUCENE_DATA_LOCATION2 L"../src/test/data/"
+#define CLUCENE_DATA_LOCATION3 L"../../../src/test/data/"
+#define CLUCENE_DATA_LOCATIONENV L"srcdir"
 
-extern const char* cl_tempDir;
+extern const wchar_t * cl_tempDir;
 
 #endif

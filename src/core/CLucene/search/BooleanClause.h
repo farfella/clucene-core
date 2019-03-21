@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -89,7 +89,7 @@ public:
 	bool isProhibited() const;
 	bool isRequired() const;
 
-	wchar_t* toString() const;
+	std::wstring toString() const;
 
 public: // TODO: Make private and remove for CLucene 2.3.2
 	/** If true, documents documents which <i>do not</i>

@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -32,7 +32,7 @@ CL_NS_DEF(search)
 	//       n != NULL
 	//Post - The instance has been created
 
-		CND_PRECONDITION(tps != NULL,"tps is NULL");
+		CND_PRECONDITION(tps != NULL,L"tps is NULL");
 
 		// convert tps to a list of phrase positions.
 		// note: phrase-position differs from term-position in that its position
@@ -42,7 +42,7 @@ CL_NS_DEF(search)
 		int32_t i = 0;
 		while(tps[i] != NULL){
 			PhrasePositions *pp = _CLNEW PhrasePositions(tps[i], offsets[i]);
-			CND_CONDITION(pp != NULL,"Could not allocate memory for pp");
+			CND_CONDITION(pp != NULL,L"Could not allocate memory for pp");
 
 			//Store PhrasePos into the PhrasePos pq
 			if (last != NULL) {			  // add next to end of list
@@ -55,7 +55,7 @@ CL_NS_DEF(search)
 		}
 
 		pq = _CLNEW PhraseQueue(i); //i==tps.length
-		CND_CONDITION(pq != NULL,"Could not allocate memory for pq");
+		CND_CONDITION(pq != NULL,L"Could not allocate memory for pq");
 	}
 
 	PhraseScorer::~PhraseScorer() {
@@ -141,7 +141,7 @@ CL_NS_DEF(search)
 	//       of PhrasePositions of which the first element is pointed to by first
 	//       and the last element is pointed to by last
 
-		CND_PRECONDITION(pq != NULL,"pq is NULL");
+		CND_PRECONDITION(pq != NULL,L"pq is NULL");
 		
 		last = first = NULL;
 
@@ -166,7 +166,7 @@ CL_NS_DEF(search)
 		}
 
 		//Check to see that pq is empty now
-		CND_CONDITION(pq->size()==0, "pq is not empty while it should be");
+		CND_CONDITION(pq->size()==0, L"pq is not empty while it should be");
 	}
 
 	void PhraseScorer::firstToLast(){
@@ -177,7 +177,7 @@ CL_NS_DEF(search)
 	//Post - The first element has become the last element in the list
 
 		CND_PRECONDITION(((first==NULL && last==NULL) ||(first !=NULL && last != NULL)),
-					   "Either first or last is NULL but not both");
+					   L"Either first or last is NULL but not both");
 
 		//Check if first and last are valid pointers
 		if(first && last){
@@ -198,26 +198,24 @@ CL_NS_DEF(search)
 		float_t phraseFreq = (doc() == _doc) ? freq : 0.0f;
 		tfExplanation->setValue(getSimilarity()->tf(phraseFreq));
 
-		StringBuffer buf;
+		std::wstring buf;
 		buf.append(L"tf(phraseFreq=");
-		buf.appendFloat(phraseFreq,2);
+		buf.append(std::to_wstring(phraseFreq));
 		buf.append(L")");
-		tfExplanation->setDescription(buf.getBuffer());
+		tfExplanation->setDescription(buf.c_str());
 
 		return tfExplanation;
 	}
 
-	wchar_t* PhraseScorer::toString() { 
-		StringBuffer buf;
-		buf.append(L"scorer(");
+	std::wstring PhraseScorer::toString() { 
+		std::wstring buf = L"scorer(";
 
-		wchar_t* tmp = weight->toString();
+		std::wstring tmp = weight->toString();
 		buf.append(tmp);
-		_CLDELETE_CARRAY(tmp);
 
 		buf.append(L")");
 
-		return buf.toString();
+		return buf;
 	}
 
 	int32_t PhraseScorer::doc() const { return first->doc; }

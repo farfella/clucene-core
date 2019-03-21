@@ -39,7 +39,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- #include "CLucene\_SharedHeader.h"
+#include "CLucene\_SharedHeader.h"
 
 typedef unsigned long  gunichar;
 typedef unsigned char  guchar;
@@ -100,66 +100,66 @@ typedef unsigned char  guchar;
     }
 
 
-/**
- * lucene_wctoutf8:
- * @c: a ISO10646 character code
- * @outbuf: output buffer, must have at least 6 bytes of space.
- *       If %NULL, the length will be computed and returned
- *       and nothing will be written to @outbuf.
- *
- * Converts a single character to UTF-8.
- *
- * Return value: number of bytes written
- **/
+      /**
+       * lucene_wctoutf8:
+       * @c: a ISO10646 character code
+       * @outbuf: output buffer, must have at least 6 bytes of space.
+       *       If %NULL, the length will be computed and returned
+       *       and nothing will be written to @outbuf.
+       *
+       * Converts a single character to UTF-8.
+       *
+       * Return value: number of bytes written
+       **/
 size_t	lucene_wctoutf8(char * outbuf, const wchar_t ch)
 {
-  gunichar c = ch;
-  guchar len = 0;
-  int first;
-  int i;
+    gunichar c = ch;
+    guchar len = 0;
+    int first;
+    int i;
 
-  if (c < 0x80)
+    if (c < 0x80)
     {
-      first = 0;
-      len = 1;
+        first = 0;
+        len = 1;
     }
-  else if (c < 0x800)
+    else if (c < 0x800)
     {
-      first = 0xc0;
-      len = 2;
+        first = 0xc0;
+        len = 2;
     }
-  else if (c < 0x10000)
+    else if (c < 0x10000)
     {
-      first = 0xe0;
-      len = 3;
+        first = 0xe0;
+        len = 3;
     }
-   else if (c < 0x200000)
+    else if (c < 0x200000)
     {
-      first = 0xf0;
-      len = 4;
+        first = 0xf0;
+        len = 4;
     }
-  else if (c < 0x4000000)
+    else if (c < 0x4000000)
     {
-      first = 0xf8;
-      len = 5;
+        first = 0xf8;
+        len = 5;
     }
-  else
+    else
     {
-      first = 0xfc;
-      len = 6;
+        first = 0xfc;
+        len = 6;
     }
 
-  if (outbuf)
-  {
-	for (i = len - 1; i > 0; --i)
-	{
-		outbuf[i] = (char)((c & 0x3f) | 0x80);
-		c >>= 6;
-	}
-	outbuf[0] = (char)(c | first);
-  }
+    if (outbuf)
+    {
+        for (i = len - 1; i > 0; --i)
+        {
+            outbuf[i] = (char) ((c & 0x3f) | 0x80);
+            c >>= 6;
+        }
+        outbuf[0] = (char) (c | first);
+    }
 
-  return len;
+    return len;
 }
 
 
@@ -177,73 +177,88 @@ size_t	lucene_wctoutf8(char * outbuf, const wchar_t ch)
  **/
 size_t lucene_utf8towc(wchar_t& pwc, const char *p)
 {
-  int i, mask = 0;
-  int result;
-  unsigned char c = (unsigned char) *p;
-  int len=0;
+    int i, mask = 0;
+    int result;
+    unsigned char c = (unsigned char) *p;
+    int len = 0;
 
-  UTF8_COMPUTE (c, mask, len);
-  if (len == -1)
-    return 0;
-  UTF8_GET (result, p, i, mask, len);
+    UTF8_COMPUTE(c, mask, len);
+    if (len == -1)
+        return 0;
+    UTF8_GET(result, p, i, mask, len);
 
-  pwc = result;
-  return len;
+    pwc = result;
+    return len;
 }
 
 
 //this function was not taken from gnome
-size_t lucene_wcstoutf8(char * result, const wchar_t * str, size_t result_length){
-  char *p=result;
-  int i = 0;
+size_t lucene_wcstoutf8(char * result, const wchar_t * str, size_t result_length)
+{
+    char *p = result;
+    int i = 0;
 
-  while (p < result + result_length-1 && str[i] != 0)
-    p += lucene_wctoutf8(p,str[i++]);
+    while (p < result + result_length - 1 && str[i] != 0)
+        p += lucene_wctoutf8(p, str[i++]);
 
-  *p = '\0';
+    *p = '\0';
 
-  return p-result;
+    return p - result;
 }
 //this function was not taken from gnome
-size_t lucene_utf8towcs(wchar_t * result, const char * str, size_t result_length){
-  char *sp = const_cast<char*>(str);
-  wchar_t *rp = result;
+size_t lucene_utf8towcs(wchar_t * result, const char * str, size_t result_length)
+{
+    char *sp = const_cast<char*>(str);
+    wchar_t *rp = result;
 
-  while (rp < result + result_length && *sp!=0){
-    size_t r = lucene_utf8towc(*rp,sp);
-    if ( r == 0 )
-      return 0;
-    sp += r;
-    rp++;
-  }
+    while (rp < result + result_length && *sp != 0)
+    {
+        size_t r = lucene_utf8towc(*rp, sp);
+        if (r == 0)
+            return 0;
+        sp += r;
+        rp++;
+    }
 
-  size_t ret = sp-str;
-  if ( ret < result_length )
-	*rp = '\0';
+    size_t ret = sp - str;
+    if (ret < result_length)
+        *rp = '\0';
 
-  return ret;
+    return ret;
 }
 //get the number of bytes that make up the utf8 character.
 //this function was not taken from gnome
 size_t lucene_utf8charlen(const unsigned char c)
 {
-  int mask = 0;
-  int len=0;
+    int mask = 0;
+    int len = 0;
 
-  UTF8_COMPUTE (c, mask, len);
-  return len;
+    UTF8_COMPUTE(c, mask, len);
+    return len;
 }
 #ifndef _ASCII
 //convert unicode string to a utf8 string
-std::string lucene_wcstoutf8string(const wchar_t* str, size_t strlen){
-  size_t i = 0;
-  std::string result;
-  char p[6];
+std::string lucene_wcstoutf8s(const std::wstring & str)
+{
+    return lucene_wcstoutf8string(str.c_str());
+}
 
-  while (i < strlen && str[i] != 0){
-    result.append(p, lucene_wctoutf8(p,str[i++]));
-  }
+std::string lucene_wcstoutf8string(const wchar_t* str, size_t strlen)
+{
+    size_t i = 0;
+    std::string result;
+    char p[6];
 
-  return result;
+    if (strlen == -1)
+    {
+        strlen = wcslen(str);
+    }
+
+    while (i < strlen && str[i] != 0)
+    {
+        result.append(p, lucene_wctoutf8(p, str[i++]));
+    }
+
+    return result;
 }
 #endif

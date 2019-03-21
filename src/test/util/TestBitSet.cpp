@@ -130,8 +130,8 @@ void doTestWriteRead(CuTest* tc, int n) {
         bv.set(i);
         CLUCENE_ASSERT(bv.get(i));
         CLUCENE_ASSERT(i+1==bv.count());
-        bv.write(d, "TESTBV");
-        BitSet compare(d, "TESTBV");
+        bv.write(d, L"TESTBV");
+        BitSet compare(d, L"TESTBV");
         // compare bit vectors with bits set incrementally
         CLUCENE_ASSERT(doCompare(bv,compare));
     }
@@ -157,26 +157,26 @@ void doTestDgaps(CuTest* tc, int size, int count1, int count2) {
     bv->set(i);
     CLUCENE_ASSERT(i+1==bv->count());
   }
-  bv->write(d, "TESTBV");
+  bv->write(d, L"TESTBV");
   // gradually increase number of set bits
   for (int i=count1; i<count2; i++) {
-    BitSet* bv2 = _CLNEW BitSet(d, "TESTBV");
+    BitSet* bv2 = _CLNEW BitSet(d, L"TESTBV");
     CLUCENE_ASSERT(doCompare(*bv,*bv2));
     _CLLDELETE(bv);
     bv = bv2;
     bv->set(i, true);
     CLUCENE_ASSERT(i+1==bv->count());
-    bv->write(d, "TESTBV");
+    bv->write(d, L"TESTBV");
   }
   // now start decreasing number of set bits
   for (int i=count2-1; i>=count1; i--) {
-    BitVector* bv2 = _CLNEW BitSet(d, "TESTBV");
+    BitVector* bv2 = _CLNEW BitSet(d, L"TESTBV");
     CLUCENE_ASSERT(doCompare(*bv,*bv2));
     _CLLDELETE(bv);
     bv = bv2;
     bv->set(i, false);
     CLUCENE_ASSERT(i==bv->count());
-    bv->write(d, "TESTBV");
+    bv->write(d, L"TESTBV");
   }
   _CLLDELETE(bv);
   _CLLDECDELETE( d );
@@ -202,9 +202,9 @@ void doTestBitAtEndOfBitSet(CuTest* tc, int size, int pos) {
   BitSet* bv = _CLNEW BitSet(size);
 
   bv->set(pos, true);
-  bv->write(d, "TESTBV");
+  bv->write(d, L"TESTBV");
   _CLLDELETE(bv);
-  bv = _CLNEW BitSet(d, "TESTBV");
+  bv = _CLNEW BitSet(d, L"TESTBV");
   CLUCENE_ASSERT(bv->get(pos));
   _CLLDELETE( bv );
   _CLLDECDELETE( d );

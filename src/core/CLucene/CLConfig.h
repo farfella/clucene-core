@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -60,12 +60,12 @@
 //#define LUCENE_LOCK_DIR "/tmp"
 //
 //define this to try and load the lock dir from this specified environment variable
-#define LUCENE_LOCK_DIR_ENV_1 "TEMP"
+#define LUCENE_LOCK_DIR_ENV_1 L"TEMP"
 //define this if you want to have look up this environment variable if the first one fails
-#define LUCENE_LOCK_DIR_ENV_2 "TMP"
+#define LUCENE_LOCK_DIR_ENV_2 L"TMP"
 //define this if you want to have a fallback directory, if not defined then 
 //the lockdirectory will be the index directory
-#define LUCENE_LOCK_DIR_ENV_FALLBACK "/tmp"
+#define LUCENE_LOCK_DIR_ENV_FALLBACK L"/tmp"
 //
 ////////////////////////////////////////////////////////////////////
 

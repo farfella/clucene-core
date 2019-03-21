@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -133,14 +133,17 @@ BitSet* RangeFilter::bits( IndexReader* reader )
 	return bts;
 }
 
-wchar_t* RangeFilter::toString()
+std::wstring RangeFilter::toString()
 {
 	size_t len = (fieldName ? wcslen(fieldName) : 0) + (lowerTerm ? wcslen(lowerTerm) : 0) + (upperTerm ? wcslen(upperTerm) : 0) + 8;
 	wchar_t* ret = _CL_NEWARRAY( wchar_t, len );
 	ret[0] = 0;
 	_snwprintf( ret, len, L"%s: [%s-%s]", fieldName, (lowerTerm?lowerTerm: L""), (upperTerm?upperTerm: L"") );
-	
-	return ret;
+
+    std::wstring r = ret;
+    _CLDELETE_ARRAY(ret);
+
+	return r;
 }
 
 Filter* RangeFilter::clone() const {

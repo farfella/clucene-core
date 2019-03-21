@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -20,7 +20,7 @@ CL_NS_DEF(index)
 		maxSkipLevels(_parent->tis->getMaxSkipLevels()),skipListReader(NULL),freqBasePointer(0),proxBasePointer(0),
 		skipPointer(0),haveSkipped(false)
 	{
-      CND_CONDITION(_parent != NULL,"Parent is NULL");
+      CND_CONDITION(_parent != NULL,L"Parent is NULL");
    }
 
   SegmentTermDocs::~SegmentTermDocs() {

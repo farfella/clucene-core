@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -34,7 +34,7 @@ CL_NS_DEF2(queryParser,legacy)
 	//Pre  - token != NULL
 	//Post - token has been added to the token list
 
-       CND_PRECONDITION(token != NULL, "token != NULL");
+       CND_PRECONDITION(token != NULL, L"token != NULL");
 
        tokens.insert(tokens.begin(),token);
     }
@@ -44,7 +44,7 @@ CL_NS_DEF2(queryParser,legacy)
 	//Pre  - token != NULL
 	//Post - 
 
-      CND_PRECONDITION(token != NULL, "token is NULL");
+      CND_PRECONDITION(token != NULL, L"token is NULL");
 
       tokens.push_back(token);
     }

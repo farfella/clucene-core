@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -18,16 +18,16 @@ DEFINE_MUTEX(createReaderMutex)
 
 void createDocument(Document& doc, int n, int numFields) {
   doc.clear();
-  StringBuffer sb;
+  std::wstring sb;
   sb.append( _T("a"));
-  sb.appendInt(n);
-  doc.add(* _CLNEW Field( _T("field1"), sb.getBuffer(), Field::STORE_YES | Field::INDEX_TOKENIZED));
+  sb.append(std::to_wstring(n));
+  doc.add(* _CLNEW Field( _T("field1"), sb.c_str(), Field::STORE_YES | Field::INDEX_TOKENIZED));
   sb.append(_T(" b"));
-  sb.appendInt(n);
+  sb.append(std::to_wstring(n));
   for (int i = 1; i < numFields; i++) {
     wchar_t buf[10];
     _snwprintf(buf,10,_T("field%d"), i+1);
-    doc.add(* _CLNEW Field(buf, sb.getBuffer(), Field::STORE_YES | Field::INDEX_TOKENIZED));
+    doc.add(* _CLNEW Field(buf, sb.c_str(), Field::STORE_YES | Field::INDEX_TOKENIZED));
   }
 }
 
@@ -53,9 +53,9 @@ void createIndex(CuTest* tc, Directory* dir, bool multiSegment) {
 
   IndexReader* r = IndexReader::open(dir);
   if (multiSegment) {
-    CuAssert(tc,_T("check is multi"), strcmp(r->getObjectName(),"MultiSegmentReader")==0);
+    CuAssert(tc,_T("check is multi"), wcscmp(r->getObjectName().c_str(),L"MultiSegmentReader")==0);
   } else {
-    CuAssert(tc,_T("check is segment"), strcmp(r->getObjectName(),"SegmentReader")==0);
+    CuAssert(tc,_T("check is segment"), wcscmp(r->getObjectName().c_str(),L"SegmentReader")==0);
   }
   r->close();
   _CLDELETE(r);

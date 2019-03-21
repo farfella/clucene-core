@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -134,7 +134,7 @@ DocumentsWriter::~DocumentsWriter(){
   }
 }
 
-void DocumentsWriter::setInfoStream(std::ostream* infoStream) {
+void DocumentsWriter::setInfoStream(std::wostream* infoStream) {
   this->infoStream = infoStream;
 }
 
@@ -162,7 +162,7 @@ int32_t DocumentsWriter::getMaxBufferedDocs() {
   return maxBufferedDocs;
 }
 
-std::string DocumentsWriter::getSegment() {
+std::wstring DocumentsWriter::getSegment() {
   return segment;
 }
 
@@ -170,7 +170,7 @@ int32_t DocumentsWriter::getNumDocsInRAM() {
   return numDocsInRAM;
 }
 
-const std::string& DocumentsWriter::getDocStoreSegment() {
+const std::wstring& DocumentsWriter::getDocStoreSegment() {
   return docStoreSegment;
 }
 
@@ -178,15 +178,15 @@ int32_t DocumentsWriter::getDocStoreOffset() {
   return docStoreOffset;
 }
 
-std::string DocumentsWriter::closeDocStore() {
+std::wstring DocumentsWriter::closeDocStore() {
 
   assert (allThreadsIdle());
 
-  const std::vector<string>& flushedFiles = files();
+  const std::vector<std::wstring>& flushedFiles = files();
 
   if (infoStream != NULL)
-    (*infoStream) << string("\ncloseDocStore: ") << Misc::toString((int32_t)flushedFiles.size()) << string(" files to flush to segment ") <<
-    docStoreSegment << string(" numDocs=") << Misc::toString(numDocsInStore) << string("\n");
+    (*infoStream) << std::wstring(L"\ncloseDocStore: ") << Misc::toString((int32_t)flushedFiles.size()) << std::wstring(L" files to flush to segment ") <<
+    docStoreSegment << std::wstring(L" numDocs=") << Misc::toString(numDocsInStore) << std::wstring(L"\n");
 
   if (flushedFiles.size() > 0) {
     _CLDELETE(_files);
@@ -201,7 +201,7 @@ std::string DocumentsWriter::closeDocStore() {
       tvd->close();
       _CLDELETE(tvd);
 
-      assert ( 4+numDocsInStore*8 == directory->fileLength( (docStoreSegment + "." + IndexFileNames::VECTORS_INDEX_EXTENSION).c_str()) ); // "after flush: tvx size mismatch: " + numDocsInStore + " docs vs " + directory->fileLength(docStoreSegment + "." + IndexFileNames::VECTORS_INDEX_EXTENSION) + " length in bytes of " + docStoreSegment + "." + IndexFileNames::VECTORS_INDEX_EXTENSION;
+      assert ( 4+numDocsInStore*8 == directory->fileLength( (docStoreSegment + L"." + IndexFileNames::VECTORS_INDEX_EXTENSION).c_str()) ); // "after flush: tvx size mismatch: " + numDocsInStore + " docs vs " + directory->fileLength(docStoreSegment + "." + IndexFileNames::VECTORS_INDEX_EXTENSION) + " length in bytes of " + docStoreSegment + "." + IndexFileNames::VECTORS_INDEX_EXTENSION;
     }
 
     if (fieldsWriter != NULL) {
@@ -209,44 +209,44 @@ std::string DocumentsWriter::closeDocStore() {
       fieldsWriter->close();
       _CLDELETE(fieldsWriter);
 
-      assert(numDocsInStore*8 == directory->fileLength( (docStoreSegment + "." + IndexFileNames::FIELDS_INDEX_EXTENSION).c_str() ) );// "after flush: fdx size mismatch: " + numDocsInStore + " docs vs " + directory->fileLength(docStoreSegment + "." + IndexFileNames::FIELDS_INDEX_EXTENSION) + " length in bytes of " + docStoreSegment + "." + IndexFileNames::FIELDS_INDEX_EXTENSION;
+      assert(numDocsInStore*8 == directory->fileLength( (docStoreSegment + L"." + IndexFileNames::FIELDS_INDEX_EXTENSION).c_str() ) );// "after flush: fdx size mismatch: " + numDocsInStore + " docs vs " + directory->fileLength(docStoreSegment + "." + IndexFileNames::FIELDS_INDEX_EXTENSION) + " length in bytes of " + docStoreSegment + "." + IndexFileNames::FIELDS_INDEX_EXTENSION;
     }
 
-    std::string s = docStoreSegment;
+    std::wstring s = docStoreSegment;
     docStoreSegment.clear();
     docStoreOffset = 0;
     numDocsInStore = 0;
     return s;
   } else {
-    return "";
+    return L"";
   }
 }
 
-const std::vector<string>* DocumentsWriter::abortedFiles() {
+const std::vector<std::wstring>* DocumentsWriter::abortedFiles() {
   return _abortedFiles;
 }
 
-const std::vector<std::string>& DocumentsWriter::files() {
+const std::vector<std::wstring>& DocumentsWriter::files() {
 	SCOPED_LOCK_MUTEX(THIS_LOCK)
 
   if (_files != NULL)
     return *_files;
 
-  _files = _CLNEW std::vector<string>;
+  _files = _CLNEW std::vector<std::wstring>;
 
   // Stored fields:
   if (fieldsWriter != NULL) {
     assert ( !docStoreSegment.empty());
-    _files->push_back(docStoreSegment + "." + IndexFileNames::FIELDS_EXTENSION);
-    _files->push_back(docStoreSegment + "." + IndexFileNames::FIELDS_INDEX_EXTENSION);
+    _files->push_back(docStoreSegment + L"." + IndexFileNames::FIELDS_EXTENSION);
+    _files->push_back(docStoreSegment + L"." + IndexFileNames::FIELDS_INDEX_EXTENSION);
   }
 
   // Vectors:
   if (tvx != NULL) {
     assert ( !docStoreSegment.empty());
-    _files->push_back(docStoreSegment + "." + IndexFileNames::VECTORS_INDEX_EXTENSION);
-    _files->push_back(docStoreSegment + "." + IndexFileNames::VECTORS_FIELDS_EXTENSION);
-    _files->push_back(docStoreSegment + "." + IndexFileNames::VECTORS_DOCUMENTS_EXTENSION);
+    _files->push_back(docStoreSegment + L"." + IndexFileNames::VECTORS_INDEX_EXTENSION);
+    _files->push_back(docStoreSegment + L"." + IndexFileNames::VECTORS_FIELDS_EXTENSION);
+    _files->push_back(docStoreSegment + L"." + IndexFileNames::VECTORS_DOCUMENTS_EXTENSION);
   }
 
   return *_files;
@@ -271,7 +271,7 @@ void DocumentsWriter::abort(AbortException* ae) {
   try {
 
     if (infoStream != NULL)
-      (*infoStream) << string("docWriter: now abort\n");
+      (*infoStream) << std::wstring(L"docWriter: now abort\n");
 
     // Forcefully remove waiting ThreadStates from line
     for(int32_t i=0;i<numWaiting;i++)
@@ -289,9 +289,9 @@ void DocumentsWriter::abort(AbortException* ae) {
       numBufferedDeleteTerms = 0;
 
       try {
-		    const std::vector<string>& __abortedFiles = files();
-		    _abortedFiles = _CLNEW std::vector<string>;
-		    for ( std::vector<string>::const_iterator itr = __abortedFiles.begin();
+		    const std::vector<std::wstring>& __abortedFiles = files();
+		    _abortedFiles = _CLNEW std::vector<std::wstring>;
+		    for ( std::vector<std::wstring>::const_iterator itr = __abortedFiles.begin();
 			    itr != __abortedFiles.end(); itr ++ ){
 			    _abortedFiles->push_back(*itr);
 		    }
@@ -451,7 +451,7 @@ int32_t DocumentsWriter::flush(bool _closeDocStore) {
   assert ( numDocsInRAM > 0 );
 
   if (infoStream != NULL)
-    (*infoStream) << string("\nflush postings as segment ") << segment << string(" numDocs=") << Misc::toString(numDocsInRAM) << string("\n");
+    (*infoStream) << std::wstring(L"\nflush postings as segment ") << segment << std::wstring(L" numDocs=") << Misc::toString(numDocsInRAM) << std::wstring(L"\n");
 
   bool success = false;
 
@@ -460,14 +460,14 @@ int32_t DocumentsWriter::flush(bool _closeDocStore) {
     if (_closeDocStore) {
       assert ( !docStoreSegment.empty());
 	    assert ( docStoreSegment.compare(segment) == 0 );
-	    const std::vector<string>& tmp = files();
-	    for (std::vector<string>::const_iterator itr = tmp.begin();
+	    const std::vector<std::wstring>& tmp = files();
+	    for (std::vector<std::wstring>::const_iterator itr = tmp.begin();
 		    itr != tmp.end(); itr++ )
 		    newFiles.push_back(*itr);
       closeDocStore();
     }
 
-    fieldInfos->write(directory, (segment + ".fnm").c_str() );
+    fieldInfos->write(directory, (segment + L".fnm").c_str() );
 
     docCount = numDocsInRAM;
 
@@ -483,10 +483,10 @@ int32_t DocumentsWriter::flush(bool _closeDocStore) {
   return docCount;
 }
 
-void DocumentsWriter::createCompoundFile(const std::string& segment)
+void DocumentsWriter::createCompoundFile(const std::wstring& segment)
 {
-  CompoundFileWriter* cfsWriter = _CLNEW CompoundFileWriter(directory, (segment + "." + IndexFileNames::COMPOUND_FILE_EXTENSION).c_str());
-  for (std::vector<string>::const_iterator itr = newFiles.begin();
+  CompoundFileWriter* cfsWriter = _CLNEW CompoundFileWriter(directory, (segment + L"." + IndexFileNames::COMPOUND_FILE_EXTENSION).c_str());
+  for (std::vector<std::wstring>::const_iterator itr = newFiles.begin();
 		itr != newFiles.end(); itr ++ )
     cfsWriter->addFile( (*itr).c_str() );
 
@@ -512,8 +512,8 @@ void DocumentsWriter::clearFlushPending() {
   flushPending = false;
 }
 
-void DocumentsWriter::writeNorms(const std::string& segmentName, int32_t totalNumDoc) {
-  IndexOutput* normsOut = directory->createOutput( (segmentName + "." + IndexFileNames::NORMS_EXTENSION).c_str() );
+void DocumentsWriter::writeNorms(const std::wstring& segmentName, int32_t totalNumDoc) {
+  IndexOutput* normsOut = directory->createOutput( (segmentName + L"." + IndexFileNames::NORMS_EXTENSION).c_str() );
 
   try {
 	  normsOut->writeBytes(SegmentMerger::NORMS_HEADER, SegmentMerger::NORMS_HEADER_length);
@@ -542,19 +542,19 @@ void DocumentsWriter::writeNorms(const std::string& segmentName, int32_t totalNu
   )
 }
 
-void DocumentsWriter::writeSegment(std::vector<std::string>& flushedFiles) {
+void DocumentsWriter::writeSegment(std::vector<std::wstring>& flushedFiles) {
 
   assert ( allThreadsIdle() );
 
   assert ( nextDocID == numDocsInRAM );
 
-  const std::string segmentName = segment;
+  const std::wstring segmentName = segment;
 
   TermInfosWriter* termsOut = _CLNEW TermInfosWriter(directory, segmentName.c_str(), fieldInfos,
                                                  writer->getTermIndexInterval());
 
-  IndexOutput* freqOut = directory->createOutput( (segmentName + ".frq").c_str() );
-  IndexOutput* proxOut = directory->createOutput( (segmentName + ".prx").c_str() );
+  IndexOutput* freqOut = directory->createOutput( (segmentName + L".frq").c_str() );
+  IndexOutput* proxOut = directory->createOutput( (segmentName + L".prx").c_str() );
 
   // Gather all FieldData's that have postings, across all
   // ThreadStates
@@ -625,10 +625,10 @@ void DocumentsWriter::writeSegment(std::vector<std::string>& flushedFiles) {
   if (infoStream != NULL) {
     const int64_t newSegmentSize = segmentSize(segmentName);
 
-    (*infoStream) << string("  oldRAMSize=") << Misc::toString(numBytesUsed) <<
-				string(" newFlushedSize=") << Misc::toString(newSegmentSize) <<
-        string(" docs/MB=") << Misc::toString((float_t)(numDocsInRAM/(newSegmentSize/1024.0/1024.0))) <<
-        string(" new/old=") << Misc::toString((float_t)(100.0*newSegmentSize/numBytesUsed)) << string("%\n");
+    (*infoStream) << std::wstring(L"  oldRAMSize=") << Misc::toString(numBytesUsed) <<
+				std::wstring(L" newFlushedSize=") << Misc::toString(newSegmentSize) <<
+        std::wstring(L" docs/MB=") << Misc::toString((float_t)(numDocsInRAM/(newSegmentSize/1024.0/1024.0))) <<
+        std::wstring(L" new/old=") << Misc::toString((float_t)(100.0*newSegmentSize/numBytesUsed)) << std::wstring(L"%\n");
   }
 
   resetPostingsData();
@@ -649,11 +649,11 @@ void DocumentsWriter::writeSegment(std::vector<std::string>& flushedFiles) {
 
 }
 
-std::string DocumentsWriter::segmentFileName(const char* extension) {
-  return segmentFileName( string(extension) );
+std::wstring DocumentsWriter::segmentFileName(const wchar_t * extension) {
+  return segmentFileName( std::wstring(extension) );
 }
-std::string DocumentsWriter::segmentFileName(const std::string& extension) {
-  return segment + "." + extension;
+std::wstring DocumentsWriter::segmentFileName(const std::wstring& extension) {
+  return segment + L"." + extension;
 }
 
 int32_t DocumentsWriter::compareText(const wchar_t* text1, const wchar_t* text2) {
@@ -1159,15 +1159,15 @@ void DocumentsWriter::copyBytes(IndexInput* srcIn, IndexOutput* destIn, int64_t 
 }
 
 
-int64_t DocumentsWriter::segmentSize(const std::string& segmentName) {
+int64_t DocumentsWriter::segmentSize(const std::wstring& segmentName) {
   assert (infoStream != NULL);
 
-  int64_t size = directory->fileLength( (segmentName + ".tii").c_str() ) +
-    directory->fileLength( (segmentName + ".tis").c_str() ) +
-    directory->fileLength( (segmentName + ".frq").c_str() ) +
-    directory->fileLength( (segmentName + ".prx").c_str() );
+  int64_t size = directory->fileLength( (segmentName + L".tii").c_str() ) +
+    directory->fileLength( (segmentName + L".tis").c_str() ) +
+    directory->fileLength( (segmentName + L".frq").c_str() ) +
+    directory->fileLength( (segmentName + L".prx").c_str() );
 
-  const std::string normFileName = segmentName + ".nrm";
+  const std::wstring normFileName = segmentName + L".nrm";
   if (directory->fileExists(normFileName.c_str()))
     size += directory->fileLength(normFileName.c_str());
 
@@ -1269,10 +1269,10 @@ void DocumentsWriter::recycleBlocks(ArrayBase<wchar_t*>& blocks, int32_t start, 
   }
 }
 
-std::string DocumentsWriter::toMB(int64_t v) {
-  char buf[40];
-  cl_sprintf(buf,40, "%0.2f", v/1024.0/1024.0);
-  return string(buf);
+std::wstring DocumentsWriter::toMB(int64_t v) {
+  wchar_t buf[40];
+  swprintf_s(buf,40, L"%0.2f", v/1024.0/1024.0);
+  return buf;
 }
 
 void DocumentsWriter::balanceRAM() {
@@ -1291,13 +1291,13 @@ void DocumentsWriter::balanceRAM() {
 
   if (numBytesAlloc > freeTrigger) {
     if (infoStream != NULL)
-      (*infoStream) << string("  RAM: now balance allocations: usedMB=") << toMB(numBytesUsed) +
-                         string(" vs trigger=") << toMB(flushTrigger) <<
-                         string(" allocMB=") << toMB(numBytesAlloc) <<
-                         string(" vs trigger=") << toMB(freeTrigger) <<
-                         string(" postingsFree=") << toMB(this->postingsFreeCountDW*POSTING_NUM_BYTE) <<
-                         string(" byteBlockFree=") << toMB(freeByteBlocks.size()*BYTE_BLOCK_SIZE) <<
-                         string(" charBlockFree=") << toMB(freeCharBlocks.size()*CHAR_BLOCK_SIZE*CHAR_NUM_BYTE) << string("\n");
+      (*infoStream) << std::wstring(L"  RAM: now balance allocations: usedMB=") << toMB(numBytesUsed) +
+                         std::wstring(L" vs trigger=") << toMB(flushTrigger) <<
+                         std::wstring(L" allocMB=") << toMB(numBytesAlloc) <<
+                         std::wstring(L" vs trigger=") << toMB(freeTrigger) <<
+                         std::wstring(L" postingsFree=") << toMB(this->postingsFreeCountDW*POSTING_NUM_BYTE) <<
+                         std::wstring(L" byteBlockFree=") << toMB(freeByteBlocks.size()*BYTE_BLOCK_SIZE) <<
+                         std::wstring(L" charBlockFree=") << toMB(freeCharBlocks.size()*CHAR_BLOCK_SIZE*CHAR_NUM_BYTE) << std::wstring(L"\n");
 
     // When we've crossed 100% of our target Postings
     // RAM usage, try to free up until we're back down
@@ -1317,7 +1317,7 @@ void DocumentsWriter::balanceRAM() {
         // Nothing else to free -- must flush now.
         bufferIsFull = true;
         if (infoStream != NULL)
-          (*infoStream) << string("    nothing to free; now set bufferIsFull\n");
+          (*infoStream) << std::wstring(L"    nothing to free; now set bufferIsFull\n");
         break;
       }
 
@@ -1349,9 +1349,9 @@ void DocumentsWriter::balanceRAM() {
     }
 
     if (infoStream != NULL){
-      (*infoStream) << "    after free: freedMB=" + Misc::toString((float_t)((startBytesAlloc-numBytesAlloc)/1024.0/1024.0)) +
-        " usedMB=" + Misc::toString((float_t)(numBytesUsed/1024.0/1024.0)) +
-        " allocMB=" + Misc::toString((float_t)(numBytesAlloc/1024.0/1024.0)) << string("\n");
+      (*infoStream) << L"    after free: freedMB=" + Misc::toString((float_t)((startBytesAlloc-numBytesAlloc)/1024.0/1024.0)) +
+        L" usedMB=" + Misc::toString((float_t)(numBytesUsed/1024.0/1024.0)) +
+        L" allocMB=" + Misc::toString((float_t)(numBytesAlloc/1024.0/1024.0)) << std::wstring(L"\n");
     }
 
   } else {
@@ -1362,9 +1362,9 @@ void DocumentsWriter::balanceRAM() {
     // flush.
     if (numBytesUsed > flushTrigger) {
 	    if (infoStream != NULL){
-        (*infoStream) << string("  RAM: now flush @ usedMB=") << Misc::toString((float_t)(numBytesUsed/1024.0/1024.0)) <<
-            string(" allocMB=") << Misc::toString((float_t)(numBytesAlloc/1024.0/1024.0)) <<
-            string(" triggerMB=") << Misc::toString((float_t)(flushTrigger/1024.0/1024.0)) << string("\n");
+        (*infoStream) << std::wstring(L"  RAM: now flush @ usedMB=") << Misc::toString((float_t)(numBytesUsed/1024.0/1024.0)) <<
+            std::wstring(L" allocMB=") << Misc::toString((float_t)(numBytesAlloc/1024.0/1024.0)) <<
+            std::wstring(L" triggerMB=") << Misc::toString((float_t)(flushTrigger/1024.0/1024.0)) << std::wstring(L"\n");
 	    }
 
       bufferIsFull = true;
@@ -1472,14 +1472,14 @@ DocumentsWriter::ByteSliceReader::ByteSliceReader(){
 }
 DocumentsWriter::ByteSliceReader::~ByteSliceReader(){
 }
-const char* DocumentsWriter::ByteSliceReader::getDirectoryType() const{
-  return "";
+const std::wstring DocumentsWriter::ByteSliceReader::getDirectoryType() const{
+  return L"";
 }
-const char* DocumentsWriter::ByteSliceReader::getObjectName() const{
+const std::wstring DocumentsWriter::ByteSliceReader::getObjectName() const{
   return getClassName();
 }
-const char* DocumentsWriter::ByteSliceReader::getClassName(){
-  return "DocumentsWriter::ByteSliceReader";
+const std::wstring DocumentsWriter::ByteSliceReader::getClassName(){
+  return L"DocumentsWriter::ByteSliceReader";
 }
 IndexInput* DocumentsWriter::ByteSliceReader::clone() const{
   _CLTHROWA(CL_ERR_UnsupportedOperation, "Not implemented");

@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -71,8 +71,8 @@ public:
     static void checkHitsQuery( CuTest* tc, Query * query, Hits * hits1, Hits * hits2, int32_t * results, size_t resultsCount );
 
     static void checkEqual( CuTest* tc, Query * query, Hits * hits1, Hits * hits2 );
-    static void appendHits( StringBuffer& buffer, Hits * hits1, Hits * hits2, size_t start, size_t end );
-    static void appendTopdocs( StringBuffer& buffer, TopDocs * docs, size_t start, size_t end );
+    static void appendHits( std::wstring & buffer, Hits * hits1, Hits * hits2, size_t start, size_t end );
+    static void appendTopdocs( std::wstring & buffer, TopDocs * docs, size_t start, size_t end );
 
     /**
      * Asserts that the explanation value for every document matching a

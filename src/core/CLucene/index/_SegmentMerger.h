@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -38,7 +38,7 @@ class SegmentMerger:LUCENE_BASE {
 	//Directory of the segment
 	CL_NS(store)::Directory* directory;     
 	//name of the new segment
-  std::string segment;
+  std::wstring segment;
 	//Set of IndexReaders
 	CL_NS(util)::CLVector<IndexReader*,CL_NS(util)::Deletor::Object<IndexReader> > readers;
 	//Field Infos for t	he FieldInfo instances of all fields
@@ -81,9 +81,9 @@ public:
 	* @param name The name of the new segment
 	* @param compoundFile true if the new segment should use a compoundFile
 	*/
-  SegmentMerger( IndexWriter* writer, const char* name, MergePolicy::OneMerge* merge );
+  SegmentMerger( IndexWriter* writer, const wchar_t * name, MergePolicy::OneMerge* merge );
 
-  SegmentMerger(IndexWriter* writer, std::string name, MergePolicy::OneMerge* merge);
+  SegmentMerger(IndexWriter* writer, std::wstring name, MergePolicy::OneMerge* merge);
 
   void init();
 
@@ -193,7 +193,7 @@ private:
 	//Merges the norms for all fields 
 	void mergeNorms();
 
-	void createCompoundFile(const char* filename, std::vector<std::string>* files=NULL);
+	void createCompoundFile(const wchar_t * filename, std::vector<std::wstring>* files=NULL);
 	friend class IndexWriter; //allow IndexWriter to use createCompoundFile
 };
 CL_NS_END

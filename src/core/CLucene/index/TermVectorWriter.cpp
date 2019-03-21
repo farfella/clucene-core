@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -18,23 +18,23 @@ CL_NS_USE(util)
 CL_NS_DEF(index)
 
  TermVectorsWriter::TermVectorsWriter(CL_NS(store)::Directory* directory,
-    const char* segment,FieldInfos* fieldInfos)
+    const wchar_t * segment,FieldInfos* fieldInfos)
  {
     // Open files for TermVector storage
-    char fbuf[CL_MAX_NAME];
-    strcpy_s(fbuf,segment);
-    strcat_s(fbuf,".");
-    char* fpbuf=fbuf+strlen(fbuf);
+    wchar_t  fbuf[CL_MAX_NAME];
+    wcscpy_s(fbuf,segment);
+    wcscat_s (fbuf,L".");
+    wchar_t * fpbuf=fbuf+wcslen(fbuf);
 
-    strcpy(fpbuf,IndexFileNames::VECTORS_INDEX_EXTENSION);
+    wcscpy(fpbuf,IndexFileNames::VECTORS_INDEX_EXTENSION);
     tvx = directory->createOutput(fbuf);
     tvx->writeInt(TermVectorsReader::FORMAT_VERSION);
 
-    strcpy(fpbuf,IndexFileNames::VECTORS_DOCUMENTS_EXTENSION);
+    wcscpy(fpbuf,IndexFileNames::VECTORS_DOCUMENTS_EXTENSION);
     tvd = directory->createOutput(fbuf);
     tvd->writeInt(TermVectorsReader::FORMAT_VERSION);
 
-    strcpy(fpbuf,IndexFileNames::VECTORS_FIELDS_EXTENSION);
+    wcscpy(fpbuf,IndexFileNames::VECTORS_FIELDS_EXTENSION);
     tvf = directory->createOutput(fbuf);
     tvf->writeInt(TermVectorsReader::FORMAT_VERSION);
 
@@ -132,7 +132,7 @@ CL_NS_DEF(index)
       for (int32_t i=0; i<numFields; i++) {
         fieldPointers[i] = tvf->getFilePointer();
 
-        const int32_t fieldNumber = fieldInfos->fieldNumber(vectors[i]->getField());
+        const int32_t fieldNumber = fieldInfos->fieldNumber(vectors[i]->getField().c_str());
 
         // 1st pass: write field numbers to tvd
         tvd->writeVInt(fieldNumber);

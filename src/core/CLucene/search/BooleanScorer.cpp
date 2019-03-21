@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -95,17 +95,15 @@ CL_NS_DEF(search)
 		_CLTHROWA(CL_ERR_UnsupportedOperation,"UnsupportedOperationException: BooleanScorer::explain");
 	}
 
-	wchar_t* BooleanScorer::toString() {
-		CL_NS(util)::StringBuffer buffer;
-		buffer.append(L"boolean(");
+	std::wstring BooleanScorer::toString() {
+		std::wstring buffer = L"boolean(";
 		for (SubScorer* sub = scorers; sub != NULL; sub = sub->next) {
-			wchar_t* tmp = sub->scorer->toString();
+			std::wstring tmp = sub->scorer->toString();
 			buffer.append(tmp);
-			_CLDELETE_LCARRAY(tmp);
-			buffer.appendChar(L' ');
+			buffer.push_back(L' ');
 		}
-		buffer.appendChar(L')');
-		return buffer.toString();
+		buffer.push_back(L')');
+		return buffer;
 	}
 
   void BooleanScorer::add(Scorer* scorer, const bool required, const bool prohibited) {
@@ -206,8 +204,8 @@ CL_NS_DEF(search)
   //       nxt may or may not be NULL
   //Post - The instance has been created
 
-      CND_PRECONDITION(scr != NULL,"scr is NULL");
-      CND_PRECONDITION(c != NULL,"c is NULL");
+      CND_PRECONDITION(scr != NULL,L"scr is NULL");
+      CND_PRECONDITION(c != NULL,L"c is NULL");
 
       done        = !scorer->next();
   }

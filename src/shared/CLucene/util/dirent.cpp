@@ -13,10 +13,10 @@
 
 
 DIR * 
-opendir (const char *szPath)
+opendir (const wchar_t *szPath)
 {
 	DIR *nd;
-	char szFullPath[CL_MAX_PATH];
+	wchar_t szFullPath[CL_MAX_PATH];
 
 	errno = 0;
 
@@ -34,7 +34,7 @@ opendir (const char *szPath)
 
 	/* Attempt to determine if the given path really is a directory. */
 	struct cl_stat_t rcs;
-	if ( fileStat(szPath,&rcs) == -1)
+	if ( _wstati64(szPath,&rcs) == -1)
 	{
 		/* call GetLastError for more error info */
 		errno = ENOENT;
@@ -48,7 +48,7 @@ opendir (const char *szPath)
 	}
 
 	/* Make an absolute pathname.  */
-	_realpath(szPath,szFullPath);
+	_wfullpath(szFullPath, szPath, CL_MAX_PATH);
 
 	/* Allocate enough space to store DIR structure and the complete
 	* directory path given. */
@@ -64,18 +64,18 @@ opendir (const char *szPath)
 	}
 
 	/* Create the search expression. */
-	strcpy_s(nd->dd_name, szFullPath);
+	wcscpy_s(nd->dd_name, szFullPath);
 
 	/* Add on a slash if the path does not end with one. */
 	if (nd->dd_name[0] != '\0' &&
-		nd->dd_name[strlen (nd->dd_name) - 1] != '/' &&
-		nd->dd_name[strlen (nd->dd_name) - 1] != '\\')
+		nd->dd_name[wcslen (nd->dd_name) - 1] != '/' &&
+		nd->dd_name[wcslen (nd->dd_name) - 1] != '\\')
 	{
-		strcat_s(nd->dd_name, DIRENT_SLASH);
+		wcscat_s(nd->dd_name, DIRENT_SLASH);
 	}
 
 	/* Add on the search pattern */
-	strcat_s(nd->dd_name, DIRENT_SEARCH_SUFFIX);
+	wcscat_s(nd->dd_name, DIRENT_SEARCH_SUFFIX);
 
 	/* Initialize handle to -1 so that a premature closedir doesn't try
 	* to call _findclose on it. */
@@ -126,7 +126,7 @@ struct dirent * readdir (DIR * dirp)
 	{
 		/* We haven't started the search yet. */
 		/* Start the search */
-		dirp->dd_handle = _findfirst (dirp->dd_name, &(dirp->dd_dta));
+		dirp->dd_handle = _wfindfirst (dirp->dd_name, &(dirp->dd_dta));
 
 		if (dirp->dd_handle == -1)
 		{
@@ -148,7 +148,7 @@ struct dirent * readdir (DIR * dirp)
 		if (bCallFindNext)
 		{
 			/* Get the next search entry. */
-			if (_findnext (dirp->dd_handle, &(dirp->dd_dta)))
+			if (_wfindnext (dirp->dd_handle, &(dirp->dd_dta)))
 			{
 				/* We are off the end or otherwise error. */
 				_findclose (dirp->dd_handle);
@@ -167,7 +167,7 @@ struct dirent * readdir (DIR * dirp)
 		/* Successfully got an entry. Everything about the file is
 		* already appropriately filled in except the length of the
 		* file name. */
-		dirp->dd_dir.d_namlen = strlen (dirp->dd_dir.d_name);
+		dirp->dd_dir.d_namlen = wcslen (dirp->dd_dir.d_name);
 
 		bool bThisFolderOrUpFolder = dirp->dd_dir.d_name[0] == '.' &&
 			(dirp->dd_dir.d_name[1] == 0 || (dirp->dd_dir.d_name[1] == '.' && dirp->dd_dir.d_name[2] == 0));
@@ -175,12 +175,12 @@ struct dirent * readdir (DIR * dirp)
 		if (!bThisFolderOrUpFolder)
 		{
 			struct cl_stat_t buf;
-			char buffer[CL_MAX_DIR];
-			size_t bl = strlen(dirp->dd_name)-strlen(DIRENT_SEARCH_SUFFIX);
-			strncpy_s(buffer,dirp->dd_name,bl);
+			wchar_t buffer[CL_MAX_DIR];
+			size_t bl = wcslen(dirp->dd_name)-wcslen(DIRENT_SEARCH_SUFFIX);
+			wcsncpy_s(buffer,dirp->dd_name,bl);
 			buffer[bl]=0;
-			strcat_s(buffer, dirp->dd_dir.d_name);
-			if ( fileStat(buffer,&buf) == 0 )
+			wcscat_s(buffer, dirp->dd_dir.d_name);
+			if ( _wstati64(buffer,&buf) == 0 )
 			{
 				/* Finally we have a valid entry. */
 				return &dirp->dd_dir;

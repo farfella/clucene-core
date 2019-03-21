@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -92,13 +92,11 @@ CachingWrapperFilter::CachingWrapperFilter(const CachingWrapperFilter& copy):
 Filter* CachingWrapperFilter::clone() const{
 	return _CLNEW CachingWrapperFilter(*this);
 }
-wchar_t* CachingWrapperFilter::toString(){
-	wchar_t* fs = filter->toString();
-	int len = wcslen(fs)+23;
-	wchar_t* ret = _CL_NEWARRAY(wchar_t,len);
-	_snwprintf(ret,len, L"CachingWrapperFilter(%s)",fs);
-	_CLDELETE_CARRAY(fs);
-	return ret;
+
+std::wstring CachingWrapperFilter::toString(){
+	std::wstring fs = filter->toString();
+	
+	return L"CachingWrapperFilter(" + fs + L")";
 }
 BitSet* CachingWrapperFilter::doBits(IndexReader* reader){
 	return filter->bits(reader);

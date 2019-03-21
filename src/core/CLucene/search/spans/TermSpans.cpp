@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
  * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
  * 
  * Distributable under the terms of either the Apache License (Version 2.0) or 
  * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -75,11 +75,11 @@ bool TermSpans::skipTo( int32_t target )
     return true;
 }
 
-wchar_t* TermSpans::toString() const
+std::wstring TermSpans::toString() const
 {
-    CL_NS(util)::StringBuffer strBuf( 50 );
+    std::wstring strBuf;
 
-    wchar_t * tszTerm = term->toString();
+    std::wstring tszTerm = term->toString();
     strBuf.append( L"spans(" );
     strBuf.append( tszTerm );
     strBuf.append( L")@");
@@ -89,13 +89,12 @@ wchar_t* TermSpans::toString() const
         strBuf.append( L"END" );
     else
     {
-        strBuf.appendInt( doc_ );
+        strBuf.append( std::to_wstring(doc_) );
         strBuf.append( L"-");
-        strBuf.appendInt( position );
+        strBuf.append( std::to_wstring(position) );
     }
-    _CLDELETE_CARRAY( tszTerm );
 
-    return strBuf.toString();
+    return strBuf;
 }
 
 CL_NS_END2

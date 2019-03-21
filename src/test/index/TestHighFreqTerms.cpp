@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -33,7 +33,7 @@
         }
     };
 
-  void _TestHighFreqTerms(const char* index, size_t numTerms) {
+  void _TestHighFreqTerms(const wchar_t * index, size_t numTerms) {
 
 		IndexReader* reader = IndexReader::open(index);
     
@@ -71,9 +71,9 @@
 		//CuMessageA(tc,"%d milliseconds\n",(int32_t)(Misc::currentTimeMillis()-start));
   }
   void TestHighFreqTerms(CuTest *tc){
-	char loc[1024];
-	strcpy(loc, clucene_data_location);
-	strcat(loc, "/reuters-21578-index");
+	wchar_t loc[1024];
+	wcscpy_s(loc, clucene_data_location);
+	wcscat_s(loc, L"/reuters-21578-index");
 
 	CuAssert(tc,_T("Index does not exist"),Misc::dir_Exists(loc));
   	_TestHighFreqTerms(loc,100);

@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -41,13 +41,13 @@ void SegmentMerger::init(){
   skipInterval     = 0;
 }
 
-SegmentMerger::SegmentMerger(IndexWriter* writer, const char* name, MergePolicy::OneMerge* merge){
+SegmentMerger::SegmentMerger(IndexWriter* writer, const wchar_t * name, MergePolicy::OneMerge* merge){
 //Func - Constructor
 //Pre  - dir holds a valid reference to a Directory
 //       name != NULL
 //Post - Instance has been created
 
-  CND_PRECONDITION(name != NULL, "name is NULL");
+  CND_PRECONDITION(name != NULL, L"name is NULL");
 
   this->init();
   this->directory		   = writer->getDirectory();
@@ -108,12 +108,12 @@ IndexReader* SegmentMerger::segmentReader(const int32_t i) {
 //Pre  - 0 <= i < readers.size()
 //Post - A reference to the i-th IndexReader has been returned
 
-	CND_PRECONDITION(i >= 0, "i is a negative number");
-    CND_PRECONDITION((size_t)i < readers.size(), "i is bigger than the number of IndexReader instances");
+	CND_PRECONDITION(i >= 0, L"i is a negative number");
+    CND_PRECONDITION((size_t)i < readers.size(), L"i is bigger than the number of IndexReader instances");
 
 	//Retrieve the i-th IndexReader
     IndexReader* ret = readers[i];
-    CND_CONDITION(ret != NULL,"No IndexReader found");
+    CND_CONDITION(ret != NULL,L"No IndexReader found");
 
     return ret;
 }
@@ -146,22 +146,22 @@ void SegmentMerger::closeReaders(){
   }
 }
 
-void SegmentMerger::createCompoundFile(const char* filename, std::vector<std::string>* files){
+void SegmentMerger::createCompoundFile(const wchar_t * filename, std::vector<std::wstring>* files){
   CompoundFileWriter* cfsWriter = _CLNEW CompoundFileWriter(directory, filename, checkAbort);
 
   bool ownFiles = false;
   if ( files == NULL ){
-    files = new vector<string>;
+    files = new std::vector<std::wstring>;
     files->reserve(IndexFileNames::COMPOUND_EXTENSIONS().length + 1);
     ownFiles = true;
   }
 
 	// Basic files
   for (int32_t i = 0; i < IndexFileNames::COMPOUND_EXTENSIONS().length; i++) {
-    const char* ext = IndexFileNames::COMPOUND_EXTENSIONS()[i];
-    if (mergeDocStores || (strcmp(ext,IndexFileNames::FIELDS_EXTENSION) != 0 &&
-        strcmp(ext,IndexFileNames::FIELDS_INDEX_EXTENSION) != 0 ) ){
-		  files->push_back ( string(segment) + "." + ext );
+    const wchar_t * ext = IndexFileNames::COMPOUND_EXTENSIONS()[i];
+    if (mergeDocStores || (wcscmp(ext,IndexFileNames::FIELDS_EXTENSION) != 0 &&
+        wcscmp(ext,IndexFileNames::FIELDS_INDEX_EXTENSION) != 0 ) ){
+		  files->push_back ( std::wstring(segment) + L"." + ext );
     }
 	}
 
@@ -169,7 +169,7 @@ void SegmentMerger::createCompoundFile(const char* filename, std::vector<std::st
 	for (size_t i = 0; i < fieldInfos->size(); i++) {
 		FieldInfo* fi = fieldInfos->fieldInfo(i);
 		if (fi->isIndexed && !fi->omitNorms) {
-      files->push_back ( segment + "." + IndexFileNames::NORMS_EXTENSION );
+      files->push_back ( segment + L"." + IndexFileNames::NORMS_EXTENSION );
       break;
 		}
 	}
@@ -177,7 +177,7 @@ void SegmentMerger::createCompoundFile(const char* filename, std::vector<std::st
   // Vector files
   if ( mergeDocStores && fieldInfos->hasVectors()) {
     for (int32_t i = 0; i < IndexFileNames::VECTOR_EXTENSIONS().length; i++) {
-	      files->push_back ( segment + "." + IndexFileNames::VECTOR_EXTENSIONS()[i] );
+	      files->push_back ( segment + L"." + IndexFileNames::VECTOR_EXTENSIONS()[i] );
       }
   }
 
@@ -238,7 +238,7 @@ int32_t SegmentMerger::mergeFields() {
     fieldInfos = _CLNEW FieldInfos();		  // merge field names
   }
 	//Condition check to see if fieldInfos points to a valid instance
-	CND_CONDITION(fieldInfos != NULL,"Memory allocation for fieldInfos failed");
+	CND_CONDITION(fieldInfos != NULL,L"Memory allocation for fieldInfos failed");
 
 	IndexReader* reader = NULL;
 
@@ -247,7 +247,7 @@ int32_t SegmentMerger::mergeFields() {
 	  //get the i-th reader
 	  reader = readers[i];
 	  //Condition check to see if reader points to a valid instance
-	  CND_CONDITION(reader != NULL,"No IndexReader found");
+	  CND_CONDITION(reader != NULL,L"No IndexReader found");
 
     if (reader->instanceOf(SegmentReader::getClassName())) {
       SegmentReader* segmentReader = (SegmentReader*) reader;
@@ -289,7 +289,7 @@ int32_t SegmentMerger::mergeFields() {
   }
 
   //Write the new FieldInfos file to the directory
-  fieldInfos->write(directory, Misc::segmentname(segment.c_str(),".fnm").c_str() );
+  fieldInfos->write(directory, Misc::segmentname(segment.c_str(),L".fnm").c_str() );
 
 	int32_t docCount = 0;
 
@@ -371,8 +371,8 @@ int32_t SegmentMerger::mergeFields() {
       fieldsWriter.close();
     )
 
-    CND_PRECONDITION (docCount*8 == directory->fileLength( (segment + "." + IndexFileNames::FIELDS_INDEX_EXTENSION).c_str() ),
-    (string("after mergeFields: fdx size mismatch: ") + Misc::toString(docCount) + " docs vs " + Misc::toString(directory->fileLength( (segment + "." + IndexFileNames::FIELDS_INDEX_EXTENSION).c_str() )) + " length in bytes of " + segment + "." + IndexFileNames::FIELDS_INDEX_EXTENSION).c_str() );
+    CND_PRECONDITION (docCount*8 == directory->fileLength( (segment + L"." + IndexFileNames::FIELDS_INDEX_EXTENSION).c_str() ),
+    (std::wstring(L"after mergeFields: fdx size mismatch: ") + Misc::toString(docCount) + L" docs vs " + Misc::toString(directory->fileLength( (segment + L"." + IndexFileNames::FIELDS_INDEX_EXTENSION).c_str() )) + L" length in bytes of " + segment + L"." + IndexFileNames::FIELDS_INDEX_EXTENSION).c_str() );
 
   } else{
     // If we are skipping the doc stores, that means there
@@ -414,8 +414,8 @@ void SegmentMerger::mergeVectors(){
     }
   );
 
-  CND_PRECONDITION(4+mergedDocs*8 == directory->fileLength( (segment + "." + IndexFileNames::VECTORS_INDEX_EXTENSION).c_str() ),
-    (string("after mergeVectors: tvx size mismatch: ") + Misc::toString(mergedDocs) + " docs vs " + Misc::toString(directory->fileLength( (segment + "." + IndexFileNames::VECTORS_INDEX_EXTENSION).c_str() )) + " length in bytes of " + segment + "." + IndexFileNames::VECTORS_INDEX_EXTENSION).c_str() )
+  CND_PRECONDITION(4+mergedDocs*8 == directory->fileLength( (segment + L"." + IndexFileNames::VECTORS_INDEX_EXTENSION).c_str() ),
+    (std::wstring(L"after mergeVectors: tvx size mismatch: ") + Misc::toString(mergedDocs) + L" docs vs " + Misc::toString(directory->fileLength( (segment + L"." + IndexFileNames::VECTORS_INDEX_EXTENSION).c_str() )) + L" length in bytes of " + segment + L"." + IndexFileNames::VECTORS_INDEX_EXTENSION).c_str() )
 
 }
 
@@ -425,21 +425,21 @@ void SegmentMerger::mergeTerms() {
 //Pre  - fieldInfos != NULL
 //Post - The terms of all segments have been merged
 
-	CND_PRECONDITION(fieldInfos != NULL, "fieldInfos is NULL");
+	CND_PRECONDITION(fieldInfos != NULL, L"fieldInfos is NULL");
 
     try{
       //Open an IndexOutput to the new Frequency File
-      freqOutput = directory->createOutput( Misc::segmentname(segment.c_str(),".frq").c_str() );
+      freqOutput = directory->createOutput( Misc::segmentname(segment.c_str(),L".frq").c_str() );
 
       //Open an IndexOutput to the new Prox File
-      proxOutput = directory->createOutput( Misc::segmentname(segment.c_str(),".prx").c_str() );
+      proxOutput = directory->createOutput( Misc::segmentname(segment.c_str(),L".prx").c_str() );
 
       //Instantiate  a new termInfosWriter which will write in directory
       //for the segment name segment using the new merged fieldInfos
       termInfosWriter = _CLNEW TermInfosWriter(directory, segment.c_str(), fieldInfos, termIndexInterval);
 
       //Condition check to see if termInfosWriter points to a valid instance
-      CND_CONDITION(termInfosWriter != NULL,"Memory allocation for termInfosWriter failed")	;
+      CND_CONDITION(termInfosWriter != NULL,L"Memory allocation for termInfosWriter failed")	;
 
       skipInterval = termInfosWriter->skipInterval;
       maxSkipLevels = termInfosWriter->maxSkipLevels;
@@ -474,7 +474,7 @@ void SegmentMerger::mergeTermInfos(){
 //Post - All TermInfos have been merged into a single segment
 
     //Condition check to see if queue points to a valid instance
-    CND_CONDITION(queue != NULL, "Memory allocation for queue failed")	;
+    CND_CONDITION(queue != NULL, L"Memory allocation for queue failed")	;
 
 	//base is the id of the first document in a segment
     int32_t base = 0;
@@ -488,7 +488,7 @@ void SegmentMerger::mergeTermInfos(){
       reader = readers[i];
 
       //Condition check to see if reader points to a valid instance
-      CND_CONDITION(reader != NULL, "No IndexReader found");
+      CND_CONDITION(reader != NULL, L"No IndexReader found");
 
       //Get the term enumeration of the reader
       TermEnum* termEnum = reader->terms();
@@ -496,7 +496,7 @@ void SegmentMerger::mergeTermInfos(){
       smi = _CLNEW SegmentMergeInfo(base, termEnum, reader);
 
       //Condition check to see if smi points to a valid instance
-      CND_CONDITION(smi != NULL, "Memory allocation for smi failed")	;
+      CND_CONDITION(smi != NULL, L"Memory allocation for smi failed")	;
 
       //Increase the base by the number of documents that have not been marked deleted
       //so base will contain a new value for the first document of the next iteration
@@ -519,7 +519,7 @@ void SegmentMerger::mergeTermInfos(){
     SegmentMergeInfo** match = _CL_NEWARRAY(SegmentMergeInfo*,readers.size());
 
     //Condition check to see if match points to a valid instance
-    CND_CONDITION(match != NULL, "Memory allocation for match failed")	;
+    CND_CONDITION(match != NULL, L"Memory allocation for match failed")	;
 
     SegmentMergeInfo* top = NULL;
 
@@ -535,7 +535,7 @@ void SegmentMerger::mergeTermInfos(){
       Term* term = match[0]->term;
 
       //Condition check to see if term points to a valid instance
-      CND_CONDITION(term != NULL,"term is NULL")	;
+      CND_CONDITION(term != NULL,L"term is NULL")	;
 
       //Get the current top of the queue
       top = queue->top();
@@ -557,7 +557,7 @@ void SegmentMerger::mergeTermInfos(){
         smi = match[--matchSize];
 
         //Condition check to see if smi points to a valid instance
-        CND_CONDITION(smi != NULL,"smi is NULL")	;
+        CND_CONDITION(smi != NULL,L"smi is NULL")	;
 
 			  //Move to the next term in the enumeration of SegmentMergeInfo smi
 			  if (smi->next()){
@@ -583,9 +583,9 @@ int32_t SegmentMerger::mergeTermInfo( SegmentMergeInfo** smis, int32_t n){
 //       proxOutput != NULL
 //Post - The TermInfo of a term has been merged
 
-	CND_PRECONDITION(smis != NULL, "smis is NULL");
-	CND_PRECONDITION(freqOutput != NULL, "freqOutput is NULL");
-	CND_PRECONDITION(proxOutput != NULL, "proxOutput is NULL");
+	CND_PRECONDITION(smis != NULL, L"smis is NULL");
+	CND_PRECONDITION(freqOutput != NULL, L"freqOutput is NULL");
+	CND_PRECONDITION(proxOutput != NULL, L"proxOutput is NULL");
 
   //Get the file pointer of the IndexOutput to the Frequency File
   int64_t freqPointer = freqOutput->getFilePointer();
@@ -603,7 +603,7 @@ int32_t SegmentMerger::mergeTermInfo( SegmentMergeInfo** smis, int32_t n){
     termInfo.set(df, freqPointer, proxPointer, (int32_t)(skipPointer - freqPointer));
     //Precondition check for to be sure that the reference to
     //smis[0]->term will be valid
-    CND_PRECONDITION(smis[0]->term != NULL, "smis[0]->term is NULL");
+    CND_PRECONDITION(smis[0]->term != NULL, L"smis[0]->term is NULL");
     //Write a new TermInfo
     termInfosWriter->add(smis[0]->term, &termInfo);
   }
@@ -621,9 +621,9 @@ int32_t SegmentMerger::appendPostings(SegmentMergeInfo** smis, int32_t n){
 //       proxOutput != NULL
 //Post - Returns number of documents across all segments where this term was found
 
-  CND_PRECONDITION(smis != NULL, "smis is NULL");
-  CND_PRECONDITION(freqOutput != NULL, "freqOutput is NULL");
-  CND_PRECONDITION(proxOutput != NULL, "proxOutput is NULL");
+  CND_PRECONDITION(smis != NULL, L"smis is NULL");
+  CND_PRECONDITION(freqOutput != NULL, L"freqOutput is NULL");
+  CND_PRECONDITION(proxOutput != NULL, L"proxOutput is NULL");
 
   int32_t lastDoc = 0;
   int32_t df = 0;       //Document Counter
@@ -640,7 +640,7 @@ int32_t SegmentMerger::appendPostings(SegmentMergeInfo** smis, int32_t n){
     smi = smis[i];
 
     //Condition check to see if smi points to a valid instance
-    CND_PRECONDITION(smi!=NULL,"	 is NULL");
+    CND_PRECONDITION(smi!=NULL,L"	 is NULL");
 
     //Get the term positions
     TermPositions* postings = smi->getPositions();
@@ -660,8 +660,8 @@ int32_t SegmentMerger::appendPostings(SegmentMergeInfo** smis, int32_t n){
 
       //Condition check to see doc is eaqual to or bigger than lastDoc
       if (doc < 0 || (df > 0 && doc <= lastDoc))
-        _CLTHROWA(CL_ERR_CorruptIndex, (string("docs out of order (") + Misc::toString(doc) +
-            " <= " + Misc::toString(lastDoc) + " )").c_str());
+        _CLTHROWT(CL_ERR_CorruptIndex, (std::wstring(L"docs out of order (") + Misc::toString(doc) +
+            L" <= " + Misc::toString(lastDoc) + L" )").c_str());
 
       //Increase the total frequency over all segments
       df++;
@@ -733,7 +733,7 @@ void SegmentMerger::mergeNorms() {
 	IndexOutput*  output  = NULL;
   try {
 
-    CND_PRECONDITION(fieldInfos != NULL, "fieldInfos is NULL");
+    CND_PRECONDITION(fieldInfos != NULL, L"fieldInfos is NULL");
 
 	  IndexReader* reader  = NULL;
 
@@ -745,12 +745,12 @@ void SegmentMerger::mergeNorms() {
       if (fi->isIndexed && !fi->omitNorms){
         //Instantiate  an IndexOutput to that norm file
         if (output == NULL) {
-          output = directory->createOutput( (segment + "." + IndexFileNames::NORMS_EXTENSION).c_str() );
+          output = directory->createOutput( (segment + L"." + IndexFileNames::NORMS_EXTENSION).c_str() );
           output->writeBytes(NORMS_HEADER,NORMS_HEADER_length);
         }
 
         //Condition check to see if output points to a valid instance
-        CND_CONDITION(output != NULL, "No Outputstream retrieved");
+        CND_CONDITION(output != NULL, L"No Outputstream retrieved");
 
 		    //Iterate through all IndexReaders
         for (uint32_t j = 0; j < readers.size(); j++) {
@@ -758,7 +758,7 @@ void SegmentMerger::mergeNorms() {
 			    reader = readers[j];
 
 			    //Condition check to see if reader points to a valid instance
-			    CND_CONDITION(reader != NULL, "No reader found");
+			    CND_CONDITION(reader != NULL, L"No reader found");
 
 			    //Get the total number of documents including the documents that have been marked deleted
 			    size_t maxDoc = reader->maxDoc();

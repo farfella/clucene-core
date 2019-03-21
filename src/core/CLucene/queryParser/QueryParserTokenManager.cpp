@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -1228,40 +1228,38 @@ QueryToken* QueryParserTokenManager::getNextToken() {
 			}
 		}
 		// TODO: TokenMgrError.LEXICAL_ERROR ?
-		wchar_t* err = getLexicalError(EOFSeen, curLexState, error_line, error_column, error_after, curChar);
+		std::wstring err = getLexicalError(EOFSeen, curLexState, error_line, error_column, error_after, curChar);
 		_CLDELETE_LCARRAY(error_after);
-		_CLTHROWT_DEL(CL_ERR_TokenMgr,err);
+		_CLTHROWT_DEL(CL_ERR_TokenMgr,err.c_str());
 	}
 }
 
-wchar_t* QueryParserTokenManager::getLexicalError(bool EOFSeen, int32_t /*lexState*/, int32_t errorLine,
+std::wstring QueryParserTokenManager::getLexicalError(bool EOFSeen, int32_t /*lexState*/, int32_t errorLine,
 												int32_t errorColumn, wchar_t* errorAfter, wchar_t curChar)
 {
-	wchar_t* tmp = NULL;
-	CL_NS(util)::StringBuffer sb(100);
-	sb.append(L"Lexical error at line ");
-	sb.appendInt(errorLine);
+	std::wstring tmp;
+	std::wstring sb = L"Lexical error at line ";
+	sb.append(std::to_wstring(errorLine));
 	sb.append(L", column ");
-	sb.appendInt(errorColumn);
+	sb.append(std::to_wstring(errorColumn));
 	sb.append(L".  Encountered: ");
 	if (EOFSeen){
 		sb.append(L"<EOF> ");
 	}else{
-		sb.appendChar(L'"');
-		sb.appendChar(curChar); // TODO: addEscapes ?
-		sb.appendChar(L'"');
+		sb.push_back(L'\"');
+        sb.push_back(curChar); // TODO: addEscapes ?
+		sb.push_back(L'\"');
 		sb.append(L" (");
-		sb.appendInt((int32_t)curChar);
+		sb.append(std::to_wstring(curChar));
 		sb.append(L"), ");
 	}
 	sb.append(L"after : \"");
 
 	tmp = addEscapes(errorAfter);
 	sb.append(tmp);
-	_CLDELETE_LCARRAY(tmp);
 
-	sb.appendChar(L'"');
-	return sb.giveBuffer();
+	sb.push_back(L'"');
+	return sb;
 }
 
 CL_NS_END // QueryParserTokenManager

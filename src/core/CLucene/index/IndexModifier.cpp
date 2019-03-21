@@ -1,15 +1,15 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
 ------------------------------------------------------------------------------*/
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -33,7 +33,7 @@ IndexModifier::IndexModifier(Directory* directory, Analyzer* analyzer, bool crea
 	init(directory, analyzer, create);
 }
 
-IndexModifier::IndexModifier(const char* dirName, Analyzer* analyzer, bool create) {
+IndexModifier::IndexModifier(const wchar_t * dirName, Analyzer* analyzer, bool create) {
 	Directory* dir = FSDirectory::getDirectory(dirName);
 	init(dir, analyzer, create);
 }
@@ -227,8 +227,8 @@ void IndexModifier::close() {
 	open = false;
 }
 
-string IndexModifier::toString() const{
-	return string("Index@") + directory->toString();
+std::wstring IndexModifier::toString() const{
+	return std::wstring(L"Index@") + directory->toString();
 }
 
 

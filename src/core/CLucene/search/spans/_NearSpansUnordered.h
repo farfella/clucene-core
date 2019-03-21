@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
  * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
  * 
  * Distributable under the terms of either the Apache License (Version 2.0) or 
  * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -42,7 +42,7 @@ private:
         int32_t start() const           { return spans->start(); }
         int32_t end() const             { return spans->end(); }
 
-        wchar_t* toString() const;
+        std::wstring toString() const;
         
     private:
         bool adjust( bool condition );
@@ -88,7 +88,7 @@ public:
     int32_t start() const   { return min()->start(); }
     int32_t end() const     { return max->end(); }
 
-    wchar_t* toString() const;
+    std::wstring toString() const;
 
 private:
     SpansCell * min() const { return queue->top(); }

@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -29,7 +29,7 @@ class ExplanationAsserter : public HitCollector
 private:
     Query *         q;
     Searcher *      s;
-    wchar_t *         d;
+    std::wstring         d;
     bool            deep;
     CuTest *        tc;
 
@@ -55,7 +55,6 @@ public:
 
     virtual ~ExplanationAsserter()
     {
-        _CLDELETE_LARRAY( d );
     }
 
     void collect( const int32_t doc, const float_t score )
@@ -65,17 +64,17 @@ public:
   
         if( exp.getDetailsLength() == 0 )                                                   // ToDo: Fix IndexSearcher::explain() method
         {
-            StringBuffer buffer;
+            std::wstring buffer;
             buffer.append( _T( "Explanation of [[" ));
             buffer.append( d );
             buffer.append( _T( "]] for #" ));
-            buffer.appendInt( doc );
+            buffer.append( std::to_wstring(doc ));
             buffer.append( _T( " is null" ));
-            assertTrueMsg( buffer.getBuffer(), false );
+            assertTrueMsg( buffer.c_str(), false );
         }
 
         assertTrue( exp.getDetailsLength() == 1 );
-        CheckHits::verifyExplanation( tc, d, doc, score, deep, exp.getDetail( 0 ) );        // ToDo: Fix IndexSearcher::explain() method
+        CheckHits::verifyExplanation( tc, d.c_str(), doc, score, deep, exp.getDetail( 0 ) );        // ToDo: Fix IndexSearcher::explain() method
     }
 };
 
@@ -171,7 +170,7 @@ bool CheckHits::stringEndsWith( const wchar_t* tszStr, const wchar_t * tszEnd )
 
 void CheckHits::checkNoMatchExplanations( CuTest* tc, Query * q, const wchar_t * defaultFieldName, Searcher * searcher, int32_t * results, size_t resultsCount )
 {
-    wchar_t * d = q->toString( defaultFieldName );
+    std::wstring d = q->toString( defaultFieldName );
     
     set<int32_t> ignore;
     for( size_t i = 0; i < resultsCount; i++ )
@@ -188,23 +187,21 @@ void CheckHits::checkNoMatchExplanations( CuTest* tc, Query * q, const wchar_t *
         
         if( 0.0f != exp.getValue() )
         {
-            StringBuffer buffer;
-            wchar_t * tszExp = exp.toString();
+            std::wstring buffer;
+            std::wstring tszExp = exp.toString();
 
             buffer.append( _T( "Explanation of [[" ));
             buffer.append( d );
             buffer.append( _T( "]] for #" ));
-            buffer.appendInt( doc );
+            buffer.append( std::to_wstring(doc ));
             buffer.append( _T( " doesn't indicate non-match: " ));
 
             buffer.append( tszExp );
-            _CLDELETE_LARRAY( tszExp );
 
-            assertTrueMsg( buffer.getBuffer(), false );
+            assertTrueMsg( buffer.c_str(), false );
         }
     }
 
-    _CLDELETE_LARRAY( d );
 }
 
 void CheckHits::checkHitCollector( CuTest* tc, Query * query, const wchar_t * defaultFieldName, Searcher * searcher, int32_t * results, size_t resultsCount )
@@ -218,9 +215,8 @@ void CheckHits::checkHitCollector( CuTest* tc, Query * query, const wchar_t * de
 
     if( ! setEquals( correct, hitSet.actual ))
     {
-        wchar_t * tszQry = query->toString( defaultFieldName );
-        assertTrueMsg( tszQry, false );
-        _CLDELETE_LARRAY( tszQry );
+        std::wstring tszQry = query->toString( defaultFieldName );
+        assertTrueMsg( tszQry.c_str(), false );
     }
     
     QueryUtils::check( tc, query, searcher );
@@ -256,13 +252,13 @@ void CheckHits::checkHits( CuTest* tc, Query * query, const wchar_t * defaultFie
 
 void CheckHits::checkDocIds( CuTest* tc, const wchar_t * mes, int32_t * results, size_t resultsCount, Hits * hits )
 {
-    StringBuffer buffer;
+    std::wstring buffer;
 
     if( resultsCount != hits->length() )
     {
         buffer.append( mes );
         buffer.append( _T( " nr of hits" ));
-        assertTrueMsg( buffer.getBuffer(), false );
+        assertTrueMsg( buffer.c_str(), false );
     }
 
     for( size_t i = 0; i < resultsCount; i++ )
@@ -272,8 +268,8 @@ void CheckHits::checkDocIds( CuTest* tc, const wchar_t * mes, int32_t * results,
             buffer.clear();
             buffer.append( mes );
             buffer.append( _T( " doc nrs for hit " ));
-            buffer.appendInt( i );
-            assertTrueMsg( buffer.getBuffer(), false );
+            buffer.append( std::to_wstring(i) );
+            assertTrueMsg( buffer.c_str(), false );
         }
     }
 }
@@ -294,17 +290,16 @@ void CheckHits::checkEqual( CuTest* tc, Query * query, Hits * hits1, Hits * hits
     {
         if( hits1->id( i ) != hits2->id( i ))
         {
-            StringBuffer buffer;
+            std::wstring buffer;
             buffer.append( _T( "Hit " ));
-            buffer.appendInt( i );
+            buffer.append( std::to_wstring(i) );
             buffer.append( _T( " docnumbers don't match\n" ));
             appendHits( buffer, hits1, hits2, 0, 0 );
             buffer.append( _T( "for query:" ));
-            wchar_t * tszQry = query->toString();
+            std::wstring tszQry = query->toString();
             buffer.append( tszQry );
-            _CLDELETE_LARRAY( tszQry );
 
-            assertTrueMsg( buffer.getBuffer(), false );
+            assertTrueMsg( buffer.c_str(), false );
         }
 
         float_t sd = hits1->score( i ) -  hits2->score( i );
@@ -313,28 +308,27 @@ void CheckHits::checkEqual( CuTest* tc, Query * query, Hits * hits1, Hits * hits
         if(( hits1->id( i ) != hits2->id( i ))
             || sd > scoreTolerance )
         {
-            StringBuffer buffer;
+            std::wstring buffer;
             buffer.append( _T( "Hit " ));
-            buffer.appendInt( i );
+            buffer.append( std::to_wstring(i ));
             buffer.append( _T( ", doc nrs " ));
-            buffer.appendInt( hits1->id( i ));
+            buffer.append( std::to_wstring(hits1->id( i )));
             buffer.append( _T( " and "  ));
-            buffer.appendInt( hits2->id( i ));
+            buffer.append( std::to_wstring(hits2->id( i )));
             buffer.append( _T( "\nunequal       : " ));
-            buffer.appendFloat( hits1->score( i ), 2 );
+            buffer.append( float_to_wstring(hits1->score( i ), 2 ));
             buffer.append( _T( "\n           and: " ));
-            buffer.appendFloat( hits2->score( i ), 2 );
+            buffer.append( float_to_wstring(hits2->score( i ), 2 ));
             buffer.append( _T( "\nfor query:" ));
-            wchar_t *tszQry = query->toString();
+            std::wstring tszQry = query->toString();
             buffer.append( tszQry );
-            _CLDELETE_LARRAY( tszQry );
 
-            assertTrueMsg( buffer.getBuffer(), false );
+            assertTrueMsg( buffer.c_str(), false );
         }
     }
 }
 
-void CheckHits::appendHits( StringBuffer& buffer, Hits * hits1, Hits * hits2, size_t start, size_t end )
+void CheckHits::appendHits( std::wstring & buffer, Hits * hits1, Hits * hits2, size_t start, size_t end )
 {
     size_t len1 = hits1 ? hits1->length() : 0;
     size_t len2 = hits2 ? hits2->length() : 0;
@@ -342,22 +336,22 @@ void CheckHits::appendHits( StringBuffer& buffer, Hits * hits1, Hits * hits2, si
         end = len1 < len2 ? len2 : len1;    // max
 
     buffer.append( _T( "Hits length1=" ));
-    buffer.appendInt( len1 );
+    buffer.append( std::to_wstring(len1 ));
     buffer.append( _T( "\tlength2=" ));
-    buffer.appendInt( len2 );
+    buffer.append( std::to_wstring(len2 ));
 
     buffer.append( _T( "\n" ));
     for( size_t i = start; i < end; i++ )
     {
         buffer.append( _T( "hit=" ));
-        buffer.appendInt( i );
+        buffer.append( std::to_wstring(i) );
         buffer.append( _T( ":" ));
         if( i < len1 )
         {
             buffer.append( _T( " doc" ));
-            buffer.appendInt( hits1->id( i ) );
+            buffer.append( std::to_wstring(hits1->id( i ) ));
             buffer.append( _T( "=" ));
-            buffer.appendFloat( hits1->score( i ), 2);
+            buffer.append( float_to_wstring(hits1->score( i ), 2));
         } 
         else 
         {
@@ -368,21 +362,21 @@ void CheckHits::appendHits( StringBuffer& buffer, Hits * hits1, Hits * hits2, si
         if( i < len2 )
         {
             buffer.append( _T( " doc" ));
-            buffer.appendInt( hits2->id( i ));
+            buffer.append( std::to_wstring( hits2->id( i )));
             buffer.append( _T( "= "));
-            buffer.appendFloat( hits2->score( i ), 2 );
+            buffer.append( float_to_wstring(hits2->score( i ), 2 ));
         }
         
         buffer.append( _T( "\n" ));
     }
 }
 
-void CheckHits::appendTopdocs( StringBuffer& buffer, TopDocs * docs, size_t start, size_t end )
+void CheckHits::appendTopdocs( std::wstring & buffer, TopDocs * docs, size_t start, size_t end )
 {
     buffer.append( _T( "TopDocs totalHits=" ));
-    buffer.appendInt( docs->totalHits );
+    buffer.append( std::to_wstring(docs->totalHits ));
     buffer.append( _T( " top=" ));
-    buffer.appendInt( docs->scoreDocsLength );
+    buffer.append( std::to_wstring(docs->scoreDocsLength ));
     buffer.append( _T( "\n" ));
     if( end <= 0 )
         end = docs->scoreDocsLength;
@@ -392,11 +386,11 @@ void CheckHits::appendTopdocs( StringBuffer& buffer, TopDocs * docs, size_t star
     for( size_t i = start; i < end; i++ )
     {
         buffer.append( _T( "\t" ));
-        buffer.appendInt( i );
+        buffer.append( std::to_wstring(i) );
         buffer.append( _T( ") doc=" ));
-        buffer.appendInt( docs->scoreDocs[ i ].doc );
+        buffer.append( std::to_wstring(docs->scoreDocs[ i ].doc ));
         buffer.append( _T( "\tscore=" ));
-        buffer.appendFloat( docs->scoreDocs[ i ].score, 2 );
+        buffer.append( float_to_wstring(docs->scoreDocs[ i ].score, 2 ));
         buffer.append( _T( "\n" ));
     }
 }
@@ -415,8 +409,8 @@ void CheckHits::checkExplanations( CuTest* tc, Query * query, const wchar_t * de
 
 void CheckHits::verifyExplanation( CuTest* tc, const wchar_t * q, int32_t doc, float_t score, bool deep, Explanation * expl )
 {
-    StringBuffer buffer;
-    wchar_t * tmp;
+    std::wstring buffer;
+    std::wstring tmp;
     
     float_t value = expl->getValue();
 
@@ -424,17 +418,16 @@ void CheckHits::verifyExplanation( CuTest* tc, const wchar_t * q, int32_t doc, f
     {
         buffer.append( q );
         buffer.append( _T( ": score(doc=" ));
-        buffer.appendInt( doc );
+        buffer.append( std::to_wstring(doc ));
         buffer.append( _T( ")=" ));
-        buffer.appendFloat( score, 2 );
+        buffer.append( float_to_wstring( score, 2 ));
         buffer.append( _T( " != explanationScore=" ));
-        buffer.appendFloat( value, 2 );
+        buffer.append( float_to_wstring(value, 2 ));
         buffer.append( _T( " Explanation: " ));
         tmp = expl->toString();
         buffer.append( tmp );
-        _CLDELETE_LARRAY( tmp );
 
-        assertTrueMsg( buffer.getBuffer(), false );
+        assertTrueMsg( buffer.c_str(), false );
     }
 
     if( ! deep )
@@ -456,18 +449,18 @@ void CheckHits::verifyExplanation( CuTest* tc, const wchar_t * q, int32_t doc, f
             // - end with one of: "product of:", "sum of:", "max of:", or
             // - have "max plus <x> times others" (where <x> is float).
             float_t x = 0;
-            const wchar_t* descr = expl->getDescription();
-            wchar_t* descrLwr = STRDUP_TtoT( descr );
+            const std::wstring descr = expl->getDescription();
+            wchar_t* descrLwr = STRDUP_TtoT( descr.c_str() );
             _tcslwr( descrLwr );
             
-            bool productOf = stringEndsWith( descr, _T( "product of:" ));
-            bool sumOf = stringEndsWith( descr, _T( "sum of:" ));
-            bool maxOf = stringEndsWith( descr, _T( "max of:" ));
+            bool productOf = stringEndsWith( descr.c_str(), _T( "product of:" ));
+            bool sumOf = stringEndsWith( descr.c_str(), _T( "sum of:" ));
+            bool maxOf = stringEndsWith( descr.c_str(), _T( "max of:" ));
             bool maxTimesOthers = false;
             if( ! ( productOf || sumOf || maxOf ))
             {
                 // maybe 'max plus x times others'
-                const wchar_t * k1 = wcsstr( descr, _T( "max plus " ));
+                const wchar_t * k1 = wcsstr( descr.c_str(), _T( "max plus " ));
                 if( k1 )
                 {
                     k1 += 9; // "max plus ".length();
@@ -489,9 +482,8 @@ void CheckHits::verifyExplanation( CuTest* tc, const wchar_t * q, int32_t doc, f
                 buffer.append( _T( "\" must be 'max of plus x times others' or end with 'product of' or 'sum of:' or 'max of:' - " ));
                 tmp = expl->toString();
                 buffer.append( tmp );
-                _CLDELETE_LARRAY( tmp );
 
-                assertTrueMsg( buffer.getBuffer(), false );
+                assertTrueMsg( buffer.c_str(), false );
             }
 
             float_t sum = 0;
@@ -525,15 +517,14 @@ void CheckHits::verifyExplanation( CuTest* tc, const wchar_t * q, int32_t doc, f
                 buffer.clear();
                 buffer.append( q );
                 buffer.append( _T( ": actual subDetails combined==" ));
-                buffer.appendFloat( combined, 2 );
+                buffer.append( float_to_wstring(combined, 2 ));
                 buffer.append( _T( " != value=" ));
-                buffer.appendFloat( value, 2 );
+                buffer.append( float_to_wstring(value, 2 ));
                 buffer.append( _T( " Explanation: " ));
                 tmp = expl->toString();
                 buffer.append( tmp );
-                _CLDELETE_LARRAY( tmp );
 
-                assertTrueMsg( buffer.getBuffer(), false );
+                assertTrueMsg( buffer.c_str(), false );
             }
 
             _CLDELETE_LARRAY( descrLwr );

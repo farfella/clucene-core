@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
  * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
  * 
  * Distributable under the terms of either the Apache License (Version 2.0) or 
  * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -52,17 +52,16 @@ bool NearSpansUnordered::SpansCell::adjust( bool condition )
     return condition;
 }
 
-wchar_t* NearSpansUnordered::SpansCell::toString() const
+std::wstring NearSpansUnordered::SpansCell::toString() const
 {
-    CL_NS(util)::StringBuffer buffer;
-    wchar_t * tszSpans = spans->toString();
+    std::wstring buffer;
+    std::wstring tszSpans = spans->toString();
 
     buffer.append( tszSpans );
     buffer.append( L"#");
-    buffer.appendInt( index );
+    buffer.append( std::to_wstring(index) );
 
-    _CLDELETE_LARRAY( tszSpans );
-    return buffer.toString();
+    return buffer;
 }
 
 
@@ -192,10 +191,10 @@ bool NearSpansUnordered::skipTo( int32_t target )
     return more && ( atMatch() ||  next() );
 }
 
-wchar_t* NearSpansUnordered::toString() const
+std::wstring NearSpansUnordered::toString() const
 {
-    CL_NS(util)::StringBuffer buffer;
-    wchar_t * tszQuery = query->toString();
+    std::wstring buffer;
+    std::wstring tszQuery = query->toString();
 
     buffer.append( L"NearSpansUnordered(" );
     buffer.append( tszQuery );
@@ -204,18 +203,16 @@ wchar_t* NearSpansUnordered::toString() const
         buffer.append( L"START" );
     else if( more )
     {
-        buffer.appendInt( doc() );
+        buffer.append(std::to_wstring( doc() ));
         buffer.append( L":" );
-        buffer.appendInt( start() );
+        buffer.append(std::to_wstring( start() ));
         buffer.append( L"-" );
-        buffer.appendInt( end() );
+        buffer.append(std::to_wstring( end() ));
     }
     else
         buffer.append( L"END" );
 
-    _CLDELETE_ARRAY( tszQuery );
-
-    return buffer.toString();
+    return buffer;
 }
 
 void NearSpansUnordered::initList( bool next ) 

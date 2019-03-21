@@ -65,7 +65,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_REENTRANT;_UCS2;_CL_HAVE_WIN32_THREADS;_CL_HAVE_NAMESPACES;_CL_HAVE_IO_H;_CL_HAVE_DIRECT_H;_UNICODE;MAKE_CLUCENE_CORE_LIB;_DEBUG;CMAKE_INTDIR="Debug";_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_WINDOWS;_REENTRANT;_UCS2;_CL_HAVE_WIN32_THREADS;_CL_HAVE_NAMESPACES;_CL_HAVE_IO_H;_CL_HAVE_DIRECT_H;_UNICODE;MAKE_CLUCENE_CORE_LIB;_DEBUG;CMAKE_INTDIR="Debug";_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
     </ClCompile>
     <ResourceCompile>

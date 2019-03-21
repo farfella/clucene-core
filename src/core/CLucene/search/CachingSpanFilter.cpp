@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
  * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
  * 
  * Distributable under the terms of either the Apache License (Version 2.0) or 
  * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -108,15 +108,10 @@ SpanFilterResult * CachingSpanFilter::bitSpans( CL_NS(index)::IndexReader * read
     return getCachedResult( reader );
 }
 
-wchar_t* CachingSpanFilter::toString()
+std::wstring CachingSpanFilter::toString()
 {
-	wchar_t* ft = filter->toString();
-	size_t len = wcslen( ft ) + 20;
-	wchar_t* ret = _CL_NEWARRAY( wchar_t, len );
-	ret[0] = 0;
-	_snwprintf( ret, len, L"CachingSpanFilter(%s)", ft );
-	_CLDELETE_CARRAY( ft );
-	return ret;
+	std::wstring ft = filter->toString();
+    return L"CachingSpanFilter(" + ft + L")";
 }
 
 CL_NS_END

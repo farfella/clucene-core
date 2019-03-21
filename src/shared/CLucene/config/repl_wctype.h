@@ -1,13 +1,11 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
 ------------------------------------------------------------------------------*/
-#ifndef _lucene_repl_wctype_h
-#define _lucene_repl_wctype_h
+#pragma once
 
 
 ////////////////////////////////////////////////////////
@@ -75,4 +73,3 @@ CLUCENE_SHARED_EXPORT bool cl_isspace (clunichar c);
 CLUCENE_SHARED_EXPORT wchar_t cl_tolower (wchar_t c);
 CLUCENE_SHARED_EXPORT wchar_t cl_toupper (wchar_t c);
 
-#endif

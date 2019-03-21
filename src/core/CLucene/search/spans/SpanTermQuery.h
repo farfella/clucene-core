@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
  * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
  *
  * Distributable under the terms of either the Apache License (Version 2.0) or
  * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -29,8 +29,8 @@ public:
     SpanTermQuery( CL_NS(index)::Term * term );
     virtual ~SpanTermQuery();
 
-    static const char * getClassName();
-	const char * getObjectName() const;
+    static const std::wstring getClassName();
+	const std::wstring getObjectName() const;
 
     /** Return the term whose spans are matched. */
 	CL_NS(index)::Term * getTerm( bool pointer=true ) const;
@@ -54,7 +54,7 @@ public:
     /** Returns a hash code value for this object.*/
     size_t hashCode() const;
 
-    wchar_t* toString( const wchar_t* field ) const;
+    std::wstring toString( const wchar_t* field ) const;
 };
 
 CL_NS_END2

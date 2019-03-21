@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -13,24 +13,24 @@
 CL_NS_USE(util)
 
 #ifdef _UCS2
-  void _Index(CuTest *tc, IndexWriter* ndx, const char* file){
-    char path[CL_MAX_PATH];
+  void _Index(CuTest *tc, IndexWriter* ndx, const wchar_t * file){
+    wchar_t path[CL_MAX_PATH];
     wchar_t tlang[20];
 
-	  strcpy(path,clucene_data_location);
-	  strcat(path,"/utf8text");
+	  wcscpy(path,clucene_data_location);
+	  wcscat(path,L"/utf8text");
 	  CuAssert(tc,_T("Utf8 directory does not exist"),Misc::dir_Exists(path));
-	  strcat(path,"/");
-	  strcat(path,file);
-	  strcat(path,"_utf8.txt");
+	  wcscat(path,L"/");
+	  wcscat(path,file);
+	  wcscat(path,L"_utf8.txt");
 	  CuAssert(tc,_T("Language file does not exist"),Misc::dir_Exists(path));
 	
-	  STRCPY_AtoT(tlang,file,CL_MAX_PATH);
+	  wcscpy(tlang,file);
 
     Document doc;
 	  doc.add(* _CLNEW Field(_T("language"),tlang,Field::STORE_YES | Field::INDEX_UNTOKENIZED));
 
-	  doc.add(* _CLNEW Field(_T("contents"),_CLNEW FileReader(path, "UTF-8",1024), Field::INDEX_TOKENIZED));
+	  doc.add(* _CLNEW Field(_T("contents"),_CLNEW FileReader(path, L"UTF-8",1024), Field::INDEX_TOKENIZED));
 
 	  ndx->addDocument(&doc);
   }
@@ -56,18 +56,18 @@ CL_NS_USE(util)
     RAMDirectory ram;
 	  StandardAnalyzer a;
 	  IndexWriter ndx(&ram,&a,true);
-	  _Index(tc, &ndx,"arabic");
-	  _Index(tc, &ndx,"chinese");
-	  _Index(tc, &ndx,"czech");
-	  _Index(tc, &ndx,"english");
-	  _Index(tc, &ndx,"french");
-	  _Index(tc, &ndx,"german");
-	  _Index(tc, &ndx,"greek");
-	  _Index(tc, &ndx,"hebrew");
-	  _Index(tc, &ndx,"japanese");
-	  _Index(tc, &ndx,"korean");
-	  _Index(tc, &ndx,"polish");
-	  _Index(tc, &ndx,"russian");
+	  _Index(tc, &ndx,L"arabic");
+	  _Index(tc, &ndx,L"chinese");
+	  _Index(tc, &ndx,L"czech");
+	  _Index(tc, &ndx,L"english");
+	  _Index(tc, &ndx,L"french");
+	  _Index(tc, &ndx,L"german");
+	  _Index(tc, &ndx,L"greek");
+	  _Index(tc, &ndx,L"hebrew");
+	  _Index(tc, &ndx,L"japanese");
+	  _Index(tc, &ndx,L"korean");
+	  _Index(tc, &ndx,L"polish");
+	  _Index(tc, &ndx,L"russian");
     ndx.close();
 
     IndexSearcher srch(&ram);
@@ -139,18 +139,18 @@ CL_NS_USE(util)
 
 
  void testReader(CuTest *tc) {
-	char utf8text[1024];
-	strcpy(utf8text, clucene_data_location);
-	strcat(utf8text, "/utf8text/french_utf8.txt");
+	wchar_t utf8text[1024];
+	wcscpy(utf8text, clucene_data_location);
+	wcscat(utf8text, L"/utf8text/french_utf8.txt");
 	CuAssert(tc,_T("french_utf8.txt does not exist"),Misc::dir_Exists(utf8text));
 
-	char unicodetext[1024];
-	strcpy(unicodetext, clucene_data_location);
-	strcat(unicodetext, "/french_unicode.bin");
+	wchar_t unicodetext[1024];
+	wcscpy(unicodetext, clucene_data_location);
+	wcscat(unicodetext, L"/french_unicode.bin");
 	CuAssert(tc,_T("french_unicode.bin does not exist"),Misc::dir_Exists(unicodetext));
 
-	FileReader utf8(utf8text,"UTF-8");
-	FileReader unicode(unicodetext, "UCS-2LE");
+	FileReader utf8(utf8text,L"UTF-8");
+	FileReader unicode(unicodetext, L"UCS-2LE");
 
 	utf8.setMinBufSize(10000);
 	unicode.setMinBufSize(10000);

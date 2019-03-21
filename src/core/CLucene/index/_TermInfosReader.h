@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -29,7 +29,7 @@ CL_NS_DEF(index)
 	class TermInfosReader :LUCENE_BASE{
 	private:
 		CL_NS(store)::Directory* directory;
-		const char* segment;
+		const wchar_t * segment;
 		FieldInfos* fieldInfos;
 
 		CL_NS(util)::ThreadLocal<SegmentTermEnum*, 
@@ -55,7 +55,7 @@ CL_NS_DEF(index)
 		* Constructor.
         * Reads the TermInfos file (.tis) and eventually the Term Info Index file (.tii)
 		*/
-		TermInfosReader(CL_NS(store)::Directory* dir, const char* segment, FieldInfos* fis,
+		TermInfosReader(CL_NS(store)::Directory* dir, const wchar_t * segment, FieldInfos* fis,
 			const int32_t readBufferSize = CL_NS(store)::BufferedIndexInput::BUFFER_SIZE);
 		~TermInfosReader();
 

@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -108,13 +108,13 @@ CL_NS_DEF(search)
 	};
 
 
-  IndexSearcher::IndexSearcher(const char* path){
+  IndexSearcher::IndexSearcher(const wchar_t * path){
   //Func - Constructor
   //       Creates a searcher searching the index in the named directory.  */
   //Pre  - path != NULL
   //Post - The instance has been created
 
-      CND_PRECONDITION(path != NULL, "path is NULL");
+      CND_PRECONDITION(path != NULL, L"path is NULL");
 
       reader = IndexReader::open(path);
       readerOwner = true;
@@ -126,7 +126,7 @@ CL_NS_DEF(search)
   //Pre  - path != NULL
   //Post - The instance has been created
 
-      CND_PRECONDITION(directory != NULL, "directory is NULL");
+      CND_PRECONDITION(directory != NULL, L"directory is NULL");
 
       reader = IndexReader::open(directory);
       readerOwner = true;
@@ -166,7 +166,7 @@ CL_NS_DEF(search)
   //Pre  - reader != NULL
   //Post -
 
-      CND_PRECONDITION(reader != NULL, "reader is NULL");
+      CND_PRECONDITION(reader != NULL, L"reader is NULL");
 
       return reader->docFreq(term);
   }
@@ -185,7 +185,7 @@ CL_NS_DEF(search)
   //Pre  - reader != NULL
   //Post - The i-th document has been returned
 
-      CND_PRECONDITION(reader != NULL, "reader is NULL");
+      CND_PRECONDITION(reader != NULL, L"reader is NULL");
 
       return reader->document(i,d);
   }
@@ -195,7 +195,7 @@ CL_NS_DEF(search)
   //Pre  - reader != NULL
   //Post - The i-th document has been returned
 
-      CND_PRECONDITION(reader != NULL, "reader is NULL");
+      CND_PRECONDITION(reader != NULL, L"reader is NULL");
 
       return reader->document(i,*d);
   }
@@ -207,7 +207,7 @@ CL_NS_DEF(search)
   //Post - The total number of documents including the ones marked deleted 
   //       has been returned
 
-      CND_PRECONDITION(reader != NULL, "reader is NULL");
+      CND_PRECONDITION(reader != NULL, L"reader is NULL");
 
       return reader->maxDoc();
   }
@@ -218,8 +218,8 @@ CL_NS_DEF(search)
   //Pre  - reader != NULL
   //Post -
 
-      CND_PRECONDITION(reader != NULL, "reader is NULL");
-      CND_PRECONDITION(query != NULL, "query is NULL");
+      CND_PRECONDITION(reader != NULL, L"reader is NULL");
+      CND_PRECONDITION(query != NULL, L"query is NULL");
 
       Weight* weight = query->weight(this);
       Scorer* scorer = weight->scorer(reader);
@@ -235,7 +235,7 @@ CL_NS_DEF(search)
       HitQueue* hq = _CLNEW HitQueue(nDocs);
 
 		  //Check hq has been allocated properly
-		  CND_CONDITION(hq != NULL, "Could not allocate memory for HitQueue hq");
+		  CND_CONDITION(hq != NULL, L"Could not allocate memory for HitQueue hq");
 	
 		  int32_t* totalHits = _CL_NEWARRAY(int32_t,1);
       totalHits[0] = 0;
@@ -269,8 +269,8 @@ CL_NS_DEF(search)
   TopFieldDocs* IndexSearcher::_search(Query* query, Filter* filter, const int32_t nDocs,
          const Sort* sort) {
              
-      CND_PRECONDITION(reader != NULL, "reader is NULL");
-      CND_PRECONDITION(query != NULL, "query is NULL");
+      CND_PRECONDITION(reader != NULL, L"reader is NULL");
+      CND_PRECONDITION(query != NULL, L"query is NULL");
 
     Weight* weight = query->weight(this);
     Scorer* scorer = weight->scorer(reader);
@@ -317,8 +317,8 @@ CL_NS_DEF(search)
   //       results is a valid reference to a HitCollector and used to store the results
   //Post - filter if non-NULL, a bitset used to eliminate some documents
 
-      CND_PRECONDITION(reader != NULL, "reader is NULL");
-      CND_PRECONDITION(query != NULL, "query is NULL");
+      CND_PRECONDITION(reader != NULL, L"reader is NULL");
+      CND_PRECONDITION(query != NULL, L"query is NULL");
 
       BitSet* bits = NULL;
       SimpleFilteredCollector* fc = NULL; 

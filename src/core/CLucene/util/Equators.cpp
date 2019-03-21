@@ -1,174 +1,214 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
-* Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
-* 
-* Distributable under the terms of either the Apache License (Version 2.0) or 
+
+*
+* Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
 ------------------------------------------------------------------------------*/
 #include "CLucene/_ApiHeader.h"
 #include "Equators.h"
 #include "CLucene/util/Misc.h"
 
-CL_NS_DEF(util)
+namespace lucene {
 
-bool Equals::Int32::operator()( const int32_t val1, const int32_t val2 ) const{
-	return (val1)==(val2);
-}
+    namespace util {
 
-bool Equals::Char::operator()( const char* val1, const char* val2 ) const{
-	if ( val1 == val2 )
-		return true;
-	return (strcmp( val1,val2 ) == 0);
-}
+        bool Equals::Int32::operator()(const int32_t val1, const int32_t val2) const
+        {
+            return (val1) == (val2);
+        }
 
-#ifdef _UCS2
-bool Equals::WChar::operator()( const wchar_t* val1, const wchar_t* val2 ) const{
-	if ( val1 == val2 )
-		return true;
-	return (wcscmp( val1,val2 ) == 0);
-}
-#endif
+        bool Equals::Char::operator()(const char* val1, const char* val2) const
+        {
+            if (val1 == val2)
+                return true;
+            return (strcmp(val1, val2) == 0);
+        }
 
-AbstractDeletor::~AbstractDeletor(){
-}
+        bool Equals::WChar::operator()(const wchar_t* val1, const wchar_t* val2) const
+        {
+            if (val1 == val2)
+                return true;
+            return (wcscmp(val1, val2) == 0);
+        }
 
-////////////////////////////////////////////////////////////////////////////////
-// Comparors
-////////////////////////////////////////////////////////////////////////////////
-int32_t compare(Comparable* o1, Comparable* o2){
-  if ( o1 == NULL && o2 == NULL )
-    return 0;
-  else if ( o1 == NULL )
-    return 1;
-  else if ( o2 == NULL )
-    return -1;
-  else
-    return o1->compareTo(o2);
-}
-NamedObject::~NamedObject(){
-}
-bool NamedObject::instanceOf(const char* other) const{
-  const char* t = this->getObjectName();
-	if ( t==other || strcmp( t, other )==0 )
-		return true;
-	else
-		return false;
-}
+        AbstractDeletor::~AbstractDeletor()
+        {
+        }
 
-int32_t Compare::Int32::getValue() const{ return value; }
-Compare::Int32::Int32(int32_t val){
-	value = val;
-}
-Compare::Int32::Int32(){
-	value = 0;
-}
-const char* Compare::Int32::getClassName(){
-	return "Compare::Int32::getClassName";
-}
-const char* Compare::Int32::getObjectName() const{
-	return getClassName();
-}
-int32_t Compare::Int32::compareTo(NamedObject* o){
-	if ( o->getObjectName() != Int32::getClassName() ) return -1;
+        ////////////////////////////////////////////////////////////////////////////////
+        // Comparors
+        ////////////////////////////////////////////////////////////////////////////////
+        int32_t compare(Comparable* o1, Comparable* o2)
+        {
+            if (o1 == NULL && o2 == NULL)
+                return 0;
+            else if (o1 == NULL)
+                return 1;
+            else if (o2 == NULL)
+                return -1;
+            else
+                return o1->compareTo(o2);
+        }
+        NamedObject::~NamedObject()
+        {
+        }
+        bool NamedObject::instanceOf(const std::wstring & other) const
+        {
+            const std::wstring t = this->getObjectName();
+            if (t == other || wcscmp(t.c_str(), other.c_str()) == 0)
+                return true;
+            else
+                return false;
+        }
 
-	Int32* other = (Int32*)o;
-	if (value == other->value)
-		return 0;
-	// Returns just -1 or 1 on inequality; doing math might overflow.
-	return value > other->value ? 1 : -1;
-}
+        int32_t Compare::Int32::getValue() const { return value; }
+        Compare::Int32::Int32(int32_t val)
+        {
+            value = val;
+        }
+        Compare::Int32::Int32()
+        {
+            value = 0;
+        }
+        const std::wstring Compare::Int32::getClassName()
+        {
+            return L"Compare::Int32::getClassName";
+        }
+        const std::wstring Compare::Int32::getObjectName() const
+        {
+            return getClassName();
+        }
+        int32_t Compare::Int32::compareTo(NamedObject* o)
+        {
+            if (o->getObjectName() != Int32::getClassName()) return -1;
 
-bool Compare::Int32::operator()( int32_t t1, int32_t t2 ) const{
-	return t1 > t2 ? true : false;
-}
-size_t Compare::Int32::operator()( int32_t t ) const{
-	return t;
-}
+            Int32* other = (Int32*) o;
+            if (value == other->value)
+                return 0;
+            // Returns just -1 or 1 on inequality; doing math might overflow.
+            return value > other->value ? 1 : -1;
+        }
 
-
-float_t Compare::Float::getValue() const{
-	return value;
-}
-Compare::Float::Float(float_t val){
-	value = val;
-}
-const char* Compare::Float::getClassName(){
-	return "Compare::Float::getClassName";
-}
-const char* Compare::Float::getObjectName() const{
-	return getClassName();
-}
-int32_t Compare::Float::compareTo(NamedObject* o){
-	if ( o->getObjectName() != Float::getClassName() ) return -1;
-	Float* other = (Float*)o;
-	if (value == other->value)
-		return 0;
-	// Returns just -1 or 1 on inequality; doing math might overflow.
-	return value > other->value ? 1 : -1;
-}
+        bool Compare::Int32::operator()(int32_t t1, int32_t t2) const
+        {
+            return t1 > t2 ? true : false;
+        }
+        size_t Compare::Int32::operator()(int32_t t) const
+        {
+            return t;
+        }
 
 
-bool Compare::Char::operator()( const char* val1, const char* val2 ) const{
-	if ( val1==val2)
-		return false;
-	return (strcmp( val1,val2 ) < 0);
-}
-size_t Compare::Char::operator()( const char* val1) const{
-	return CL_NS(util)::Misc::ahashCode(val1);
-}
-const char* Compare::Char::getValue() const{ return s; }
+        float_t Compare::Float::getValue() const
+        {
+            return value;
+        }
+        Compare::Float::Float(float_t val)
+        {
+            value = val;
+        }
 
-Compare::Char::Char(){
-	s=NULL;
-}
- Compare::Char::Char(const char* str){
-	this->s = str;
-}
-const char* Compare::Char::getClassName(){
-	return "Compare::Char::getClassName";
-}
-const char* Compare::Char::getObjectName() const{
-	return getClassName();
-}
-int32_t Compare::Char::compareTo(NamedObject* o){
-	if ( o->getObjectName() != Char::getClassName() ) return -1;
-	Char* os = (Char*)o;
-	return strcmp(s,os->s);
-}
+        const std::wstring Compare::Float::getClassName()
+        {
+            return L"Compare::Float::getClassName";
+        }
 
-#ifdef _UCS2
-bool Compare::WChar::operator()( const wchar_t* val1, const wchar_t* val2 ) const{
-	if ( val1==val2)
-		return false;
-	bool ret = (wcscmp( val1,val2 ) < 0);
-	return ret;
-}
-size_t Compare::WChar::operator()( const wchar_t* val1) const{
-	return CL_NS(util)::Misc::whashCode(val1);
-}
+        const std::wstring Compare::Float::getObjectName() const
+        {
+            return getClassName();
+        }
 
-const wchar_t* Compare::WChar::getValue() const{ return s; }
-
-Compare::WChar::WChar(){
-	s=NULL;
-}
- Compare::WChar::WChar(const wchar_t* str){
-	this->s = str;
-}
-const char* Compare::WChar::getClassName(){
-	return "Compare::WChar::getClassName";
-}
-const char* Compare::WChar::getObjectName() const{
-	return getClassName();
-}
-int32_t Compare::WChar::compareTo(NamedObject* o){
-	if ( o->getObjectName() != WChar::getClassName() ) return -1;
-	WChar * os = (WChar *)o;
-	return wcscmp(s,os->s);
-}
-
-#endif
+        int32_t Compare::Float::compareTo(NamedObject* o)
+        {
+            if (o->getObjectName() != Float::getClassName()) return -1;
+            Float* other = (Float*) o;
+            if (value == other->value)
+                return 0;
+            // Returns just -1 or 1 on inequality; doing math might overflow.
+            return value > other->value ? 1 : -1;
+        }
 
 
-CL_NS_END
+        bool Compare::Char::operator()(const char* val1, const char* val2) const
+        {
+            if (val1 == val2)
+                return false;
+            return (strcmp(val1, val2) < 0);
+        }
+
+        size_t Compare::Char::operator()(const char* val1) const
+        {
+            return CL_NS(util)::Misc::ahashCode(val1);
+        }
+
+        const char* Compare::Char::getValue() const { return s; }
+
+        Compare::Char::Char()
+        {
+            s = NULL;
+        }
+        Compare::Char::Char(const char* str)
+        {
+            this->s = str;
+        }
+
+        std::wstring Compare::Char::getClassName()
+        {
+            return L"Compare::Char::getClassName";
+        }
+
+        const std::wstring Compare::Char::getObjectName() const
+        {
+            return getClassName();
+        }
+
+        int32_t Compare::Char::compareTo(NamedObject* o)
+        {
+            if (o->getObjectName() != Char::getClassName()) return -1;
+            Char* os = (Char*) o;
+            return strcmp(s, os->s);
+        }
+
+
+        bool Compare::WChar::operator()(const wchar_t* val1, const wchar_t* val2) const
+        {
+            if (val1 == val2)
+                return false;
+            bool ret = (wcscmp(val1, val2) < 0);
+            return ret;
+        }
+        size_t Compare::WChar::operator()(const wchar_t* val1) const
+        {
+            return CL_NS(util)::Misc::whashCode(val1);
+        }
+
+        const wchar_t* Compare::WChar::getValue() const { return s; }
+
+        Compare::WChar::WChar()
+        {
+            s = NULL;
+        }
+        Compare::WChar::WChar(const wchar_t* str)
+        {
+            this->s = str;
+        }
+        const std::wstring Compare::WChar::getClassName()
+        {
+            return L"Compare::WChar::getClassName";
+        }
+        const std::wstring Compare::WChar::getObjectName() const
+        {
+            return getClassName();
+        }
+        int32_t Compare::WChar::compareTo(NamedObject* o)
+        {
+            if (o->getObjectName() != WChar::getClassName()) return -1;
+            WChar * os = (WChar *) o;
+            return wcscmp(s, os->s);
+        }
+
+    }
+
+
+}

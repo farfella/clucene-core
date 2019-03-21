@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
  * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
  *
  * Distributable under the terms of either the Apache License (Version 2.0) or
  * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -36,7 +36,7 @@ public:
     int32_t start() const { return spans->start(); }
     int32_t end() const   { return spans->end(); }
 
-    wchar_t* toString() const;
+    std::wstring toString() const;
 };
 
 SpanFirstQuery::SpanFirstQuerySpans::SpanFirstQuerySpans( SpanFirstQuery * parentQuery, CL_NS(index)::IndexReader * reader )
@@ -72,17 +72,16 @@ bool SpanFirstQuery::SpanFirstQuerySpans::skipTo( int32_t target )
     return next();                  // scan to next match
 }
 
-wchar_t* SpanFirstQuery::SpanFirstQuerySpans::toString() const
+std::wstring SpanFirstQuery::SpanFirstQuerySpans::toString() const
 {
-    CL_NS(util)::StringBuffer buffer;
-    wchar_t *      tszQry = parentQuery->toString();
+    std::wstring buffer;
+    std::wstring tszQry = parentQuery->toString();
 
     buffer.append( L"spans(" );
     buffer.append( tszQry );
     buffer.append( L")" );
 
-    _CLDELETE_LARRAY( tszQry );
-    return buffer.toString();
+    return buffer;
 }
 
 
@@ -115,12 +114,12 @@ CL_NS(search)::Query * SpanFirstQuery::clone() const
     return _CLNEW SpanFirstQuery( *this );
 }
 
-const char * SpanFirstQuery::getClassName()
+const std::wstring SpanFirstQuery::getClassName()
 {
-	return "SpanFirstQuery";
+	return L"SpanFirstQuery";
 }
 
-const char * SpanFirstQuery::getObjectName() const
+const std::wstring SpanFirstQuery::getObjectName() const
 {
 	return getClassName();
 }
@@ -163,20 +162,19 @@ CL_NS(search)::Query * SpanFirstQuery::rewrite( CL_NS(index)::IndexReader * read
         return this;                         // no clauses rewrote
 }
 
-wchar_t* SpanFirstQuery::toString( const wchar_t* field ) const
+std::wstring SpanFirstQuery::toString( const wchar_t* field ) const
 {
-    CL_NS(util)::StringBuffer buffer;
-    wchar_t * tszMatch = match->toString( field );
+    std::wstring buffer;
+    std::wstring tszMatch = match->toString( field );
 
     buffer.append( L"spanFirst(" );
     buffer.append( tszMatch );
     buffer.append( L", " );
-    buffer.appendInt( end );
+    buffer.append( std::to_wstring(end));
     buffer.append( L")" );
-    buffer.appendBoost( getBoost() );
-    _CLDELETE_LARRAY( tszMatch );
+    buffer.append( boost_to_wstring(getBoost() ));
 
-    return buffer.toString();
+    return buffer;
 }
 
 bool SpanFirstQuery::equals( Query * other ) const

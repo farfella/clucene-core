@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
  * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
  * 
  * Distributable under the terms of either the Apache License (Version 2.0) or 
  * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -37,11 +37,11 @@ NearSpansOrdered::NearSpansOrdered( SpanNearQuery * spanNearQuery, CL_NS(index):
 
     if( spanNearQuery->getClausesCount() < 2 )
     {
-        wchar_t * tszQry = spanNearQuery->toString();
-        size_t  bBufLen = wcslen( tszQry ) + 25;
+        std::wstring tszQry = spanNearQuery->toString();
+        size_t  bBufLen = tszQry.length() + 25;
         wchar_t * tszMsg = _CL_NEWARRAY( wchar_t, bBufLen );
-		_snwprintf( tszMsg, bBufLen, L"Less than 2 clauses: %s" , tszQry );
-        _CLDELETE_LCARRAY( tszQry );
+		_snwprintf( tszMsg, bBufLen, L"Less than 2 clauses: %s" , tszQry.c_str() );
+        
         _CLTHROWT_DEL( CL_ERR_IllegalArgument, tszMsg );
     }
 
@@ -258,10 +258,10 @@ bool NearSpansOrdered::shrinkToAfterShortestMatch()
     return matchSlop <= allowedSlop;    // ordered and allowed slop
 }
 
-wchar_t* NearSpansOrdered::toString() const
+std::wstring NearSpansOrdered::toString() const
 {
-    CL_NS(util)::StringBuffer buffer;
-    wchar_t * tszQuery = query->toString();
+    std::wstring buffer;
+    std::wstring tszQuery = query->toString();
 
     buffer.append( L"NearSpansOrdered(");
     buffer.append( tszQuery );
@@ -270,18 +270,16 @@ wchar_t* NearSpansOrdered::toString() const
         buffer.append( L"START" );
     else if( more )
     {
-        buffer.appendInt( doc() );
+        buffer.append( std::to_wstring(doc()) );
         buffer.append( L":");
-        buffer.appendInt( start() );
+        buffer.append( std::to_wstring(start()) );
         buffer.append( L"-");
-        buffer.appendInt( end() );
+        buffer.append( std::to_wstring(end()) );
     }
     else
         buffer.append( L"END");
 
-    _CLDELETE_ARRAY( tszQuery );
-
-    return buffer.toString();
+    return buffer;
 }
 
 CL_NS_END2

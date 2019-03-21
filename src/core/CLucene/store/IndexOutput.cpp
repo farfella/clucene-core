@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -45,7 +45,7 @@ CL_NS_DEF(store)
   }
 
   void BufferedIndexOutput::writeByte(const uint8_t b) {
-  	CND_PRECONDITION(buffer!=NULL,"IndexOutput is closed")
+  	CND_PRECONDITION(buffer!=NULL,L"IndexOutput is closed")
     if (bufferPosition >= BUFFER_SIZE)
       flush();
     buffer[bufferPosition++] = b;
@@ -53,7 +53,7 @@ CL_NS_DEF(store)
 
   void BufferedIndexOutput::writeBytes(const uint8_t* b, const int32_t length) {
 	  if ( length < 0 )
-		  _CLTHROWA(CL_ERR_IllegalArgument, "IO Argument Error. Value must be a positive value.");
+		  _CLTHROWA(CL_ERR_IllegalArgument, L"IO Argument Error. Value must be a positive value.");
 	  int32_t bytesLeft = BUFFER_SIZE - bufferPosition;
 	  // is there enough space in the buffer?
 	  if (bytesLeft >= length) {
@@ -125,7 +125,7 @@ CL_NS_DEF(store)
     writeByte((uint8_t)i);
   }
 
-  void IndexOutput::writeString(const string& s ) {
+  void IndexOutput::writeString(const wstring& s ) {
     writeString(s.c_str(),s.length());
   }
 

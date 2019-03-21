@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -63,11 +63,11 @@ public:
 
 	Query* rewrite(CL_NS(index)::IndexReader* reader);
 
-	wchar_t* toString(const wchar_t* field) const;
+	std::wstring toString(const wchar_t* field) const;
 
 	//Returns the name "FuzzyQuery"
-	static const char* getClassName();
-	const char* getObjectName() const;
+	static const std::wstring getClassName();
+	const std::wstring getObjectName() const;
 
 	Query* clone() const;
 	bool equals(Query * other) const;
@@ -198,8 +198,8 @@ public:
 	*/
 	float_t difference();
 
-	const char* getObjectName() const;
-	static const char* getClassName();
+	const std::wstring getObjectName() const;
+	static const std::wstring getClassName();
 };
 
 CL_NS_END

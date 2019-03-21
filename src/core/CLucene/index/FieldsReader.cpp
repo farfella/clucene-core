@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -27,7 +27,7 @@ CL_NS_USE(document)
 CL_NS_USE(util)
 CL_NS_DEF(index)
 
-FieldsReader::FieldsReader(Directory* d, const char* segment, FieldInfos* fn, int32_t _readBufferSize, int32_t _docStoreOffset, int32_t size):
+FieldsReader::FieldsReader(Directory* d, const wchar_t * segment, FieldInfos* fn, int32_t _readBufferSize, int32_t _docStoreOffset, int32_t size):
 	fieldInfos(fn), cloneableFieldsStream(NULL), fieldsStream(NULL), indexStream(NULL),
         numTotalDocs(0),_size(0), closed(false),docStoreOffset(0)
 {
@@ -37,15 +37,15 @@ FieldsReader::FieldsReader(Directory* d, const char* segment, FieldInfos* fn, in
 //       fn contains a valid reference to a FieldInfos
 //Post - The instance has been created
 
-	CND_PRECONDITION(segment != NULL, "segment != NULL");
+	CND_PRECONDITION(segment != NULL, L"segment != NULL");
 
 	bool success = false;
 
 	try {
-		cloneableFieldsStream = d->openInput( Misc::segmentname(segment,".fdt").c_str(), _readBufferSize );
+		cloneableFieldsStream = d->openInput( Misc::segmentname(segment,L".fdt").c_str(), _readBufferSize );
 		fieldsStream = cloneableFieldsStream->clone();
 
-		indexStream = d->openInput( Misc::segmentname(segment,".fdx").c_str(), _readBufferSize );
+		indexStream = d->openInput( Misc::segmentname(segment,L".fdx").c_str(), _readBufferSize );
 
 		if (_docStoreOffset != -1) {
 			// We read only a slice out of this shared fields file
@@ -55,7 +55,7 @@ FieldsReader::FieldsReader(Directory* d, const char* segment, FieldInfos* fn, in
 			// Verify the file is long enough to hold all of our
 			// docs
 			CND_CONDITION(((int32_t) (indexStream->length() / 8)) >= size + this->docStoreOffset,
-				"the file is not long enough to hold all of our docs");
+				L"the file is not long enough to hold all of our docs");
 		} else {
 			this->docStoreOffset = 0;
 			this->_size = (int32_t) (indexStream->length() >> 3);
@@ -136,7 +136,7 @@ bool FieldsReader::doc(int32_t n, Document& doc, const CL_NS(document)::FieldSel
 
 		uint8_t bits = fieldsStream->readByte();
 		CND_CONDITION(bits <= FieldsWriter::FIELD_IS_COMPRESSED + FieldsWriter::FIELD_IS_TOKENIZED + FieldsWriter::FIELD_IS_BINARY,
-			"invalid field bits");
+			L"invalid field bits");
 
 		const bool compressed = (bits & FieldsWriter::FIELD_IS_COMPRESSED) != 0;
 		const bool tokenize = (bits & FieldsWriter::FIELD_IS_TOKENIZED) != 0;
@@ -178,7 +178,7 @@ CL_NS(store)::IndexInput* FieldsReader::rawDocs(int32_t* lengths, const int32_t 
 	while (count < numDocs) {
 		int64_t offset;
 		const int32_t docID = docStoreOffset + startDocID + count + 1;
-		CND_CONDITION( docID <= numTotalDocs, "invalid docID");
+		CND_CONDITION( docID <= numTotalDocs, L"invalid docID");
 		if (docID < numTotalDocs)
 			offset = indexStream->readLong();
 		else
@@ -540,10 +540,10 @@ FieldsReader::FieldForMerge::FieldForMerge(void* _value, ValueType _type, const 
 }
 FieldsReader::FieldForMerge::~FieldForMerge(){
 }
-const char* FieldsReader::FieldForMerge::getClassName(){
-  return "FieldsReader::FieldForMerge";
+const std::wstring FieldsReader::FieldForMerge::getClassName(){
+  return L"FieldsReader::FieldForMerge";
 }
-const char* FieldsReader::FieldForMerge::getObjectName() const{
+const std::wstring FieldsReader::FieldForMerge::getObjectName() const{
   return getClassName();
 }
 

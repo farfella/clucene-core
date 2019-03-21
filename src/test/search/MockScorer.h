@@ -44,9 +44,9 @@ public:
         return NULL;
     }
 
-    virtual wchar_t* toString()
+    virtual std::wstring toString()
     {
-        return NULL;
+        return L"";
     }
 
     virtual float_t score()

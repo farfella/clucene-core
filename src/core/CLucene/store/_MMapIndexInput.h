@@ -1,41 +1,43 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
 ------------------------------------------------------------------------------*/
-#ifndef _lucene_store_MMap_
-#define _lucene_store_MMap_
+#pragma once
 
 #include "IndexInput.h"
 
-CL_NS_DEF(store)
+namespace lucene {
 
-class MMapIndexInput : public IndexInput {
-  class Internal;
-  Internal* _internal;
+    namespace store {
 
-  MMapIndexInput(const MMapIndexInput& clone);
-  MMapIndexInput(Internal* _internal);
-public:
-  static bool open(const char* path, IndexInput*& ret, CLuceneError& error, int32_t __bufferSize);
+        class MMapIndexInput : public IndexInput
+        {
+            class Internal;
+            Internal* _internal;
 
-  ~MMapIndexInput();
-  IndexInput* clone() const;
+            MMapIndexInput(const MMapIndexInput& clone);
+            MMapIndexInput(Internal* _internal);
+        public:
+            static bool open(const char* path, IndexInput*& ret, CLuceneError& error, int32_t __bufferSize);
 
-  inline uint8_t readByte();
-  int32_t readVInt();
-  void readBytes(uint8_t* b, const int32_t len);
-  void close();
-  int64_t getFilePointer() const;
-  void seek(const int64_t pos);
-  int64_t length() const;
+            ~MMapIndexInput();
+            IndexInput* clone() const;
 
-  const char* getObjectName() const{ return MMapIndexInput::getClassName(); }
-  static const char* getClassName(){ return "MMapIndexInput"; }
-  const char* getDirectoryType() const{ return "MMapDirectory"; }
-};
-CL_NS_END
-#endif
+            inline uint8_t readByte();
+            int32_t readVInt();
+            void readBytes(uint8_t* b, const int32_t len);
+            void close();
+            int64_t getFilePointer() const;
+            void seek(const int64_t pos);
+            int64_t length() const;
+
+            const std::wstring getObjectName() const { return MMapIndexInput::getClassName(); }
+            static const std::wstring getClassName() { return L"MMapIndexInput"; }
+            const std::wstring getDirectoryType() const { return L"MMapDirectory"; }
+        };
+    }
+}

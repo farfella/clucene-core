@@ -4,8 +4,7 @@
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
 ------------------------------------------------------------------------------*/
-#ifndef lucene_util_dirent_H
-#define lucene_util_dirent_H
+#pragma once
 
 
 #if !defined(_CL_HAVE_DIRENT_H) && !defined(_CL_HAVE_SYS_NDIR_H) && !defined(_CL_HAVE_SYS_DIR_H) && !defined(_CL_HAVE_NDIR_H)
@@ -36,14 +35,14 @@
 struct CLUCENE_SHARED_INLINE_EXPORT dirent
 {
 	unsigned short	d_namlen;	/* Length of name in d_name. */
-	char *d_name;		/* File name. */
+	wchar_t *d_name;		/* File name. */
 };
 
 /** DIR structure - used by the dirent.h directory iteration functions*/
 struct CLUCENE_SHARED_INLINE_EXPORT DIR
 {
 	/** disk transfer area for this dir */
-	struct _finddata_t dd_dta;
+	struct _wfinddata_t dd_dta;
 
 	/* dirent struct to return from dir (NOTE: this makes this thread
 	 * safe as long as only one thread uses a particular DIR struct at
@@ -62,19 +61,19 @@ struct CLUCENE_SHARED_INLINE_EXPORT DIR
 	int32_t			dd_stat;
 	
 	/** given path for dir with search pattern (struct is extended) */
-	char			dd_name[CL_MAX_DIR];
+	wchar_t			dd_name[CL_MAX_DIR];
 
 };
 
-#define DIRENT_SEARCH_SUFFIX "*"
-#define DIRENT_SLASH PATH_DELIMITERA
+#define DIRENT_SEARCH_SUFFIX L"*"
+#define DIRENT_SLASH PATH_DELIMITERW
 
 
 /**
 * Returns a pointer to a DIR structure appropriately filled in to begin
 * searching a directory.
 */
-CLUCENE_SHARED_EXPORT DIR* opendir (const char* filespec);
+CLUCENE_SHARED_EXPORT DIR* opendir (const wchar_t * filespec);
 
 /**
 * Return a pointer to a dirent structure filled with the information on the
@@ -106,4 +105,3 @@ CLUCENE_SHARED_EXPORT int32_t	closedir (DIR* dir);
 # endif
 
 #endif //HAVE_DIRENT_H 
-#endif

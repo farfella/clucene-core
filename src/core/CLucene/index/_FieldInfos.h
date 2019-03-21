@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -101,7 +101,7 @@ public:
 	* @param name The name of the file to open the IndexInput from in the Directory
 	* @throws IOException
 	*/
-	FieldInfos(CL_NS(store)::Directory* d, const char* name);
+	FieldInfos(CL_NS(store)::Directory* d, const wchar_t* name);
 
 	/**
 	* Returns a deep clone of this FieldInfos instance.
@@ -188,7 +188,7 @@ public:
   	bool hasVectors() const;
 
 
-	void write(CL_NS(store)::Directory* d, const char* name) const;
+	void write(CL_NS(store)::Directory* d, const wchar_t * name) const;
 	void write(CL_NS(store)::IndexOutput* output) const;
 
 private:

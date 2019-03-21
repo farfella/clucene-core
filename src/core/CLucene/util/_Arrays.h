@@ -1,7 +1,6 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -21,8 +20,8 @@ CL_NS_DEF(util)
    		}
    	}
 		static void sort(_type* a, int32_t alen, int32_t fromIndex, int32_t toIndex){
-			CND_PRECONDITION(fromIndex < toIndex,"fromIndex >= toIndex");
-			CND_PRECONDITION(fromIndex >= 0,"fromIndex < 0");
+			CND_PRECONDITION(fromIndex < toIndex,L"fromIndex >= toIndex");
+			CND_PRECONDITION(fromIndex >= 0,L"fromIndex < 0");
 				
 				// First presort the array in chunks of length 6 with insertion
 			// sort. A mergesort would give too much overhead for this length.

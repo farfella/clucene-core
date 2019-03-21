@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -25,8 +25,8 @@ CL_NS_DEF(search)
 	//       n != NULL
 	//Post - Instance has been created
 
-		CND_PRECONDITION(tps != NULL,"tps is NULL");
-		CND_PRECONDITION(tps[0] != NULL,"tps is NULL");
+		CND_PRECONDITION(tps != NULL,L"tps is NULL");
+		CND_PRECONDITION(tps[0] != NULL,L"tps is NULL");
 		//CND_PRECONDITION(n != NULL,"n is NULL") =this is checked already in PhraseScorer
 
 	}
@@ -41,10 +41,10 @@ CL_NS_DEF(search)
 	//       size of the PhraseQueue pq is 0
 	//Post - The frequency of the phrase has been returned
 
-		CND_PRECONDITION(first != NULL,"first is NULL");
-		CND_PRECONDITION(last  != NULL,"last is NULL");
-		CND_PRECONDITION(pq    != NULL,"pq is NULL");
-		CND_PRECONDITION(pq->size()==0,"pq is not empty");
+		CND_PRECONDITION(first != NULL,L"first is NULL");
+		CND_PRECONDITION(last  != NULL,L"last is NULL");
+		CND_PRECONDITION(pq    != NULL,L"pq is NULL");
+		CND_PRECONDITION(pq->size()==0,L"pq is not empty");
 
 		// sort list with pq
 		pq->clear();
@@ -87,7 +87,7 @@ CL_NS_DEF(search)
 		return (float_t)freq;
 	}
 
-	wchar_t* ExactPhraseScorer::toString(){
-		return _wcsdup(L"ExactPhraseScorer");
+	std::wstring ExactPhraseScorer::toString() {
+		return L"ExactPhraseScorer";
 	}
 CL_NS_END

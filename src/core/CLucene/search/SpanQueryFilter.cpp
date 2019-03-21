@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
  * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
  * 
  * Distributable under the terms of either the Apache License (Version 2.0) or 
  * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -77,15 +77,9 @@ SpanFilterResult * SpanQueryFilter::bitSpans( CL_NS(index)::IndexReader * reader
     return _CLNEW SpanFilterResult( bits, tmp );
 }
 
-wchar_t* SpanQueryFilter::toString()
+std::wstring SpanQueryFilter::toString()
 {
-	wchar_t* qt = query->toString();
-	size_t len = wcslen( qt ) + 21;
-	wchar_t* ret = _CL_NEWARRAY( wchar_t, len );
-	ret[0] = 0;
-	_snwprintf( ret, len, L"QueryWrapperFilter(%s)", qt );
-	_CLDELETE_CARRAY( qt );
-	return ret;
+    return std::wstring(L"QueryWrapperFilter(") + query->toString() + std::wstring(L")");
 }
 
 CL_NS_END

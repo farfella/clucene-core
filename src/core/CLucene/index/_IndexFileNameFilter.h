@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -15,7 +15,7 @@
 CL_NS_DEF(index)
 class FilenameFilter{
 public:
-	virtual bool accept(const char* dir, const char* name) const = 0;
+	virtual bool accept(const wchar_t * dir, const wchar_t * name) const = 0;
 	virtual ~FilenameFilter();
 };
 
@@ -28,8 +28,8 @@ public:
 class IndexFileNameFilter: public FilenameFilter {
   static IndexFileNameFilter* _singleton;
   static IndexFileNameFilter* singleton();
-  CL_NS(util)::CLHashSet<const char*, CL_NS(util)::Compare::Char> extensions;
-  CL_NS(util)::CLHashSet<const char*, CL_NS(util)::Compare::Char> extensionsInCFS;
+  CL_NS(util)::CLHashSet<const wchar_t*, CL_NS(util)::Compare::WChar> extensions;
+  CL_NS(util)::CLHashSet<const wchar_t*, CL_NS(util)::Compare::WChar> extensionsInCFS;
 public:
   IndexFileNameFilter();
   virtual ~IndexFileNameFilter();
@@ -37,7 +37,7 @@ public:
   /* (non-Javadoc)
    * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)
    */
-  bool accept(const char* dir, const char* name) const;
+  bool accept(const wchar_t * dir, const wchar_t * name) const;
 
   /**
    * Returns true if this is a file that would be contained
@@ -45,7 +45,7 @@ public:
    * files that pass the above "accept" (ie, are already
    * known to be a Lucene index file).
    */
-  bool isCFSFile(const char* name) const;
+  bool isCFSFile(const wchar_t * name) const;
   static const IndexFileNameFilter* getFilter();
 
   static void _shutdown();

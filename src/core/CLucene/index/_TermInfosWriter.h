@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -40,7 +40,7 @@ class TermInfo;
 		TermInfosWriter* other;
 
 		//inititalize
-		TermInfosWriter(CL_NS(store)::Directory* directory, const char* segment, FieldInfos* fis, int32_t interval, bool isIndex);
+		TermInfosWriter(CL_NS(store)::Directory* directory, const wchar_t * segment, FieldInfos* fis, int32_t interval, bool isIndex);
 
     int32_t compareToLastTerm(int32_t fieldNumber, const wchar_t* termText, int32_t length);
 	public:
@@ -78,7 +78,7 @@ class TermInfo;
 		*/
 		int32_t skipInterval;// = 16
 
-		TermInfosWriter(CL_NS(store)::Directory* directory, const char* segment, FieldInfos* fis, int32_t interval);
+		TermInfosWriter(CL_NS(store)::Directory* directory, const wchar_t * segment, FieldInfos* fis, int32_t interval);
 
 		~TermInfosWriter();
 
@@ -95,7 +95,7 @@ class TermInfo;
 
 	private:
         /** Helps constructors to initialize instances */
-		void initialise(CL_NS(store)::Directory* directory, const char* segment, int32_t interval, bool IsIndex);
+		void initialise(CL_NS(store)::Directory* directory, const wchar_t * segment, int32_t interval, bool IsIndex);
 		void writeTerm(int32_t fieldNumber, const wchar_t* termText, int32_t termTextLength);
 	};
 CL_NS_END

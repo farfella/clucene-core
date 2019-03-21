@@ -1,7 +1,6 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -22,7 +21,7 @@ namespace lucene {
         public:
             static uint64_t currentTimeMillis();
             static const wchar_t* replace_all(const wchar_t* val, const wchar_t* srch, const wchar_t* repl);
-            static bool dir_Exists(const char* path);
+            static bool dir_Exists(const wchar_t* path);
             static int64_t file_Size(const char* path);
             static int64_t filelength(int handle);
             static void Sleep(DWORD dwMilliseconds);
@@ -35,7 +34,7 @@ namespace lucene {
              * Returns 0 if deleted and dir_Exists returns still true
              * Returns -1 if file can not be deleted.
              */
-            static int32_t file_Unlink(const char* path, int32_t maxAttempts = -1);
+            static int32_t file_Unlink(const wchar_t* path, int32_t maxAttempts = -1);
 
             static size_t ahashCode(const char* str);
             static size_t ahashCode(const char* str, size_t len);
@@ -45,9 +44,9 @@ namespace lucene {
 
             static bool priv_isDotDir(const wchar_t* name);
             //Creates a filename by concatenating Segment with ext and x
-            static std::string segmentname(const char* segment, const char* ext, const int32_t x = -1);
+            static std::wstring segmentname(const wchar_t * segment, const wchar_t * ext, const int32_t x = -1);
             //Creates a filename in buffer by concatenating Segment with ext and x
-            static void segmentname(char* buffer, int32_t bufferLen, const char* Segment, const char* ext, const int32_t x = -1);
+            static void segmentname(wchar_t * buffer, int32_t bufferLen, const wchar_t * Segment, const wchar_t * ext, const int32_t x = -1);
 
             /**
             * Compares two strings, character by character, and returns the
@@ -67,14 +66,15 @@ namespace lucene {
             static wchar_t* stringTrim(wchar_t* s);
             static wchar_t* wordTrim(wchar_t* s);
 
-            static size_t longToBase(int64_t value, int32_t base, char* to); //< length of to should be at least ((sizeof(unsigned long) << 3) + 1). returns actual length used
-            static int64_t base36ToLong(const char* value);
+            static size_t longToBase(int64_t value, int32_t base, wchar_t * to); //< length of to should be at least ((sizeof(unsigned long) << 3) + 1). returns actual length used
+            static int64_t base36ToLong(const wchar_t* value);
 
-            static std::string toString(const int32_t value);
-            static std::string toString(const int64_t value);
-            static std::string toString(const _LUCENE_THREADID_TYPE value);
-            static std::string toString(const bool value);
-            static std::string toString(const float_t value);
+            static std::wstring toString(const int32_t value);
+            static std::wstring toString(const int64_t value);
+            static std::wstring toString(const _LUCENE_THREADID_TYPE value);
+            static std::wstring toWString(const _LUCENE_THREADID_TYPE value);
+            static std::wstring toString(const bool value);
+            static std::wstring toString(const float_t value);
             static std::string toString(const wchar_t* s, int32_t len = -1);
 
 #ifdef _UCS2
@@ -94,7 +94,7 @@ namespace lucene {
             /** List all files in dir.
             * @param bool fullPath True to return entire path
             */
-            static bool listFiles(const char* dir, std::vector<std::string>& files, bool fullPath = false);
+            static bool listFiles(const wchar_t* dir, std::vector<std::wstring>& files, bool fullPath = false);
 
             /** uncompress the source stream into the dest stream.
             * Default CHUNK size is 1k

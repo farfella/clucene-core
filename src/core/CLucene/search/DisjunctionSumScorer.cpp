@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -101,9 +101,9 @@ bool DisjunctionSumScorer::skipTo( int32_t target )
 	} while ( true );
 }
 
-wchar_t* DisjunctionSumScorer::toString()
+std::wstring DisjunctionSumScorer::toString()
 {
-	return _wcsdup(L"DisjunctionSumScorer");
+	return L"DisjunctionSumScorer";
 }
 
 Explanation* DisjunctionSumScorer::explain( int32_t doc ){
@@ -121,26 +121,26 @@ Explanation* DisjunctionSumScorer::explain( int32_t doc ){
 		++ssi;
 	}
 
-	CL_NS(util)::StringBuffer buf(50);
+    std::wstring buf;
 	if (_nrMatchers >= minimumNrMatchers) {
 		buf.append(L"sum over at least ");
-		buf.appendInt(minimumNrMatchers);
+		buf.append(std::to_wstring(minimumNrMatchers));
 		buf.append(L" of ");
-		buf.appendInt(subScorers.size());
-		buf.appendChar(L':');
+		buf.append(std::to_wstring(subScorers.size()));
+		buf.push_back(L':');
 
 		res->setValue(sumScore);
-		res->setDescription(buf.getBuffer());
+		res->setDescription(buf.c_str());
 	} else {
-		buf.appendInt(nrMatches);
+		buf.append(std::to_wstring(nrMatches));
 		buf.append(L" match(es) but at least ");
-		buf.appendInt(minimumNrMatchers);
+		buf.append(std::to_wstring(minimumNrMatchers));
 		buf.append(L" of ");
-		buf.appendInt(subScorers.size());
+		buf.append(std::to_wstring(subScorers.size()));
 		buf.append(L" needed");
 
 		res->setValue(0.0f);
-		res->setDescription(buf.getBuffer());
+		res->setDescription(buf.c_str());
 	}
 	return res;
 }

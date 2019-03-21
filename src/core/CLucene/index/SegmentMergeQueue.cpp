@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -24,7 +24,7 @@ CL_NS_DEF(index)
 		//BVK: bug. changed condition from size > 0 to size >= 0
 		//if size is 0, as it is  when retrieving a TermEnum 
 		//from an empty index this should this should not fail.
-        CND_PRECONDITION(size >= 0, "size is too small");
+        CND_PRECONDITION(size >= 0, L"size is too small");
 
 		//Call the initialize method of its superclass. The boolean value  passed here
 		//indicates that the superclass PriorityQueue takes the responsibility to have its elements deleted
@@ -59,8 +59,8 @@ CL_NS_DEF(index)
    //		stiB != NULL
    //Post - true is returned if stiA < stiB otherwise false
 
-        CND_PRECONDITION(stiA != NULL, "stiA is NULL");
-        CND_PRECONDITION(stiB != NULL, "stiB is NULL");
+        CND_PRECONDITION(stiA != NULL, L"stiA is NULL");
+        CND_PRECONDITION(stiB != NULL, L"stiB is NULL");
 
 		//Compare the two terms 
 		int32_t comparison = stiA->term->compareTo(stiB->term);

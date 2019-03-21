@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -14,11 +14,11 @@
 CL_NS_DEF(index)
 
 
-const char* SerialMergeScheduler::getObjectName() const{
+const std::wstring SerialMergeScheduler::getObjectName() const{
 	return getClassName();
 }
-const char* SerialMergeScheduler::getClassName(){
-	return "SerialMergeScheduler";
+const std::wstring SerialMergeScheduler::getClassName(){
+	return L"SerialMergeScheduler";
 }
 
 void SerialMergeScheduler::merge(IndexWriter* writer){

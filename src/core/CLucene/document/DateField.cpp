@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -23,7 +23,7 @@ wchar_t* DateField::timeToString(const int64_t time) {
     return buf;
 }
 void DateField::timeToString(const int64_t time, wchar_t* buf) {
-    CND_PRECONDITION (buf, "buf == NULL");
+    CND_PRECONDITION (buf, L"buf == NULL");
     *buf = '\0';
 	if (time < 0)
 	  _CLTHROWA (CL_ERR_IllegalArgument,"time too early"); //todo: make richer error
@@ -34,7 +34,7 @@ void DateField::timeToString(const int64_t time, wchar_t* buf) {
 	_i64tow(time, buf, 36);
 	int32_t bufLen = wcslen(buf);
 	
-	CND_PRECONDITION (bufLen <= DATEFIELD_DATE_LEN, "timeToString length is greater than 9");
+	CND_PRECONDITION (bufLen <= DATEFIELD_DATE_LEN, L"timeToString length is greater than 9");
 	
 	/* Supply leading zeroes if necessary. */
 	if (bufLen < DATEFIELD_DATE_LEN) {
@@ -52,7 +52,7 @@ void DateField::timeToString(const int64_t time, wchar_t* buf) {
 	  buf[DATEFIELD_DATE_LEN] = 0;
 	}
 	
-	CND_PRECONDITION (wcslen(buf) == DATEFIELD_DATE_LEN, "timeToString return is not equal to DATEFIELD_DATE_LEN");
+	CND_PRECONDITION (wcslen(buf) == DATEFIELD_DATE_LEN, L"timeToString return is not equal to DATEFIELD_DATE_LEN");
 }
 
 int64_t DateField::stringToTime(const wchar_t* time) {

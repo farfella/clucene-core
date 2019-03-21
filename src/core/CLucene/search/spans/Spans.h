@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
  * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
  * 
  * Distributable under the terms of either the Apache License (Version 2.0) or 
  * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -49,7 +49,7 @@ public:
     virtual int32_t end() const = 0;
 
     /** Returns the string representation of the spans */
-    virtual wchar_t* toString() const = 0;
+    virtual std::wstring toString() const = 0;
 };
 
 CL_NS_END2

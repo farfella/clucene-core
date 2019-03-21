@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
  * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
  *
  * Distributable under the terms of either the Apache License (Version 2.0) or
  * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -36,8 +36,8 @@ public:
 
     CL_NS(search)::Query * clone() const;
 
-    static const char * getClassName();
-	const char * getObjectName() const;
+    static const std::wstring getClassName();
+	const std::wstring getObjectName() const;
 
     /** Return the SpanQuery whose matches are filtered. */
     SpanQuery * getInclude() const;
@@ -58,7 +58,7 @@ public:
     CL_NS(search)::Query * rewrite( CL_NS(index)::IndexReader * reader );
 
     using Query::toString;
-    wchar_t* toString( const wchar_t* field ) const;
+    std::wstring toString( const wchar_t* field ) const;
     bool equals( Query* other ) const;
     size_t hashCode() const;
 

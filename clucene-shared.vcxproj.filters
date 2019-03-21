@@ -34,9 +34,6 @@
     <ClCompile Include="src\shared\CLucene\SharedHeader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\shared\CLucene\util\StringBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\shared\CLucene\config\threads.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -55,9 +52,6 @@
     <ClCompile Include="src\shared\CLucene\config\repl_tcstoll.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\shared\CLucene\config\repl_tprintf.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\shared\CLucene\config\repl_lltot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -72,6 +66,9 @@
     </ClCompile>
     <ClCompile Include="src\shared\CLucene\util\dirent.cpp">
       <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shared\CLucene\util\StringBuffer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -100,9 +97,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\shared\CLucene\SharedHeader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shared\CLucene\util\StringBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\shared\CLucene\debug\_condition.h">

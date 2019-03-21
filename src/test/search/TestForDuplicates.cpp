@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -116,9 +116,8 @@
       Hits* hits = NULL;
 
       Query* query = parser->parse(_T("high"));
-      wchar_t* tmp = query->toString(_T("priority"));
-      CuMessage(tc, _T("Query: %s\n"), tmp );
-      _CLDELETE_CARRAY(tmp);
+      std::wstring tmp = query->toString(_T("priority"));
+      CuMessage(tc, _T("Query: %s\n"), tmp.c_str() );
 
       hits = searcher->search(query);
       print_tHits(tc, hits);
@@ -138,8 +137,7 @@
 
       query = parser->parse(_T("high OR medium"));
       tmp = query->toString(_T("priority"));
-      CuMessage(tc, _T("Query: %s\n"), tmp );
-      _CLDELETE_CARRAY(tmp);
+      CuMessage(tc, _T("Query: %s\n"), tmp.c_str() );
 
       hits = searcher->search(query);
       print_tHits(tc, hits);

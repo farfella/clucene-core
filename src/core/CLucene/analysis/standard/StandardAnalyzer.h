@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -40,7 +40,7 @@ CL_NS_DEF2(analysis,standard)
 		/** Builds an analyzer with the stop words from the given file.
 		* @see WordlistLoader#getWordSet(File)
 		*/
-		StandardAnalyzer(const char* stopwordsFile, const char* enc = NULL);
+		StandardAnalyzer(const wchar_t * stopwordsFile, const wchar_t * enc = NULL);
 
 		/** Builds an analyzer with the stop words from the given reader.
 		* @see WordlistLoader#getWordSet(Reader)

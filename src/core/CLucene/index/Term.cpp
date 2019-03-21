@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -132,8 +132,8 @@ void Term::set(const wchar_t* fld, const wchar_t* txt,const bool internField){
 //       internT is true or false
 //Post - field and text of Term have been reset
 
-    CND_PRECONDITION(fld != NULL, "fld contains NULL");
-    CND_PRECONDITION(txt != NULL, "txt contains NULL");
+    CND_PRECONDITION(fld != NULL, L"fld contains NULL");
+    CND_PRECONDITION(txt != NULL, L"txt contains NULL");
 
 	//save field for unintern later
 	const wchar_t* oldField = _field;
@@ -178,7 +178,7 @@ void Term::set(const wchar_t* fld, const wchar_t* txt,const bool internField){
 		CLStringIntern::unintern(oldField);
 	internF = internField;
 		    
-    CND_PRECONDITION(wcscmp(fld, _field)==0,"field not equal");
+    CND_PRECONDITION(wcscmp(fld, _field)==0,L"field not equal");
 }
 
 /** Compares two terms, returning true iff they have the same
@@ -245,7 +245,7 @@ int32_t Term::hashedCompareTo(Term* other) {
         return 1;
 }
 
-wchar_t* Term::toString() const{
+std::wstring Term::toString() const{
 //Func - Forms the contents of Field and term in some kind of tuple notation
 //       <field:text>
 //Pre  - true

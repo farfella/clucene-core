@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -22,7 +22,7 @@ private:
 	FieldInfos* fieldInfos;
 
 public:
-	TermVectorsWriter(CL_NS(store)::Directory* directory, const char* segment,
+	TermVectorsWriter(CL_NS(store)::Directory* directory, const wchar_t * segment,
 						   FieldInfos* fieldInfos);
 	~TermVectorsWriter();
 
@@ -45,7 +45,7 @@ public:
  */
 class SegmentTermVector: public /*virtual*/ TermFreqVector {
 private:
-	wchar_t* field;
+	std::wstring field;
 	CL_NS(util)::ArrayBase<wchar_t*>* terms;
 	CL_NS(util)::ArrayBase<int32_t>* termFreqs;
 
@@ -60,8 +60,8 @@ public:
 	*
 	* @return The number of the field this vector is associated with
 	*/
-	const wchar_t* getField();
-	wchar_t* toString() const;
+	const std::wstring getField();
+	std::wstring toString() const;
 	int32_t size();
 	const CL_NS(util)::ArrayBase<const wchar_t*>* getTerms();
 	const CL_NS(util)::ArrayBase<int32_t>* getTermFrequencies();
@@ -103,7 +103,7 @@ private:
   int32_t tvfFormat;
 
 public:
-	TermVectorsReader(CL_NS(store)::Directory* d, const char* segment, FieldInfos* fieldInfos,
+	TermVectorsReader(CL_NS(store)::Directory* d, const wchar_t * segment, FieldInfos* fieldInfos,
 		int32_t readBufferSize=LUCENE_STREAM_BUFFER_SIZE, int32_t docStoreOffset=-1, int32_t size=0);
 	~TermVectorsReader();
 
@@ -199,8 +199,8 @@ public:
 	const CL_NS(util)::ArrayBase<int32_t>* getTermPositions(const size_t index);
 
 	// disambiguation
-	const wchar_t* getField(){ return SegmentTermVector::getField(); }
-	wchar_t* toString() const{ return SegmentTermVector::toString(); }
+	const std::wstring getField(){ return SegmentTermVector::getField(); }
+	std::wstring toString() const{ return SegmentTermVector::toString(); }
 	int32_t size(){ return SegmentTermVector::size(); }
 	const CL_NS(util)::ArrayBase<const wchar_t*>* getTerms(){ return SegmentTermVector::getTerms(); }
 	const CL_NS(util)::ArrayBase<int32_t>* getTermFrequencies(){ return SegmentTermVector::getTermFrequencies(); }

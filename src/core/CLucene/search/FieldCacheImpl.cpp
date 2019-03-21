@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -400,7 +400,7 @@ FieldCacheImpl::FileEntry::FileEntry (const wchar_t* field, int32_t type) {
 		    _CLDECDELETE(term);
 
 
-		    CND_PRECONDITION(t+1 <= retLen, "t out of bounds");
+		    CND_PRECONDITION(t+1 <= retLen, L"t out of bounds");
 
         // an entry for documents that have no terms in this field
         // should a document with no terms be at top or bottom?
@@ -410,7 +410,7 @@ FieldCacheImpl::FileEntry::FileEntry (const wchar_t* field, int32_t type) {
 
         try {
           if (termEnum->term(false) == NULL) {
-            _CLTHROWA(CL_ERR_Runtime,"no terms in field"); //todo: make rich message " + field);
+            _CLTHROWA(CL_ERR_Runtime,L"no terms in field"); //todo: make rich message " + field);
           }
           do {
             Term* term = termEnum->term(false);
@@ -430,7 +430,7 @@ FieldCacheImpl::FileEntry::FileEntry (const wchar_t* field, int32_t type) {
 
             t++;
           } while (termEnum->next());
-		      CND_PRECONDITION(t<retLen+2,"t out of bounds");
+		      CND_PRECONDITION(t<retLen+2,L"t out of bounds");
 		      mterms[t] = NULL;
         } _CLFINALLY(
           termDocs->close();

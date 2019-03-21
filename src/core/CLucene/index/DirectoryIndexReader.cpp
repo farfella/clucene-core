@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -91,7 +91,7 @@ CL_NS_DEF(index)
       if (writeLock == NULL) {
         LuceneLock* writeLock = _directory->makeLock(IndexWriter::WRITE_LOCK_NAME);
         if (!writeLock->obtain(IndexWriter::WRITE_LOCK_TIMEOUT)) { // obtain write lock
-          string message = string("Index locked for write: ") + writeLock->getObjectName();
+          std::wstring message = std::wstring(L"Index locked for write: ") + writeLock->getObjectName();
           _CLDELETE(writeLock);
           _CLTHROWA(CL_ERR_LockObtainFailed, message.c_str());
         }
@@ -144,7 +144,7 @@ CL_NS_DEF(index)
     bool closeDirectory;
     IndexDeletionPolicy* deletionPolicy;
 	protected:
-    DirectoryIndexReader* doBody(const char* segmentFileName) {
+    DirectoryIndexReader* doBody(const wchar_t * segmentFileName) {
 
       SegmentInfos* infos = _CLNEW SegmentInfos;
       infos->read(directory, segmentFileName);
@@ -180,7 +180,7 @@ CL_NS_DEF(index)
     IndexDeletionPolicy* deletionPolicy;
     DirectoryIndexReader* _this;
 	protected:
-    DirectoryIndexReader* doBody(const char* segmentFileName) {
+    DirectoryIndexReader* doBody(const wchar_t * segmentFileName) {
       SegmentInfos* infos = _CLNEW SegmentInfos();
       infos->read(directory, segmentFileName);
 

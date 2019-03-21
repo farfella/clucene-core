@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -26,7 +26,7 @@ CL_NS_DEF(search)
   //       n != NULL
   //Post - Instance has been created
 
-      CND_PRECONDITION(tps != NULL, "tps is NULL");
+      CND_PRECONDITION(tps != NULL, L"tps is NULL");
   }
 
   SloppyPhraseScorer::~SloppyPhraseScorer(){
@@ -35,9 +35,9 @@ CL_NS_DEF(search)
 
   float_t SloppyPhraseScorer::phraseFreq() {
 
-	  CND_PRECONDITION(first != NULL,"first is NULL");
-	  CND_PRECONDITION(last  != NULL,"last is NULL");
-	  CND_PRECONDITION(pq    != NULL,"pq is NULL");
+	  CND_PRECONDITION(first != NULL,L"first is NULL");
+	  CND_PRECONDITION(last  != NULL,L"last is NULL");
+	  CND_PRECONDITION(pq    != NULL,L"pq is NULL");
 
       int32_t end = initPhrasePositions();
 	  float_t freq = 0.0f;
@@ -171,7 +171,7 @@ CL_NS_DEF(search)
 	  return true;
   }
 
-  wchar_t* SloppyPhraseScorer::toString(){
-	  return _wcsdup(L"SloppyPhraseScorer");
+  std::wstring SloppyPhraseScorer::toString() {
+	  return L"SloppyPhraseScorer";
   }
 CL_NS_END

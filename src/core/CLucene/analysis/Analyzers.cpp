@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -240,11 +240,11 @@ Token* StopFilter::next(Token* token) {
     return NULL;
 }
 
-StopAnalyzer::StopAnalyzer(const char* stopwordsFile, const char* enc) :
+StopAnalyzer::StopAnalyzer(const wchar_t * stopwordsFile, const wchar_t * enc) :
     stopTable(_CLNEW CLTCSetList(true))
 {
     if (enc == NULL)
-        enc = "ASCII";
+        enc = L"ASCII";
     WordlistLoader::getWordSet(stopwordsFile, enc, stopTable);
 }
 
@@ -319,7 +319,7 @@ PerFieldAnalyzerWrapper::~PerFieldAnalyzerWrapper() {
 }
 
 void PerFieldAnalyzerWrapper::addAnalyzer(const wchar_t* fieldName, Analyzer* analyzer) {
-    analyzerMap->put(wcsdup(fieldName), analyzer);
+    analyzerMap->put(_wcsdup(fieldName), analyzer);
 }
 
 TokenStream* PerFieldAnalyzerWrapper::tokenStream(const wchar_t* fieldName, Reader* reader) {
@@ -375,7 +375,7 @@ Token* ISOLatin1AccentFilter::next(Token* token) {
             return token;
         }
 
-        StringBuffer output(l * 2);
+        std::wstring output;
         for (int32_t j = 0; j < l; j++) {
 #ifdef _UCS2
             wchar_t c = chars[j];
@@ -389,31 +389,31 @@ Token* ISOLatin1AccentFilter::next(Token* token) {
             case 0xC3: // �
             case 0xC4: // �
             case 0xC5: // �
-                output.appendChar('A');
+                output.push_back('A');
                 break;
             case 0xC6: // �
                 output.append(L"AE");
                 break;
             case 0xC7: // �
-                output.appendChar('C');
+                output.push_back('C');
                 break;
             case 0xC8: // �
             case 0xC9: // �
             case 0xCA: // �
             case 0xCB: // �
-                output.appendChar('E');
+                output.push_back('E');
                 break;
             case 0xCC: // �
             case 0xCD: // �
             case 0xCE: // �
             case 0xCF: // �
-                output.appendChar('I');
+                output.push_back('I');
                 break;
             case 0xD0: // �
-                output.appendChar('D');
+                output.push_back('D');
                 break;
             case 0xD1: // �
-                output.appendChar('N');
+                output.push_back('N');
                 break;
             case 0xD2: // �
             case 0xD3: // �
@@ -421,7 +421,7 @@ Token* ISOLatin1AccentFilter::next(Token* token) {
             case 0xD5: // �
             case 0xD6: // �
             case 0xD8: // �
-                output.appendChar('O');
+                output.push_back('O');
                 break;
             case 0xDE: // �
                 output.append(L"TH");
@@ -430,10 +430,10 @@ Token* ISOLatin1AccentFilter::next(Token* token) {
             case 0xDA: // �
             case 0xDB: // �
             case 0xDC: // �
-                output.appendChar('U');
+                output.push_back('U');
                 break;
             case 0xDD: // �
-                output.appendChar('Y');
+                output.push_back('Y');
                 break;
             case 0xE0: // �
             case 0xE1: // �
@@ -441,31 +441,31 @@ Token* ISOLatin1AccentFilter::next(Token* token) {
             case 0xE3: // �
             case 0xE4: // �
             case 0xE5: // �
-                output.appendChar('a');
+                output.push_back('a');
                 break;
             case 0xE6: // �
                 output.append(L"ae");
                 break;
             case 0xE7: // �
-                output.appendChar('c');
+                output.push_back('c');
                 break;
             case 0xE8: // �
             case 0xE9: // �
             case 0xEA: // �
             case 0xEB: // �
-                output.appendChar('e');
+                output.push_back('e');
                 break;
             case 0xEC: // �
             case 0xED: // �
             case 0xEE: // �
             case 0xEF: // �
-                output.appendChar('i');
+                output.push_back('i');
                 break;
             case 0xF0: // �
-                output.appendChar('d');
+                output.push_back('d');
                 break;
             case 0xF1: // �
-                output.appendChar('n');
+                output.push_back('n');
                 break;
             case 0xF2: // �
             case 0xF3: // �
@@ -473,7 +473,7 @@ Token* ISOLatin1AccentFilter::next(Token* token) {
             case 0xF5: // �
             case 0xF6: // �
             case 0xF8: // �
-                output.appendChar('o');
+                output.push_back('o');
                 break;
             case 0xDF: // �
                 output.append(L"ss");
@@ -485,11 +485,11 @@ Token* ISOLatin1AccentFilter::next(Token* token) {
             case 0xFA: // �
             case 0xFB: // �
             case 0xFC: // �
-                output.appendChar('u');
+                output.push_back('u');
                 break;
             case 0xFD: // �
             case 0xFF: // �
-                output.appendChar('y');
+                output.push_back('y');
                 break;
 
 #ifdef _UCS2
@@ -500,15 +500,15 @@ Token* ISOLatin1AccentFilter::next(Token* token) {
                 output.append(L"oe");
                 break;
             case 0x178: // �
-                output.appendChar('Y');
+                output.push_back('Y');
                 break;
 #endif
             default:
-                output.appendChar(c);
+                output.push_back(c);
                 break;
             }
         }
-        token->setText(output.getBuffer());
+        token->setText(output.c_str());
         return token;
     }
     return NULL;
@@ -601,10 +601,10 @@ Token* LengthFilter::next(Token* token)
 }
 
 
-CLTCSetList* WordlistLoader::getWordSet(const char* wordfilePath, const char* enc, CLTCSetList* stopTable)
+CLTCSetList* WordlistLoader::getWordSet(const wchar_t * wordfilePath, const wchar_t * enc, CLTCSetList* stopTable)
 {
     if (enc == NULL)
-        enc = "ASCII";
+        enc = L"ASCII";
     CL_NS(util)::FileReader* reader = NULL;
     try {
         reader = _CLNEW CL_NS(util)::FileReader(wordfilePath, enc, LUCENE_DEFAULT_TOKEN_BUFFER_SIZE);
@@ -629,7 +629,7 @@ CLTCSetList* WordlistLoader::getWordSet(CL_NS(util)::Reader* reader, CLTCSetList
     try {
         word = _CL_NEWARRAY(wchar_t, LUCENE_DEFAULT_TOKEN_BUFFER_SIZE);
         while (reader->readLine(word, LUCENE_DEFAULT_TOKEN_BUFFER_SIZE) > 0) {
-            stopTable->insert(wcsdup(CL_NS(util)::Misc::wordTrim(word)));
+            stopTable->insert(_wcsdup(CL_NS(util)::Misc::wordTrim(word)));
         }
     }
     _CLFINALLY(

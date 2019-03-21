@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -25,8 +25,8 @@ void IndexModifierExceptionTest(CuTest *tc)
         virtual void release() {};
         virtual bool isLocked() {return true;};
         bool obtain(int64_t lockWaitTimeout) {return false;};
-        virtual std::string toString() {return "LockedLock";};
-        virtual const char* getObjectName() const {return "LockedLock";};
+        virtual std::wstring toString() {return L"LockedLock";};
+        virtual const std::wstring getObjectName() const {return L"LockedLock";};
     };
 
     class LockedDirectory : public RAMDirectory
@@ -37,7 +37,7 @@ void IndexModifierExceptionTest(CuTest *tc)
         LockedDirectory() : RAMDirectory(), errOn(false) {};
 
         // this simulates locking problem, only if errOn is true
-        LuceneLock* makeLock(const char* name) {
+        LuceneLock* makeLock(const wchar_t * name) {
             if (errOn)
                 return _CLNEW LockedLock();
             else
@@ -195,8 +195,8 @@ void IMinsertDelete_tester<modification>::invoke(
 }
 
 void testIMinsertDelete(CuTest *tc){
-	char fsdir[CL_MAX_PATH];
-	_snprintf(fsdir,CL_MAX_PATH,"%s/%s",cl_tempDir, "test.search");
+	wchar_t fsdir[CL_MAX_PATH];
+	_snwprintf(fsdir,CL_MAX_PATH,L"%s/%s",cl_tempDir, L"test.search");
 	RAMDirectory ram;
 	FSDirectory* disk = FSDirectory::getDirectory(fsdir);
 	IMinsertDelete_tester<bulk_modification>().invoke(ram, tc);

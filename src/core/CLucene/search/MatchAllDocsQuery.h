@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -48,7 +48,7 @@ CL_NS_DEF(search)
 		*  don't have a representation that can be parsed by QueryParser.</li>
 		* </ul>
 		*/
-        virtual wchar_t* toString(const wchar_t* field = NULL) const;
+        virtual std::wstring toString(const wchar_t* field = NULL) const;
 
 	protected:
 		/** Expert: Constructs an appropriate Weight implementation for this query.
@@ -68,8 +68,8 @@ CL_NS_DEF(search)
         virtual bool equals(Query* o) const;
         virtual size_t hashCode() const;
 
-		static const char* getClassName();
-		const char* getObjectName() const;
+		static const std::wstring getClassName();
+		const std::wstring getObjectName() const;
 	};
 
 CL_NS_END

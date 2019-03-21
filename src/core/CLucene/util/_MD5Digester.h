@@ -36,7 +36,6 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -50,9 +49,9 @@ CL_NS_DEF(util)
 
 typedef unsigned short int uint2;
 
-char* PrintMD5(uint8_t md5Digest[16]);
-char* MD5String(char* szString);
-char* MD5File(char* szFilename);
+wchar_t * PrintMD5(uint8_t md5Digest[16]);
+wchar_t * MD5String(wchar_t * szString);
+wchar_t * MD5File(wchar_t * szFilename);
 
 class md5
 {

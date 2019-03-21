@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -243,7 +243,7 @@ protected:
 	void init(InputStream *i, int encoding);
 public:
 	LUCENE_STATIC_CONSTANT(int32_t, DEFAULT_BUFFER_SIZE=4096);
-	FileInputStream ( const char* path, int32_t buflen = -1 );
+	FileInputStream ( const wchar_t * path, int32_t buflen = -1 );
 	virtual ~FileInputStream ();
 	
 	int32_t read(const signed char*& start, int32_t min, int32_t max);
@@ -287,8 +287,8 @@ public:
 */
 class CLUCENE_EXPORT FileReader: public SimpleInputStreamReader{
 public:
-	FileReader(const char* path, int encoding, int32_t buflen = -1);
-	FileReader(const char* path, const char* encoding, int32_t buflen = -1);
+	FileReader(const wchar_t * path, int encoding, int32_t buflen = -1);
+	FileReader(const wchar_t * path, const wchar_t * encoding, int32_t buflen = -1);
 	virtual ~FileReader();
 };
 

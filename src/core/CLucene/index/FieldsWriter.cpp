@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -26,7 +26,7 @@ CL_NS_USE(util)
 CL_NS_USE(document)
 CL_NS_DEF(index)
 
-FieldsWriter::FieldsWriter(Directory* d, const char* segment, FieldInfos* fn):
+FieldsWriter::FieldsWriter(Directory* d, const wchar_t * segment, FieldInfos* fn):
 	fieldInfos(fn)
 {
 //Func - Constructor
@@ -34,15 +34,15 @@ FieldsWriter::FieldsWriter(Directory* d, const char* segment, FieldInfos* fn):
 //       segment != NULL and contains the name of the segment
 //Post - fn contains a valid reference toa a FieldInfos
 
-	CND_PRECONDITION(segment != NULL,"segment is NULL");
+	CND_PRECONDITION(segment != NULL,L"segment is NULL");
 
-  fieldsStream = d->createOutput ( Misc::segmentname(segment,".fdt").c_str() );
+  fieldsStream = d->createOutput ( Misc::segmentname(segment, L".fdt").c_str() );
 
-	CND_CONDITION(fieldsStream != NULL,"fieldsStream is NULL");
+	CND_CONDITION(fieldsStream != NULL,L"fieldsStream is NULL");
 
-  indexStream = d->createOutput( Misc::segmentname(segment,".fdx").c_str() );
+  indexStream = d->createOutput( Misc::segmentname(segment, L".fdx").c_str() );
 
-	CND_CONDITION(indexStream != NULL,"indexStream is NULL");
+	CND_CONDITION(indexStream != NULL,L"indexStream is NULL");
 
 	doClose = true;
 }
@@ -51,9 +51,9 @@ FieldsWriter::FieldsWriter(CL_NS(store)::IndexOutput* fdx, CL_NS(store)::IndexOu
 	fieldInfos(fn)
 {
 	fieldsStream = fdt;
-	CND_CONDITION(fieldsStream != NULL,"fieldsStream is NULL");
+	CND_CONDITION(fieldsStream != NULL,L"fieldsStream is NULL");
 	indexStream = fdx;
-	CND_CONDITION(fieldsStream != NULL,"fieldsStream is NULL");
+	CND_CONDITION(fieldsStream != NULL,L"fieldsStream is NULL");
 	doClose = false;
 }
 
@@ -95,8 +95,8 @@ void FieldsWriter::addDocument(Document* doc) {
 //       fieldsStream != NULL
 //Post - The document doc has been added
 
-	CND_PRECONDITION(indexStream != NULL,"indexStream is NULL");
-	CND_PRECONDITION(fieldsStream != NULL,"fieldsStream is NULL");
+	CND_PRECONDITION(indexStream != NULL,L"indexStream is NULL");
+	CND_PRECONDITION(fieldsStream != NULL,L"fieldsStream is NULL");
 
 	indexStream->writeLong(fieldsStream->getFilePointer());
 
@@ -153,7 +153,7 @@ void FieldsWriter::writeField(FieldInfo* fi, CL_NS(document)::Field* field)
       if (field->isBinary()) {
         compress(*field->binaryValue(), dataB);
       }else if ( field->stringValue() == NULL ){ //we must be using readerValue
-        CND_PRECONDITION(!field->isIndexed(), "Cannot store reader if it is indexed too")
+        CND_PRECONDITION(!field->isIndexed(), L"Cannot store reader if it is indexed too")
         Reader* r = field->readerValue();
 
         int32_t sz = r->size();
@@ -164,7 +164,7 @@ void FieldsWriter::writeField(FieldInfo* fi, CL_NS(document)::Field* field)
         const wchar_t* rv = NULL;
         int64_t rl = r->read(rv, sz, 1);
         if ( rl > LUCENE_INT32_MAX_SHOULDBE )
-          _CLTHROWA(CL_ERR_Runtime,"Field length too long");
+          _CLTHROWA(CL_ERR_Runtime,L"Field length too long");
         else if ( rl < 0 )
           rl = 0;
 
@@ -207,7 +207,7 @@ void FieldsWriter::writeField(FieldInfo* fi, CL_NS(document)::Field* field)
       fieldsStream->writeBytes(data->values, data->length);
 
 		}else if ( field->stringValue() == NULL ){ //we must be using readerValue
-			CND_PRECONDITION(!field->isIndexed(), "Cannot store reader if it is indexed too")
+			CND_PRECONDITION(!field->isIndexed(), L"Cannot store reader if it is indexed too")
 			Reader* r = field->readerValue();
 
 			int32_t sz = r->size();
@@ -249,7 +249,7 @@ void FieldsWriter::addRawDocuments(CL_NS(store)::IndexInput* stream, const int32
 		position += lengths[i];
 	}
 	fieldsStream->copyBytes(stream, position-start);
-	CND_CONDITION(fieldsStream->getFilePointer() == position,"fieldsStream->getFilePointer() != position");
+	CND_CONDITION(fieldsStream->getFilePointer() == position,L"fieldsStream->getFilePointer() != position");
 }
 
 void FieldsWriter::compress(const CL_NS(util)::ValueArray<uint8_t>& input, CL_NS(util)::ValueArray<uint8_t>& output){

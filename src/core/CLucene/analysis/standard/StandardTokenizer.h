@@ -1,13 +1,12 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
 ------------------------------------------------------------------------------*/
-#ifndef _lucene_analysis_standard_StandardTokenizer
-#define _lucene_analysis_standard_StandardTokenizer
+#pragma once
 
 
 #include "../AnalysisHeader.h" //required for Tokenizer
@@ -36,7 +35,8 @@ CL_NS_DEF2(analysis,standard)
  * not suit your application, please consider copying this source code
  * directory to your project and maintaining your own grammar-based tokenizer.
  */
-  class CLUCENE_EXPORT StandardTokenizer: public Tokenizer {
+  class CLUCENE_EXPORT StandardTokenizer: public Tokenizer
+{
   private:
     int32_t rdPos;
     int32_t tokenStart;
@@ -47,10 +47,9 @@ CL_NS_DEF2(analysis,standard)
     void unReadChar();
 
     // createToken centralizes token creation for auditing purposes.
-	//Token* createToken(CL_NS(util)::StringBuffer* sb, TokenTypes tokenCode);
-    inline Token* setToken(Token* t, CL_NS(util)::StringBuffer* sb, TokenTypes tokenCode);
+    inline Token* setToken(Token* t, std::wstring & sb, TokenTypes tokenCode);
 
-    Token* ReadDotted(CL_NS(util)::StringBuffer* str, TokenTypes forcedType,Token* t);
+    Token* ReadDotted(std::wstring & , TokenTypes forcedType,Token* t);
 
 	CL_NS(util)::BufferedReader* reader;
 	bool deleteReader;
@@ -73,13 +72,13 @@ CL_NS_DEF2(analysis,standard)
     Token* ReadAlphaNum(const wchar_t prev, Token* t);
 
     // Reads for apostrophe-containing word.
-    Token* ReadApostrophe(CL_NS(util)::StringBuffer* str, Token* t);
+    Token* ReadApostrophe(std::wstring & str, Token* t);
 
     // Reads for something@... it may be a COMPANY name or a EMAIL address
-    Token* ReadAt(CL_NS(util)::StringBuffer* str, Token* t);
+    Token* ReadAt(std::wstring & str, Token* t);
 
     // Reads for COMPANY name like AT&T.
-    Token* ReadCompany(CL_NS(util)::StringBuffer* str, Token* t);
+    Token* ReadCompany(std::wstring & str, Token* t);
     
     // Reads CJK characters
     Token* ReadCJK(const wchar_t prev, Token* t);
@@ -88,4 +87,3 @@ CL_NS_DEF2(analysis,standard)
   };
 
 CL_NS_END2
-#endif

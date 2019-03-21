@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -52,7 +52,7 @@ BitSet::BitSet ( int32_t size ):
 	memset(bits,0,len);
 }
 
-BitSet::BitSet(CL_NS(store)::Directory* d, const char* name)
+BitSet::BitSet(CL_NS(store)::Directory* d, const wchar_t * name)
 {
 	_count=-1;
 	CL_NS(store)::IndexInput* input = d->openInput( name );
@@ -69,7 +69,7 @@ BitSet::BitSet(CL_NS(store)::Directory* d, const char* name)
 	);
 }
 	
-void BitSet::write(CL_NS(store)::Directory* d, const char* name) {
+void BitSet::write(CL_NS(store)::Directory* d, const wchar_t * name) {
 	CL_NS(store)::IndexOutput* output = d->createOutput(name);
 	try {
     if (isSparse()) {

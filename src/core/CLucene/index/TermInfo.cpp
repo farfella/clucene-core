@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -34,9 +34,9 @@ TermInfo::TermInfo(const int32_t df, const int64_t fp, const int64_t pp){
 //Pre  - df >= 0, fp >= 0 pp >= 0
 //Post - An instance has been created with FreqPointer = fp, proxPointer=pp and docFreq= df
 
-    CND_PRECONDITION(df >= 0, "df contains negative number");
-    CND_PRECONDITION(fp >= 0, "fp contains negative number");
-    CND_PRECONDITION(pp >= 0, "pp contains negative number");
+    CND_PRECONDITION(df >= 0, L"df contains negative number");
+    CND_PRECONDITION(fp >= 0, L"fp contains negative number");
+    CND_PRECONDITION(pp >= 0, L"pp contains negative number");
 
     freqPointer = fp;
     proxPointer = pp;
@@ -53,9 +53,9 @@ TermInfo::TermInfo(const TermInfo* ti) {
 //       ti->proxPointer >= 0
 //Post - Values of ti have been copied to the values of this Instance.
 
-    CND_PRECONDITION(ti->docFreq     >= 0, "ti->docFreq contains negative number");
-    CND_PRECONDITION(ti->freqPointer >= 0, "ti->freqPointer contains negative number");
-    CND_PRECONDITION(ti->proxPointer >= 0, "ti->proxPointer contains negative number");
+    CND_PRECONDITION(ti->docFreq     >= 0, L"ti->docFreq contains negative number");
+    CND_PRECONDITION(ti->freqPointer >= 0, L"ti->freqPointer contains negative number");
+    CND_PRECONDITION(ti->proxPointer >= 0, L"ti->proxPointer contains negative number");
 
 	docFreq     = ti->docFreq;
 	freqPointer = ti->freqPointer;
@@ -69,9 +69,9 @@ void TermInfo::set(const int32_t df, const int64_t fp, const int64_t pp, int32_t
 //Post - The new document frequency, a new freqPointer and a new proxPointer
 //       have been set
 
-    CND_PRECONDITION(df >= 0, "df contains negative number");
-    CND_PRECONDITION(fp >= 0, "fp contains negative number");
-    CND_PRECONDITION(pp >= 0, "pp contains negative number");
+    CND_PRECONDITION(df >= 0, L"df contains negative number");
+    CND_PRECONDITION(fp >= 0, L"fp contains negative number");
+    CND_PRECONDITION(pp >= 0, L"pp contains negative number");
 
 	docFreq     = df;
 	freqPointer = fp;
@@ -88,9 +88,9 @@ void TermInfo::set(const TermInfo* ti) {
 //       ti->proxPointer >= 0
 //Post - Values of ti have been copied to the values of this Instance.
 
-    CND_PRECONDITION(ti->docFreq     >= 0, "ti->docFreq contains negative number");
-    CND_PRECONDITION(ti->freqPointer >= 0, "ti->freqPointer contains negative number");
-    CND_PRECONDITION(ti->proxPointer >= 0, "ti->proxPointer contains negative number");
+    CND_PRECONDITION(ti->docFreq     >= 0, L"ti->docFreq contains negative number");
+    CND_PRECONDITION(ti->freqPointer >= 0, L"ti->freqPointer contains negative number");
+    CND_PRECONDITION(ti->proxPointer >= 0, L"ti->proxPointer contains negative number");
 
 	docFreq     = ti->docFreq;
 	freqPointer = ti->freqPointer;

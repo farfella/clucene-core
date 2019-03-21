@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -18,8 +18,8 @@ PhrasePositions::PhrasePositions(TermPositions* t, const int32_t OffSet) {
   //       OffSet != NULL
   //Post - The instance has been created
 
-      CND_PRECONDITION(t != NULL,"Tp is NULL");
-      CND_PRECONDITION(OffSet >= 0 ,"OffSet is a negative number");
+      CND_PRECONDITION(t != NULL,L"Tp is NULL");
+      CND_PRECONDITION(OffSet >= 0 ,L"OffSet is a negative number");
 
       tp       = t;
       offset   = OffSet;
@@ -53,7 +53,7 @@ PhrasePositions::PhrasePositions(TermPositions* t, const int32_t OffSet) {
   //Post - if there was no next then doc = INT_MAX otherwise
   //       doc contains the current document number
 
-      CND_PRECONDITION(tp != NULL,"tp is NULL");
+      CND_PRECONDITION(tp != NULL,L"tp is NULL");
     
 	  //Move to the next in TermPositions tp
       if (!tp->next()) {
@@ -85,7 +85,7 @@ PhrasePositions::PhrasePositions(TermPositions* t, const int32_t OffSet) {
   //Pre  - tp != NULL
   //Post - 
 
-      CND_PRECONDITION(tp != NULL,"tp is NULL");
+      CND_PRECONDITION(tp != NULL,L"tp is NULL");
 
       //read first pos
       count = tp->freq();				  
@@ -98,7 +98,7 @@ PhrasePositions::PhrasePositions(TermPositions* t, const int32_t OffSet) {
   //Pre  - tp != NULL
   //Post -
 
-      CND_PRECONDITION(tp != NULL,"tp is NULL");
+      CND_PRECONDITION(tp != NULL,L"tp is NULL");
 
       if (count-- > 0) {				  
 		  //read subsequent pos's

@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -37,43 +37,43 @@ IndexFileNameFilter::IndexFileNameFilter() {
 }
 IndexFileNameFilter::~IndexFileNameFilter(){
 }
-bool IndexFileNameFilter::accept(const char* /*dir*/, const char* name) const {
-	string _name(name);
+bool IndexFileNameFilter::accept(const wchar_t * /*dir*/, const wchar_t * name) const {
+	std::wstring _name = name;
 	size_t i = _name.find_last_of('.');
 	if (i != string::npos) {
-	  const char* extension = name + 1 + i;
-	  char* tmp;
+	  const wchar_t * extension = name + 1 + i;
+	  wchar_t * tmp;
 	  if (extensions.find(extension) != extensions.end()) {
 		return true;
 	  }
 
 	  size_t l = _name.length();
 	  if (*extension == 'f' &&
-				 strtol(extension+1, &tmp,10)>= 0 && tmp == (extension+l) ) { //check for f001
+				 wcstol(extension+1, &tmp,10)>= 0 && tmp == (extension+l) ) { //check for f001
 		return true;
 	  } else if (*extension == 's' &&
-				 strtol(extension+1, &tmp,10)>= 0 && tmp == (extension+l)) {
+				 wcstol(extension+1, &tmp,10)>= 0 && tmp == (extension+l)) {
 		return true;
 	  }
 	} else {
-	  if ( strcmp(name, IndexFileNames::DELETABLE) == 0 ) return true;
-	  else if ( strncmp(name, IndexFileNames::SEGMENTS, strlen(IndexFileNames::SEGMENTS)) == 0 ) return true;
+	  if ( wcscmp(name, IndexFileNames::DELETABLE) == 0 ) return true;
+	  else if ( wcsncmp(name, IndexFileNames::SEGMENTS, wcslen(IndexFileNames::SEGMENTS)) == 0 ) return true;
 	}
 	return false;
 }
 
-bool IndexFileNameFilter::isCFSFile(const char* name) const {
-	string _name(name);
+bool IndexFileNameFilter::isCFSFile(const wchar_t * name) const {
+	std::wstring _name = name;
 	size_t i = _name.find_last_of('.');
 	if (i != string::npos) {
-	  const char* extension = name + 1 + i;
-	  char* tmp;
+	  const wchar_t * extension = name + 1 + i;
+	  wchar_t * tmp;
 	  if (extensionsInCFS.find(extension) != extensionsInCFS.end() ) {
 		return true;
 	  }
 	  size_t l = _name.length();
 	  if (*extension == 'f' &&
-				 strtol(extension+1, &tmp,10)>= 0 && tmp == (extension+l)) {
+				 wcstol(extension+1, &tmp,10)>= 0 && tmp == (extension+l)) {
 		return true;
 	  }
 	}

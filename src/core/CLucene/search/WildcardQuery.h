@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -34,8 +34,8 @@ public:
   WildcardQuery(CL_NS(index)::Term* term);
   ~WildcardQuery();
 
-  const char* getObjectName() const;
-  static const char* getClassName();
+  const std::wstring getObjectName() const;
+  static const std::wstring getClassName();
 
   size_t hashCode() const;
   bool equals(Query* other) const;
@@ -64,7 +64,7 @@ public:
 	CL_NS(util)::BitSet* bits( CL_NS(index)::IndexReader* reader );
 	
 	Filter* clone() const;
-	wchar_t* toString();
+	std::wstring toString();
 };
 
 

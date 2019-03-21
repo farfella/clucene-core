@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -48,7 +48,7 @@ protected:
 
 public:
     /** Prints a user-readable version of this query. */
-    wchar_t* toString(const wchar_t* field) const;
+    std::wstring toString(const wchar_t* field) const;
 
     /** Returns true if <code>o</code> is equal to this. */
     bool equals(Query* o) const;
@@ -56,8 +56,8 @@ public:
     /** Returns a hash code value for this object. */
     size_t hashCode() const;
 
-    const char* getObjectName() const;
-	static const char* getClassName(){ return "ConstantScoreQuery"; }
+    const std::wstring getObjectName() const;
+	static const std::wstring getClassName(){ return L"ConstantScoreQuery"; }
     Query* clone() const;
 
     friend class ConstantWeight;
@@ -106,7 +106,7 @@ public:
     Query* rewrite(CL_NS(index)::IndexReader* reader);
 
     /** Prints a user-readable version of this query. */
-    wchar_t* toString(const wchar_t* field) const;
+    std::wstring toString(const wchar_t* field) const;
 
     /** Returns true if <code>o</code> is equal to this. */
     bool equals(Query* o) const;
@@ -114,8 +114,8 @@ public:
     /** Returns a hash code value for this object.*/
     size_t hashCode() const;
 
-    const char* getObjectName() const;
-	static const char* getClassName(){ return "ConstantScoreRangeQuery"; }
+    const std::wstring getObjectName() const;
+	static const std::wstring getClassName(){ return L"ConstantScoreRangeQuery"; }
     Query* clone() const;
 protected:
     ConstantScoreRangeQuery( const ConstantScoreRangeQuery& copy );

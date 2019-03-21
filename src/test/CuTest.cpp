@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
-* Updated by https://github.com/farfella/.
+
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -120,7 +120,7 @@ void CuStringAppend(CuString* str, const wchar_t* text)
 	if (str->length + length + 1 >= str->size)
 		CuStringResize(str, str->length + length + 1 + STRING_INC);
 	str->length += length;
-	_tcscat(str->buffer, text);
+	wcscat(str->buffer, text);
 }
 
 void CuStringAppendChar(CuString* str, wchar_t ch)
@@ -240,7 +240,7 @@ void CuMessageA(CuTest* tc, const char* format, ...){
 	wchar_t* old = tc->message;
 	STRCPY_AtoT(tbuf,buf,HUGE_STRING_LEN);
 	if ( messyPrinting ){
-      _tprintf(_T("%s"),buf);	   
+      wprintf(L"%s",tbuf);	   
 	}else{
    	if ( old == NULL ){
    		tc->message = CuTcsCopy(tbuf);

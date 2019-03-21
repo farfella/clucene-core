@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
  * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
  *
  * Distributable under the terms of either the Apache License (Version 2.0) or
  * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -26,14 +26,14 @@ void __cdecl atomicIndexTest(void *_writer)
         while (Misc::currentTimeMillis() < stopTime && !atomicSearchFailed) {
             // Update all 100 docs...
             wchar_t buf[30];
-            StringBuffer sb;
+            std::wstring sb;
             for (int i = 0; i < 100; i++) {
                 Document d;
                 _i64tot(rand(), buf, 10);
 
                 sb.clear();
-                English::IntToEnglish(i + 10 * count, &sb);
-                d.add(*_CLNEW Field(_T("contents"), sb.getBuffer(), Field::STORE_NO | Field::INDEX_TOKENIZED));
+                English::IntToEnglish(i + 10 * count, sb);
+                d.add(*_CLNEW Field(_T("contents"), sb.c_str(), Field::STORE_NO | Field::INDEX_TOKENIZED));
 
                 _i64tot(i, buf, 10);
                 d.add(*_CLNEW Field(_T("id"), buf, Field::STORE_YES | Field::INDEX_UNTOKENIZED));
@@ -106,7 +106,7 @@ void runThreadingTests(CuTest* tc, Directory& directory)
     IndexWriter writer(&directory, &ANALYZER, true);
 
     // Establish a base index of 100 docs:
-    StringBuffer sb;
+    std::wstring sb;
     wchar_t buf[10];
     for (int i = 0; i < 100; i++)
     {
@@ -115,8 +115,8 @@ void runThreadingTests(CuTest* tc, Directory& directory)
         d.add(*_CLNEW Field(_T("id"), buf, Field::STORE_YES | Field::INDEX_UNTOKENIZED));
 
         sb.clear();
-        English::IntToEnglish(i, &sb);
-        d.add(*_CLNEW Field(_T("contents"), sb.getBuffer(), Field::STORE_NO | Field::INDEX_TOKENIZED));
+        English::IntToEnglish(i, sb);
+        d.add(*_CLNEW Field(_T("contents"), sb.c_str(), Field::STORE_NO | Field::INDEX_TOKENIZED));
         writer.addDocument(&d);
     }
 
@@ -159,9 +159,9 @@ void testRAMThreading(CuTest *tc)
 void testFSThreading(CuTest *tc)
 {
     //setup some variables
-    char tmpfsdirectory[1024];
-    strcpy_s(tmpfsdirectory, cl_tempDir);
-    strcat_s(tmpfsdirectory, "/threading-index");
+    wchar_t tmpfsdirectory[1024];
+    wcscpy_s(tmpfsdirectory, cl_tempDir);
+    wcscat_s(tmpfsdirectory, L"/threading-index");
 
     // Second in an FSDirectory:
     Directory* directory = FSDirectory::getDirectory(tmpfsdirectory);

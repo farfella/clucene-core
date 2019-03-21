@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
  * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
  * 
  * Distributable under the terms of either the Apache License (Version 2.0) or 
  * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -98,27 +98,23 @@ CL_NS(search)::Explanation * SpanScorer::explain( int32_t docIn )
     float_t phraseFreq = (doc() == docIn ) ? freq : 0.0f;
     tfExplanation->setValue( getSimilarity()->tf( phraseFreq ));
 
-    CL_NS(util)::StringBuffer strBuf( 50 );
-    strBuf.append( L"tf(phraseFreq=" );
-    strBuf.appendFloat( phraseFreq, 2 );
+    std::wstring strBuf = L"tf(phraseFreq=";
+    strBuf.append( float_to_wstring(phraseFreq, 2) );
     strBuf.append( L")" );
-    tfExplanation->setDescription( strBuf.getBuffer() );
+    tfExplanation->setDescription( strBuf.c_str() );
 
     return tfExplanation;
 }
 
-wchar_t* SpanScorer::toString()
+std::wstring SpanScorer::toString()
 {
-	CL_NS(util)::StringBuffer buf;
-	buf.append( L"SpanScorer(" );
+	std::wstring buf = L"SpanScorer(";
 
-	wchar_t* tmp = weight->toString();
+	std::wstring tmp = weight->toString();
 	buf.append( tmp );
-	_CLDELETE_CARRAY( tmp );
-
 	buf.append( L")" );
 
-	return buf.toString();
+	return buf;
 }
 
 CL_NS_END2

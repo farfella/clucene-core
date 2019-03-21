@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -67,8 +67,8 @@ public:
     virtual ~ReutersAnalyzer() {}
 };
 
-bool stringLowercaseCompare(const string &left, const string &right) {
-    for (string::const_iterator lit = left.begin(), rit = right.begin(); lit != left.end() && rit != right.end(); ++lit, ++rit)
+bool stringLowercaseCompare(const std::wstring &left, const std::wstring &right) {
+    for (std::wstring::const_iterator lit = left.begin(), rit = right.begin(); lit != left.end() && rit != right.end(); ++lit, ++rit)
         if (tolower(*lit) < tolower(*rit))
             return true;
         else if (tolower(*lit) > tolower(*rit))
@@ -81,20 +81,20 @@ bool stringLowercaseCompare(const string &left, const string &right) {
 
 
 
-char reuters_fsdirectory[CL_MAX_PATH];
+wchar_t reuters_fsdirectory[CL_MAX_PATH];
 bool reuters_ready = false;
 
-char reuters_srcdirectory[1024];
-char reuters_origdirectory[1024];
+wchar_t reuters_srcdirectory[1024];
+wchar_t reuters_origdirectory[1024];
 
 //indexes the reuters-21578 data.
 void testReuters(CuTest *tc) {
-    strcpy_s(reuters_srcdirectory, clucene_data_location);
-    strcat_s(reuters_srcdirectory, "/reuters-21578");
+    wcscpy_s(reuters_srcdirectory, clucene_data_location);
+    wcscat_s(reuters_srcdirectory, L"/reuters-21578");
     CuAssert(tc, _T("Data does not exist"), Misc::dir_Exists(reuters_srcdirectory));
 
-    strcpy(reuters_origdirectory, clucene_data_location);
-    strcat(reuters_origdirectory, "/reuters-21578-index");
+    wcscpy(reuters_origdirectory, clucene_data_location);
+    wcscat(reuters_origdirectory, L"/reuters-21578-index");
     CuAssert(tc, _T("Index does not exist"), Misc::dir_Exists(reuters_origdirectory));
 
     FSDirectory* fsdir = FSDirectory::getDirectory(reuters_fsdirectory);
@@ -106,26 +106,26 @@ void testReuters(CuTest *tc) {
     //added then the actual limit...
     writer.setMaxFieldLength(10001);
 
-    vector<string> files;
+    std::vector<std::wstring> files;
     CuAssertTrue(tc, Misc::listFiles(reuters_srcdirectory, files, false));
     sort(files.begin(), files.end(), stringLowercaseCompare);
 
-    char tmppath[CL_MAX_DIR];
-    strncpy_s(tmppath, reuters_srcdirectory, CL_MAX_DIR);
-    strcat_s(tmppath, "/");
-    char* tmppathP = tmppath + strlen(tmppath);
+    wchar_t tmppath[CL_MAX_DIR];
+    wcsncpy_s(tmppath, reuters_srcdirectory, CL_MAX_DIR);
+    wcscat_s(tmppath, L"/");
+    wchar_t * tmppathP = tmppath + wcslen(tmppath);
     wchar_t tpath[CL_MAX_PATH];
     struct cl_stat_t buf;
 
-    vector<string>::iterator fl = files.begin();
+    std::vector<std::wstring>::iterator fl = files.begin();
     while (fl != files.end()) {
-        strcpy(tmppathP, fl->c_str());
-        STRCPY_AtoT(tpath, fl->c_str(), CL_MAX_PATH);
-        fileStat(tmppath, &buf);
+        wcscpy(tmppathP, fl->c_str());
+        wcscpy_s(tpath, fl->c_str());
+        _wstati64(tmppath, &buf);
         if (buf.st_mode & S_IFREG) {
             Document* doc = _CLNEW Document;
             doc->add(*_CLNEW Field(_T("path"), tpath, Field::INDEX_UNTOKENIZED | Field::STORE_YES));
-            doc->add(*_CLNEW Field(_T("contents"), _CLNEW FileReader(tmppath, "ASCII"), Field::INDEX_TOKENIZED));
+            doc->add(*_CLNEW Field(_T("contents"), _CLNEW FileReader(tmppath, L"ASCII"), Field::INDEX_TOKENIZED));
 
             writer.addDocument(doc);
             _CLDELETE(doc);
@@ -170,13 +170,13 @@ void threadSearch(IndexSearcher* searcher, const wchar_t* qry, StandardAnalyzer*
                 //check for explanation memory leaks...
                 CL_NS(search)::Explanation expl1;
                 searcher->explain(q, h->id(0), &expl1);
-                wchar_t* tmp = expl1.toString();
-                _CLDELETE_CARRAY(tmp);
+                std::wstring tmp = expl1.toString();
+
                 if (h->length() > 1) { //do a second one just in case
                     CL_NS(search)::Explanation expl2;
                     searcher->explain(q, h->id(1), &expl2);
                     tmp = expl2.toString();
-                    _CLDELETE_CARRAY(tmp);
+
                 }
             }
         }
@@ -230,8 +230,8 @@ CuSuite *testreuters(void)
     CuSuite *suite = CuSuiteNew(_T("CLucene Reuters Test"));
 
     //setup some variables
-    strcpy_s(reuters_fsdirectory, cl_tempDir);
-    strcat_s(reuters_fsdirectory, "/reuters-index");
+    wcscpy_s(reuters_fsdirectory, cl_tempDir);
+    wcscat_s(reuters_fsdirectory, L"/reuters-index");
 
     SUITE_ADD_TEST(suite, testReuters);
     SUITE_ADD_TEST(suite, testBySection);

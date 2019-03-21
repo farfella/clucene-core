@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
  * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
  *
  * Distributable under the terms of either the Apache License (Version 2.0) or
  * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -15,50 +15,50 @@
 #include "SpanTermQuery.h"
 #include "_TermSpans.h"
 
-CL_NS_DEF2( search, spans )
+CL_NS_DEF2(search, spans)
 
-SpanTermQuery::SpanTermQuery( CL_NS(index)::Term * term )
+SpanTermQuery::SpanTermQuery(CL_NS(index)::Term * term)
 {
-    this->term = _CL_POINTER( term );
+    this->term = _CL_POINTER(term);
 }
 
-SpanTermQuery::SpanTermQuery( const SpanTermQuery& clone ) :
-    SpanQuery( clone )
+SpanTermQuery::SpanTermQuery(const SpanTermQuery& clone) :
+    SpanQuery(clone)
 {
-    this->term = _CL_POINTER( clone.term );
+    this->term = _CL_POINTER(clone.term);
 }
 
 SpanTermQuery::~SpanTermQuery()
 {
-    _CLLDECDELETE( term );
+    _CLLDECDELETE(term);
 }
 
 CL_NS(search)::Query * SpanTermQuery::clone() const
 {
-    return _CLNEW SpanTermQuery( *this );
+    return _CLNEW SpanTermQuery(*this);
 }
 
-const char* SpanTermQuery::getClassName()
+const std::wstring SpanTermQuery::getClassName()
 {
-	return "SpanTermQuery";
+    return L"SpanTermQuery";
 }
 
-const char* SpanTermQuery::getObjectName() const
+const std::wstring SpanTermQuery::getObjectName() const
 {
-	return getClassName();
+    return getClassName();
 }
 
 size_t SpanTermQuery::hashCode() const
 {
-	return Similarity::floatToByte(getBoost()) ^ term->hashCode() ^ 0xD23FE494;
+    return Similarity::floatToByte(getBoost()) ^ term->hashCode() ^ 0xD23FE494;
 }
 
-CL_NS(index)::Term * SpanTermQuery::getTerm( bool pointer ) const
+CL_NS(index)::Term * SpanTermQuery::getTerm(bool pointer) const
 {
-	if ( pointer )
-		return _CL_POINTER( term );
-	else
-		return term;
+    if (pointer)
+        return _CL_POINTER(term);
+    else
+        return term;
 }
 
 const wchar_t * SpanTermQuery::getField() const
@@ -66,41 +66,40 @@ const wchar_t * SpanTermQuery::getField() const
     return term->field();
 }
 
-void SpanTermQuery::extractTerms( CL_NS(search)::TermSet * terms ) const
+void SpanTermQuery::extractTerms(CL_NS(search)::TermSet * terms) const
 {
-    if( term && terms->end() == terms->find( term ))
-        terms->insert( _CL_POINTER( term ));
+    if (term && terms->end() == terms->find(term))
+        terms->insert(_CL_POINTER(term));
 }
 
-Spans * SpanTermQuery::getSpans( CL_NS(index)::IndexReader * reader )
+Spans * SpanTermQuery::getSpans(CL_NS(index)::IndexReader * reader)
 {
-    return _CLNEW TermSpans( reader->termPositions( term ), term );
+    return _CLNEW TermSpans(reader->termPositions(term), term);
 }
 
-wchar_t* SpanTermQuery::toString( const wchar_t* field ) const
+std::wstring SpanTermQuery::toString(const wchar_t* field) const
 {
-    CL_NS(util)::StringBuffer buffer;
+    std::wstring buffer;
 
-    if( field && 0 == wcscmp( term->field(), field ))
-        buffer.append( term->text() );
+    if (field && 0 == wcscmp(term->field(), field))
+        buffer.append(term->text());
     else
     {
-        wchar_t * tszTerm = term->toString();
-        buffer.append( tszTerm );
-        buffer.appendBoost( getBoost() );
-        _CLDELETE_CARRAY( tszTerm );
+        std::wstring tszTerm = term->toString();
+        buffer.append(tszTerm);
+        buffer.append(boost_to_wstring(getBoost()));
     }
-    return buffer.toString();
+    return buffer;
 }
 
-bool SpanTermQuery::equals( Query* other ) const
+bool SpanTermQuery::equals(Query* other) const
 {
-    if( !( other->instanceOf( SpanTermQuery::getClassName() )))
-	    return false;
+    if (!(other->instanceOf(SpanTermQuery::getClassName())))
+        return false;
 
-	SpanTermQuery * that = (SpanTermQuery *) other;
-	return ( this->getBoost() == that->getBoost() )
-		  && this->term->equals( that->term );
+    SpanTermQuery * that = (SpanTermQuery *) other;
+    return (this->getBoost() == that->getBoost())
+        && this->term->equals(that->term);
 }
 
 CL_NS_END2

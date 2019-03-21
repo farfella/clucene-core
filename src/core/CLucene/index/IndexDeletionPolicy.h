@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -22,12 +22,12 @@ public:
    * Get the segments file (<code>segments_N</code>) associated
    * with this commit point.
    */
-  virtual std::string getSegmentsFileName() = 0;
+  virtual std::wstring getSegmentsFileName() = 0;
 
   /**
    * Returns all index files referenced by this commit point.
    */
-  virtual const std::vector<std::string>& getFileNames() = 0;
+  virtual const std::vector<std::wstring>& getFileNames() = 0;
 
   /**
    * Delete this commit point.
@@ -146,8 +146,8 @@ public:
    */
   void onCommit(std::vector<IndexCommitPoint*>& commits);
 
-	static const char* getClassName();
-	const char* getObjectName() const;
+	static const std::wstring getClassName();
+	const std::wstring getObjectName() const;
 };
 
 CL_NS_END

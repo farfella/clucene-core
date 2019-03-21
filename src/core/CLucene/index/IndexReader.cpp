@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -32,10 +32,10 @@ CL_NS_DEF(index)
 		IndexReaderFindSegmentsFile( CL_NS(store)::Directory* dir ):
 			SegmentInfos::FindSegmentsFile<uint64_t>(dir){
 		}
-		IndexReaderFindSegmentsFile( const char* dir ):
+		IndexReaderFindSegmentsFile( const wchar_t * dir ):
 			SegmentInfos::FindSegmentsFile<uint64_t>(dir){
 		}
-    uint64_t doBody(const char* segmentFileName){
+    uint64_t doBody(const wchar_t * segmentFileName){
       return directory->fileModified(segmentFileName);
     }
   };
@@ -100,7 +100,7 @@ CL_NS_DEF(index)
   	_CLLDELETE(_internal);
   }
 
-  IndexReader* IndexReader::open(const char* path, bool closeDirectoryOnCleanup, IndexDeletionPolicy* deletionPolicy){
+  IndexReader* IndexReader::open(const wchar_t * path, bool closeDirectoryOnCleanup, IndexDeletionPolicy* deletionPolicy){
   //Func - Static method.
   //       Returns an IndexReader reading the index in an FSDirectory in the named path.
   //Pre  - path != NULL and contains the path of the index for which an IndexReader must be
@@ -108,7 +108,7 @@ CL_NS_DEF(index)
   //       closeDir indicates if the directory needs to be closed
   //Post - An IndexReader has been returned that reads tnhe index located at path
 
-	  CND_PRECONDITION(path != NULL, "path is NULL");
+	  CND_PRECONDITION(path != NULL, L"path is NULL");
 	   Directory* dir = FSDirectory::getDirectory(path);
      IndexReader* reader = open(dir,closeDirectoryOnCleanup,deletionPolicy);
      //because fsdirectory will now have a refcount of 1 more than
@@ -155,13 +155,13 @@ CL_NS_DEF(index)
     return ret;
   }
 
-  uint64_t IndexReader::lastModified(const char* directory2) {
+  uint64_t IndexReader::lastModified(const wchar_t * directory2) {
   //Func - Static method
   //       Returns the time the index in the named directory was last modified.
   //Pre  - directory != NULL and contains the path name of the directory to check
   //Post - The last modified time of the index has been returned
 
-    CND_PRECONDITION(directory2 != NULL, "directory is NULL");
+    CND_PRECONDITION(directory2 != NULL, L"directory is NULL");
 
 	  IndexReaderFindSegmentsFile runner(directory2);
 	  return (uint64_t)runner.run();
@@ -172,7 +172,7 @@ CL_NS_DEF(index)
   }
 
 
-   int64_t IndexReader::getCurrentVersion(const char* directory){
+   int64_t IndexReader::getCurrentVersion(const wchar_t * directory){
       Directory* dir = FSDirectory::getDirectory(directory);
       int64_t version = getCurrentVersion(dir);
       dir->close();
@@ -221,14 +221,14 @@ CL_NS_DEF(index)
      setNorm(doc, field, CL_NS(search)::Similarity::encodeNorm(value));
   }
 
-  bool IndexReader::indexExists(const char* directory){
+  bool IndexReader::indexExists(const wchar_t* directory){
   //Func - Static method
   //       Checks if an index exists in the named directory
   //Pre  - directory != NULL
   //Post - Returns true if an index exists at the specified directory->
   //       If the directory does not exist or if there is no index in it.
   //       false is returned.
-    std::vector<std::string> files;
+    std::vector<std::wstring> files;
     Misc::listFiles(directory, files);
     return SegmentInfos::getCurrentSegmentGeneration(files) != -1;
   }
@@ -257,7 +257,7 @@ CL_NS_DEF(index)
   //Post - A reference to TermDocs containing an enumeration of all found documents
   //       has been returned
 
-      CND_PRECONDITION(term != NULL, "term is NULL");
+      CND_PRECONDITION(term != NULL, L"term is NULL");
 
       ensureOpen();
       //Reference an instantiated TermDocs instance
@@ -283,7 +283,7 @@ CL_NS_DEF(index)
   //Post - A reference to TermPositions containing an enumeration of all found documents
   //       has been returned
 
-      CND_PRECONDITION(term != NULL, "term is NULL");
+      CND_PRECONDITION(term != NULL, L"term is NULL");
 
       ensureOpen();
       //Reference an instantiated termPositions instance
@@ -320,7 +320,7 @@ CL_NS_DEF(index)
 
 	  SCOPED_LOCK_MUTEX(THIS_LOCK)
 
-     CND_PRECONDITION(docNum >= 0, "docNum is negative");
+     CND_PRECONDITION(docNum >= 0, L"docNum is negative");
 
     ensureOpen();
     acquireWriteLock();
@@ -362,7 +362,7 @@ CL_NS_DEF(index)
   //Post - All documents containing term have been deleted. The number of deleted documents
   //       has been returned
 
-      CND_PRECONDITION(term != NULL, "term is NULL");
+      CND_PRECONDITION(term != NULL, L"term is NULL");
       ensureOpen();
 
 	  //Search for the documents contain term
@@ -422,19 +422,19 @@ CL_NS_DEF(index)
 
 	  //Check the existence of the file write.lock and return true when it does and false
 	  //when it doesn't
-     LuceneLock* l = directory->makeLock("write.lock");
+     LuceneLock* l = directory->makeLock(L"write.lock");
      bool ret = l->isLocked();
      _CLDELETE(l);
      return ret;
   }
 
-  bool IndexReader::isLocked(const char* directory) {
+  bool IndexReader::isLocked(const wchar_t * directory) {
   //Func - Static method
   //       Checks if the index in the named directory is currently locked.
   //Pre  - directory != NULL and contains the directory to check for a lock
   //Post - Returns true if the index in the named directory is locked otherwise false
 
-      CND_PRECONDITION(directory != NULL, "directory is NULL");
+      CND_PRECONDITION(directory != NULL, L"directory is NULL");
 
       Directory* dir = FSDirectory::getDirectory(directory);
       bool ret = isLocked(dir);
@@ -451,7 +451,7 @@ bool IndexReader::hasNorms(const wchar_t* field) {
 	return norms(field) != NULL;
 }
 
-void IndexReader::unlock(const char* path){
+void IndexReader::unlock(const wchar_t * path){
 	FSDirectory* dir = FSDirectory::getDirectory(path);
 	unlock(dir);
 	dir->close();
@@ -465,57 +465,58 @@ void IndexReader::unlock(const char* path){
   //       currently accessing this index.
   //Pre  - directory is a valid reference to a directory
   //Post - The directory has been forcibly unlocked
-      LuceneLock* lock = directory->makeLock("write.lock");
+      LuceneLock* lock = directory->makeLock(L"write.lock");
       lock->release();
       _CLDELETE(lock);
   }
 
-bool IndexReader::isLuceneFile(const char* filename){
+bool IndexReader::isLuceneFile(const wchar_t * filename)
+{
 	if ( !filename )
 		return false;
-	size_t len = strlen(filename);
+	size_t len = wcslen(filename);
 	if ( len < 6 ) //need at least x.frx
 		return false;
-	const char* ext=filename+len;
+	const wchar_t * ext=filename+len;
 	while(*ext != '.' && ext!=filename)
 		ext--;
 
-	if ( strcmp(ext, ".cfs") == 0 )
+	if ( wcscmp(ext, L".cfs") == 0 )
 		return true;
-	else if ( strcmp(ext, ".fnm") == 0 )
+	else if ( wcscmp(ext, L".fnm") == 0 )
 		return true;
-	else if ( strcmp(ext, ".fdx") == 0 )
+	else if ( wcscmp(ext, L".fdx") == 0 )
 		return true;
-	else if ( strcmp(ext, ".fdt") == 0 )
+	else if ( wcscmp(ext, L".fdt") == 0 )
 		return true;
-	else if ( strcmp(ext, ".tii") == 0 )
+	else if ( wcscmp(ext, L".tii") == 0 )
 		return true;
-	else if ( strcmp(ext, ".tis") == 0 )
+	else if ( wcscmp(ext, L".tis") == 0 )
 		return true;
-	else if ( strcmp(ext, ".frq") == 0 )
+	else if ( wcscmp(ext, L".frq") == 0 )
 		return true;
-	else if ( strcmp(ext, ".prx") == 0 )
+	else if ( wcscmp(ext, L".prx") == 0 )
 		return true;
-	else if ( strcmp(ext, ".del") == 0 )
+	else if ( wcscmp(ext, L".del") == 0 )
 		return true;
-	else if ( strcmp(ext, ".tvx") == 0 )
+	else if ( wcscmp(ext, L".tvx") == 0 )
 		return true;
-	else if ( strcmp(ext, ".tvd") == 0 )
+	else if ( wcscmp(ext, L".tvd") == 0 )
 		return true;
-	else if ( strcmp(ext, ".tvf") == 0 )
+	else if ( wcscmp(ext, L".tvf") == 0 )
 		return true;
-	else if ( strcmp(ext, ".tvp") == 0 )
-		return true;
-
-	else if ( strcmp(filename, "segments") == 0 )
-		return true;
-	else if ( strcmp(filename, "segments.new") == 0 )
-		return true;
-	else if ( strcmp(filename, "deletable") == 0 )
+	else if ( wcscmp(ext, L".tvp") == 0 )
 		return true;
 
-	else if ( strncmp(ext,".f",2)==0 ){
-		const char* n = ext+2;
+	else if ( wcscmp(filename, L"segments") == 0 )
+		return true;
+	else if ( wcscmp(filename, L"segments.new") == 0 )
+		return true;
+	else if ( wcscmp(filename, L"deletable") == 0 )
+		return true;
+
+	else if ( wcsncmp(ext, L".f", 2)==0 ){
+		const wchar_t* n = ext+2;
 		if ( *n && _istdigit(*n) )
 			return true;
 	}

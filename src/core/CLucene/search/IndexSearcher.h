@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -42,7 +42,7 @@ public:
 	* @throws CorruptIndexException if the index is corrupt
 	* @throws IOException if there is a low-level IO error
 	*/
-	IndexSearcher(const char* path);
+	IndexSearcher(const wchar_t * path);
   
 	/** Creates a searcher searching the index in the provided directory.
 	* @throws CorruptIndexException if the index is corrupt

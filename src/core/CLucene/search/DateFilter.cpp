@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -90,11 +90,13 @@ CL_NS_DEF(search)
   	return _CLNEW DateFilter(*this);	
   }
 
-  wchar_t* DateFilter::toString(){
+  std::wstring DateFilter::toString(){
 	size_t len = wcslen(start->field()) + start->textLength() + end->textLength() + 8;
 	wchar_t* ret = _CL_NEWARRAY(wchar_t,len);
 	ret[0]=0;
 	_snwprintf(ret,len, L"%s: [%s-%s]", start->field(),start->text(),end->text());
-	return ret;
+    std::wstring r = ret;
+    _CLDELETE_CARRAY(ret);
+	return r;
   }
 CL_NS_END

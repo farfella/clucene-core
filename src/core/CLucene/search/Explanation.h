@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -44,7 +44,7 @@ public:
 	void setValue(const float_t value);
 
 	/** A description of this explanation node. */
-	const wchar_t* getDescription() const; ///<returns reference
+	const std::wstring getDescription() const; ///<returns reference
 	/** Sets the description of this explanation node. */
 	void setDescription(const wchar_t* description);
 protected:
@@ -52,7 +52,7 @@ protected:
 	* A short one line summary which should contain all high level
 	* information about this Explanation, without the "Details"
 	*/
-	virtual wchar_t* getSummary();
+	virtual std::wstring getSummary();
 
 public:
 	Explanation(const Explanation& copy);
@@ -75,11 +75,11 @@ public:
 	void addDetail(Explanation* detail);
 
 	/** Render an explanation as text. */
-	wchar_t* toString();
-	wchar_t* toString(const int32_t depth);
+	std::wstring toString();
+	std::wstring toString(const int32_t depth);
 
 	/** Render an explanation as HTML. */
-	wchar_t* toHtml();
+	std::wstring toHtml();
 };
 
 class CLUCENE_EXPORT ComplexExplanation : public Explanation {
@@ -115,7 +115,7 @@ public:
 	Explanation* clone() const;
 
 protected:
-	wchar_t* getSummary();
+	std::wstring getSummary();
 };
 
 CL_NS_END

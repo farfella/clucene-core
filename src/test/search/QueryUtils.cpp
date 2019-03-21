@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -28,19 +28,19 @@ public:
         return _CLNEW WhackyQuery(); 
     }
 
-    static const char * getClassName()
+    static const std::wstring getClassName()
     {
-	    return "WhackyQuery";
+	    return L"WhackyQuery";
     }
 
-    const char * getObjectName() const 
+    const std::wstring getObjectName() const 
     {
 	    return getClassName();
     }
     
-    wchar_t* toString(const wchar_t* field) const 
+    std::wstring toString(const wchar_t* field) const 
     { 
-        return STRDUP_TtoT( _T( "My Whacky Query" )); 
+        return L"My Whacky Query"; 
     }
     
     bool equals(Query* other) const
@@ -83,41 +83,39 @@ public:
         float_t scorerDiff = scorerScore2 > scorerScore2 ? scorerScore2 - scorerScore : scorerScore - scorerScore2;
         if( ! more || doc != sdoc[ 0 ] || scoreDiff > QueryUtils::maxDiff || scorerDiff > QueryUtils::maxDiff )
         {
-            StringBuffer buffer;
+            std::wstring buffer;
             buffer.append( _T( "ERROR matching docs:\n\t" ));
             
             buffer.append( doc != sdoc[ 0 ] ? _T( "--> doc=" ) : _T( "doc=" ));
-            buffer.appendInt( sdoc[ 0 ] );
+            buffer.append(std::to_wstring( sdoc[0]));
 
             buffer.append( ! more ? _T( "\n\t--> tscorer.more=" ) : _T( "\n\ttscorer.more=" ));
-            buffer.appendBool( more );
+            buffer.append( bool_to_wstring(more) );
 
             buffer.append( scoreDiff > QueryUtils::maxDiff ? _T( "\n\t--> scorerScore=" ) : _T( "\n\tscorerScore=" ));
-            buffer.appendFloat( scorerScore, 2 );
+            buffer.append( float_to_wstring(scorerScore, 2 ));
             buffer.append( _T( " scoreDiff=" ));
-            buffer.appendFloat( scoreDiff, 2 );
+            buffer.append( float_to_wstring(scoreDiff, 2 ));
             buffer.append( _T( " maxDiff=" ));
-            buffer.appendFloat( QueryUtils::maxDiff, 2 );
+            buffer.append(float_to_wstring( QueryUtils::maxDiff, 2 ));
 
             buffer.append( scorerDiff > QueryUtils::maxDiff ? _T( "\n\t--> scorerScore2=" ) : _T( "\n\tscorerScore2=" ));
-            buffer.appendFloat( scorerScore2, 2 );
+            buffer.append( float_to_wstring( scorerScore2, 2 ));
             buffer.append( _T( " scorerDiff=" ));
-            buffer.appendFloat( scorerDiff, 2 );
+            buffer.append( float_to_wstring(scorerDiff, 2 ));
 
             buffer.append( _T( "\n\thitCollector.doc=" ));
-            buffer.appendInt( doc );
+            buffer.append( std::to_wstring(doc));
             buffer.append( _T( " score=" ));
-            buffer.appendFloat( score, 2 );
+            buffer.append( float_to_wstring(score, 2 ));
 
             buffer.append( _T( "\n\t Scorer=" ));
-            wchar_t * tmp = scorer->toString();
+            std::wstring tmp = scorer->toString();
             buffer.append( tmp );
-            _CLDELETE_LARRAY( tmp );
 
             buffer.append( _T( "\n\t Query=" ));
             tmp = q->toString();
             buffer.append( tmp );
-            _CLDELETE_ARRAY( tmp );
 
             buffer.append( _T( "\n\t Order=" ));
             for( int32_t i = 0; i < orderLength; i++) 
@@ -126,7 +124,7 @@ public:
             buffer.append( _T( "\n\t Op=" ));
             buffer.append( op == QueryUtils::skip_op ? _T( " skip()" ) : _T( " next()" ));
 
-            assertTrueMsg( buffer.getBuffer(), false );
+            assertTrueMsg( buffer.c_str(), false );
         }
     }
 };
@@ -150,54 +148,54 @@ public:
 
             if( ! scorer->skipTo( i ) )
             {
-                StringBuffer buffer;
+                std::wstring buffer;
                 buffer.append( _T( "query collected " ));
-                buffer.appendInt( doc );
+                buffer.append( std::to_wstring(doc) );
                 buffer.append( _T( " but skipTo(" ));
-                buffer.appendInt( i );
+                buffer.append( std::to_wstring(i ));
                 buffer.append( _T( ") says no more docs!" ));
-                assertTrueMsg( buffer.getBuffer(), false );
+                assertTrueMsg( buffer.c_str(), false );
             }
 
             if( doc != scorer->doc() )
             {
-                StringBuffer buffer;
+                std::wstring buffer;
                 buffer.append( _T( "query collected " ));
-                buffer.appendInt( doc );
+                buffer.append( std::to_wstring(doc ));
                 buffer.append( _T( " but skipTo(" ));
-                buffer.appendInt( i );
+                buffer.append( std::to_wstring(i) );
                 buffer.append( _T( ") got to " ));
-                buffer.appendInt( scorer->doc() );
-                assertTrueMsg( buffer.getBuffer(), false );
+                buffer.append( std::to_wstring(scorer->doc()) );
+                assertTrueMsg( buffer.c_str(), false );
             }
 
             float_t skipToScore = scorer->score();
             float_t sd = skipToScore - scorer->score();
             if( ( sd < 0 ? sd * -1 : sd ) > QueryUtils::maxDiff )
             {
-                StringBuffer buffer;
+                std::wstring buffer;
                 buffer.append( _T( "unstable skipTo(" ));
-                buffer.appendInt( i );
+                buffer.append( std::to_wstring(i) );
                 buffer.append( _T( ") score: " ));
-                buffer.appendFloat( skipToScore, 2 );
+                buffer.append( float_to_wstring(skipToScore, 2 ));
                 buffer.append( _T( "/") );
-                buffer.appendFloat( QueryUtils::maxDiff, 2 );
-                assertTrueMsg( buffer.getBuffer(), false );
+                buffer.append( float_to_wstring(QueryUtils::maxDiff, 2 ));
+                assertTrueMsg( buffer.c_str(), false );
             }
 
             if( ( skipToScore > score ? skipToScore - score : score - skipToScore ) > QueryUtils::maxDiff )
             {
-                StringBuffer buffer;
+                std::wstring buffer;
                 buffer.append( _T( "query assigned doc " ));
-                buffer.appendInt( doc );
+                buffer.append( std::to_wstring(doc) );
                 buffer.append( _T( " a score of <" ));
-                buffer.appendFloat( score, 2 );
+                buffer.append( float_to_wstring(score, 2 ));
                 buffer.append( _T( "> but skipTo(" ));
-                buffer.appendInt( i );
+                buffer.append( std::to_wstring(i) );
                 buffer.append( _T( ") has <" ));
-                buffer.appendFloat( skipToScore, 2 );
+                buffer.append( float_to_wstring(skipToScore, 2 ));
                 buffer.append( _T( ">!" ));
-                assertTrueMsg( buffer.getBuffer(), false );
+                assertTrueMsg( buffer.c_str(), false );
             }
 
             _CLLDELETE( scorer );
@@ -363,14 +361,14 @@ void QueryUtils::checkFirstSkipTo( CuTest* tc, Query * q, IndexSearcher * s )
     bool more = scorer->skipTo( lastDoc[ 0 ] + 1 );
     if( more )
     {
-        StringBuffer buffer;
+        std::wstring buffer;
         buffer.append( _T( "query's last doc was " ));
-        buffer.appendInt( lastDoc[ 0 ] );
+        buffer.append( std::to_wstring(lastDoc[ 0 ] ));
         buffer.append( _T( " but skipTo(" ));
-        buffer.appendInt( lastDoc[ 0 ] + 1 );
+        buffer.append( std::to_wstring(lastDoc[ 0 ] + 1 ));
         buffer.append( _T( ") got to " ));
-        buffer.appendInt( scorer->doc() );
-        assertTrueMsg( buffer.getBuffer(), false );
+        buffer.append( std::to_wstring(scorer->doc() ));
+        assertTrueMsg( buffer.c_str(), false );
     }
 
     _CLLDELETE( scorer );

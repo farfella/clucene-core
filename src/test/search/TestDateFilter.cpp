@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -10,8 +10,8 @@
 
 	void testBefore(CuTest *tc) {
 	// create an index
-		char fsdir[CL_MAX_PATH];
-		_snprintf(fsdir,CL_MAX_PATH,"%s/%s",cl_tempDir, "dfindex");
+		wchar_t fsdir[CL_MAX_PATH];
+		_snwprintf(fsdir,CL_MAX_PATH,L"%s/%s", cl_tempDir, L"dfindex");
 		
 		FSDirectory* indexStore = FSDirectory::getDirectory( fsdir);
 		Analyzer* a = _CLNEW SimpleAnalyzer();
@@ -20,9 +20,9 @@
 
      	Document doc;
      	// add time that is in the past
-		wchar_t* tn = DateField::timeToString(now - 1000);
-     	doc.add(*_CLNEW Field(_T("datefield"), tn,Field::STORE_YES | Field::INDEX_UNTOKENIZED));
-		_CLDELETE_CARRAY(tn);
+		std::wstring tn = DateField::timeToString(now - 1000);
+     	doc.add(*_CLNEW Field(_T("datefield"), tn.c_str(),Field::STORE_YES | Field::INDEX_UNTOKENIZED));
+
      	doc.add(*_CLNEW Field(_T("body"), _T("Today is a very sunny day in New York City"),Field::STORE_YES | Field::INDEX_TOKENIZED));
       	writer->addDocument(&doc);
     	writer->close();
@@ -173,9 +173,9 @@
 	}
 
 	void testDateFilterDestructor(CuTest *tc){
-		char loc[1024];
-		strcpy(loc, clucene_data_location);
-		strcat(loc, "/reuters-21578-index");
+		wchar_t loc[1024];
+		wcscpy(loc, clucene_data_location);
+		wcscat(loc, L"/reuters-21578-index");
 
 		CuAssert(tc,_T("Index does not exist"),Misc::dir_Exists(loc));
 		IndexReader* reader = IndexReader::open(loc);

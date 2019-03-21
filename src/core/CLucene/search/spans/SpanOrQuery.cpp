@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
  * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
  *
  * Distributable under the terms of either the Apache License (Version 2.0) or
  * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -60,7 +60,7 @@ public:
     int32_t start() const   { return top()->start(); }
     int32_t end() const     { return top()->end(); }
 
-    wchar_t* toString() const;
+    std::wstring toString() const;
 
 private:
     Spans * top() const     { return queue->top(); }
@@ -114,17 +114,16 @@ bool SpanOrQuery::SpanOrQuerySpans::skipTo( int32_t target )
     return queue->size() != 0;
 }
 
-wchar_t* SpanOrQuery::SpanOrQuerySpans::toString() const
+std::wstring SpanOrQuery::SpanOrQuerySpans::toString() const
 {
-    CL_NS(util)::StringBuffer buffer;
-    wchar_t *      tszQry = parentQuery->toString();
+    std::wstring buffer;
+    std::wstring tszQry = parentQuery->toString();
 
     buffer.append( L"spans(" );
     buffer.append( tszQry );
     buffer.append( L")" );
 
-    _CLDELETE_LARRAY( tszQry );
-    return buffer.toString();
+    return buffer;
 }
 
 bool SpanOrQuery::SpanOrQuerySpans::initSpanQueue( int32_t target )
@@ -154,8 +153,7 @@ SpanOrQuery::SpanOrQuery( const SpanOrQuery& clone ) :
     this->clausesCount = clone.clausesCount;
     this->bDeleteClauses = true;
 
-    this->field = NULL;
-    setField( clone.field );
+    setField( clone.field.c_str() );
 }
 
 SpanOrQuery::~SpanOrQuery()
@@ -168,7 +166,6 @@ SpanOrQuery::~SpanOrQuery()
 
     clausesCount = 0;
     _CLDELETE_LARRAY( clauses );
-    _CLDELETE_LARRAY( field );
 }
 
 CL_NS(search)::Query * SpanOrQuery::clone() const
@@ -176,12 +173,12 @@ CL_NS(search)::Query * SpanOrQuery::clone() const
     return _CLNEW SpanOrQuery( *this );
 }
 
-const char * SpanOrQuery::getClassName()
+const std::wstring SpanOrQuery::getClassName()
 {
-	return "SpanOrQuery";
+	return L"SpanOrQuery";
 }
 
-const char * SpanOrQuery::getObjectName() const
+const std::wstring SpanOrQuery::getObjectName() const
 {
 	return getClassName();
 }
@@ -196,15 +193,14 @@ size_t SpanOrQuery::getClausesCount() const
     return clausesCount;
 }
 
-void SpanOrQuery::setField( const wchar_t * field )
+void SpanOrQuery::setField( const wchar_t * field_ )
 {
-    _CLDELETE_LARRAY( this->field );
-    this->field = wcsdup( field );
+    this->field = field_;
 }
 
 const wchar_t * SpanOrQuery::getField() const
 {
-    return field;
+    return field.c_str();
 }
 
 void SpanOrQuery::extractTerms( CL_NS(search)::TermSet * terms ) const
@@ -235,25 +231,22 @@ CL_NS(search)::Query * SpanOrQuery::rewrite( CL_NS(index)::IndexReader * reader 
         return this;                         // no clauses rewrote
 }
 
-wchar_t* SpanOrQuery::toString( const wchar_t* field ) const
+std::wstring SpanOrQuery::toString( const wchar_t* field ) const
 {
-    CL_NS(util)::StringBuffer buffer;
-
-    buffer.append( L"spanOr([");
+    std::wstring buffer = L"spanOr([";
     for( size_t i = 0; i < clausesCount; i++ )
     {
         if( i != 0 )
             buffer.append( L", ");
 
-        wchar_t * tszClause = clauses[ i ]->toString( field );
+        std::wstring tszClause = clauses[ i ]->toString( field );
         buffer.append( tszClause );
-        _CLDELETE_ARRAY( tszClause );
     }
 
     buffer.append( L"])" );
-    buffer.appendBoost( getBoost() );
+    buffer.append( boost_to_wstring(getBoost()) );
 
-    return buffer.toString();
+    return buffer;
 }
 
 bool SpanOrQuery::equals( Query* other ) const
@@ -263,7 +256,7 @@ bool SpanOrQuery::equals( Query* other ) const
 	    return false;
 
 	SpanOrQuery * that = (SpanOrQuery *) other;
-    if( 0 != wcscmp( field, that->field )
+    if( 0 != wcscmp( field.c_str(), that->field.c_str() )
         || getBoost() != that->getBoost())
     {
         return false;

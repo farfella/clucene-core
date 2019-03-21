@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -263,7 +263,7 @@ public:
 	bool isLazy() const;
 
 	/** Prints a Field for human consumption. */
-	wchar_t* toString();
+	std::wstring toString();
 
 	/** <p>Expert: change the value of this field.  This can
 	*  be used during indexing to re-use a single Field
@@ -292,8 +292,8 @@ public:
 	/** Expert: change the value of this field.  See <a href="#setValue(wchar_t*)">setValue(wchar_t*)</a>. */
 	void setValue(CL_NS(analysis)::TokenStream* value);
 
-	virtual const char* getObjectName() const;
-	static const char* getClassName();
+	virtual const std::wstring getObjectName() const;
+	static const std::wstring getClassName();
 
 protected:
 	/**

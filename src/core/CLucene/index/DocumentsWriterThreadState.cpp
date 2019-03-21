@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -323,11 +323,11 @@ void DocumentsWriter::ThreadState::init(Document* doc, int32_t docID) {
       // because those files will be in an unknown
       // state:
       try {
-        _parent->tvx = _parent->directory->createOutput( (_parent->docStoreSegment + "." + IndexFileNames::VECTORS_INDEX_EXTENSION).c_str() );
+        _parent->tvx = _parent->directory->createOutput( (_parent->docStoreSegment + L"." + IndexFileNames::VECTORS_INDEX_EXTENSION).c_str() );
         _parent->tvx->writeInt(TermVectorsReader::FORMAT_VERSION);
-        _parent->tvd = _parent->directory->createOutput( (_parent->docStoreSegment +  "." + IndexFileNames::VECTORS_DOCUMENTS_EXTENSION).c_str() );
+        _parent->tvd = _parent->directory->createOutput( (_parent->docStoreSegment +  L"." + IndexFileNames::VECTORS_DOCUMENTS_EXTENSION).c_str() );
         _parent->tvd->writeInt(TermVectorsReader::FORMAT_VERSION);
-        _parent->tvf = _parent->directory->createOutput( (_parent->docStoreSegment +  "." + IndexFileNames::VECTORS_FIELDS_EXTENSION).c_str() );
+        _parent->tvf = _parent->directory->createOutput( (_parent->docStoreSegment +  L"." + IndexFileNames::VECTORS_FIELDS_EXTENSION).c_str() );
         _parent->tvf->writeInt(TermVectorsReader::FORMAT_VERSION);
 
         // We must "catch up" for all docs before us
@@ -738,11 +738,11 @@ void DocumentsWriter::ThreadState::FieldData::resetPostingArrays() {
   numPostings = 0;
 }
 
-const char* DocumentsWriter::ThreadState::FieldData::getObjectName() const{
+const std::wstring DocumentsWriter::ThreadState::FieldData::getObjectName() const{
   return getClassName();
 }
-const char* DocumentsWriter::ThreadState::FieldData::getClassName(){
-  return "DocumentsWriter::ThreadState";
+const std::wstring DocumentsWriter::ThreadState::FieldData::getClassName(){
+  return L"DocumentsWriter::ThreadState";
 }
 void DocumentsWriter::ThreadState::FieldData::initPostingArrays() {
   // Target hash fill factor of <= 50%

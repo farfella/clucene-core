@@ -1,7 +1,6 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -11,6 +10,68 @@
 #include "Misc.h"
 #include <assert.h>
 
+std::wstring float_to_wstring(const float_t value, const size_t digits)
+{
+    //Func - Appends a float_t (after conversion to a character string)
+    //Pre  - digits > 0. Indicates the minimum number of characters printed
+    //Post - The converted float_t value has been appended to the string in buffer
+
+      //using sprintf("%f" was not reliable on other plaforms... we use a custom float convertor
+      //bvk: also, using sprintf and %f seems excessivelly slow
+    assert(digits <= 8);
+
+    //the maximum number of characters that int64 will hold is 23. so we need 23*2+2
+    const size_t sz = 48;
+    wchar_t buf[sz]; //the buffer to hold
+    int64_t v = (int64_t) value; //the integer value of the float
+    _i64tow_s(v, buf, sz, 10); //add the whole number
+
+    size_t l = 99 - wcslen(buf); //how many digits we have to work with?
+    size_t dig = l < (size_t) digits ? l : digits;
+    if (dig > 0)
+    {
+        wcscat_s(buf, L"."); //add a decimal point
+
+        int64_t remi = (int64_t) ((value - v)*pow((float_t) 10, (float_t) (dig + 1))); //take the remainder and make a whole number
+        if (remi < 0) remi *= -1;
+        int64_t remadj = remi / 10;
+        if (remi - (remadj * 10) >= 5)
+            remadj++; //adjust remainder
+
+        // add as many zeros as necessary between the decimal point and the
+        // significant part of the number. Fixes a bug when trying to print
+        // numbers that have zeros right after the decimal point
+        if (remadj)
+        {
+            size_t numZeros = dig - (size_t) log10((float_t) remadj) - 1;
+            while (numZeros-- > 0 && numZeros < 10)
+                wcscat_s(buf, L"0"); //add a zero before the decimal point
+        }
+
+        _i64tow(remadj, buf + wcslen(buf), 10); //add the remainder
+    }
+
+    return buf;
+}
+
+std::wstring boost_to_wstring(const float_t boost)
+{
+    std::wstring ret;
+    if (boost != 1.0f)
+    {
+        ret.push_back(L'^');
+        ret.append(float_to_wstring(boost, 1));
+    }
+
+    return ret;
+}
+
+std::wstring bool_to_wstring(const bool value)
+{
+    return value ? L"true" : L"false";
+}
+
+#if 0
 CL_NS_DEF(util)
 
 	StringBuffer::StringBuffer(wchar_t* buf,size_t maxlen, const bool consumeBuffer){
@@ -430,3 +491,4 @@ CL_NS_DEF(util)
   }
 
 CL_NS_END
+#endif

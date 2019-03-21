@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -27,7 +27,7 @@ CL_NS_USE(util)
 CL_NS_DEF(index)
 
 
-  TermInfosReader::TermInfosReader(Directory* dir, const char* seg, FieldInfos* fis, const int32_t readBufferSize):
+  TermInfosReader::TermInfosReader(Directory* dir, const wchar_t * seg, FieldInfos* fis, const int32_t readBufferSize):
       directory (dir),fieldInfos (fis), indexTerms(NULL), indexInfos(NULL), indexPointers(NULL), indexDivisor(1)
   {
   //Func - Constructor.
@@ -38,14 +38,14 @@ CL_NS_DEF(index)
   //Post - An instance has been created and the index named seg has been read. (Remember
   //       a segment is nothing more then an independently readable index)
 
-      CND_PRECONDITION(seg != NULL, "seg is NULL");
+      CND_PRECONDITION(seg != NULL, L"seg is NULL");
 
 	  //Initialize the name of the segment
       segment    =  seg;
 
       //Create a filname fo a Term Info File
-	  string tisFile = Misc::segmentname(segment,".tis");
-	  string tiiFile = Misc::segmentname(segment,".tii");
+	  std::wstring tisFile = Misc::segmentname(segment,L".tis");
+	  std::wstring tiiFile = Misc::segmentname(segment,L".tii");
 	  bool success = false;
     origEnum = indexEnum = NULL;
     _size = indexTermsLength = totalIndexInterval = 0;
@@ -58,8 +58,8 @@ CL_NS_DEF(index)
 		  indexEnum = _CLNEW SegmentTermEnum( directory->openInput( tiiFile.c_str(), readBufferSize ), fieldInfos, true);
 
 		  //Check if enumerator points to a valid instance
-		  CND_CONDITION(origEnum != NULL, "No memory could be allocated for orig enumerator");
-		  CND_CONDITION(indexEnum != NULL, "No memory could be allocated for index enumerator");
+		  CND_CONDITION(origEnum != NULL, L"No memory could be allocated for orig enumerator");
+		  CND_CONDITION(indexEnum != NULL, L"No memory could be allocated for index enumerator");
 
 		  success = true;
 	  } _CLFINALLY({
@@ -295,7 +295,7 @@ CL_NS_DEF(index)
       SegmentTermEnum* cln = enumerator->clone();
 
       //Check if cln points to a valid instance
-      CND_CONDITION(cln != NULL,"cln is NULL");
+      CND_CONDITION(cln != NULL,L"cln is NULL");
 
       return cln;
   }
@@ -321,15 +321,15 @@ CL_NS_DEF(index)
 
 		      //Instantiate an block of Term's,so that each one doesn't have to be new'd
           indexTerms    = new Term[indexTermsLength];
-          CND_CONDITION(indexTerms != NULL,"No memory could be allocated for indexTerms");//Check if is indexTerms is a valid array
+          CND_CONDITION(indexTerms != NULL,L"No memory could be allocated for indexTerms");//Check if is indexTerms is a valid array
 
 		  //Instantiate an big block of TermInfo's, so that each one doesn't have to be new'd
           indexInfos    = _CL_NEWARRAY(TermInfo,indexTermsLength);
-          CND_CONDITION(indexInfos != NULL,"No memory could be allocated for indexInfos"); //Check if is indexInfos is a valid array
+          CND_CONDITION(indexInfos != NULL,L"No memory could be allocated for indexInfos"); //Check if is indexInfos is a valid array
 
           //Instantiate an array indexPointers that contains pointers to the term info index file
           indexPointers = _CL_NEWARRAY(int64_t,indexTermsLength);
-          CND_CONDITION(indexPointers != NULL,"No memory could be allocated for indexPointers");//Check if is indexPointers is a valid array
+          CND_CONDITION(indexPointers != NULL,L"No memory could be allocated for indexPointers");//Check if is indexPointers is a valid array
 
 		  //Iterate through the terms of indexEnum
           for (int32_t i = 0; indexEnum->next(); ++i){
@@ -357,7 +357,7 @@ CL_NS_DEF(index)
   //Post - The new offset has been returned
 
       //Check if is indexTerms is a valid array
-      CND_PRECONDITION(indexTerms != NULL,"indexTerms is NULL");
+      CND_PRECONDITION(indexTerms != NULL,L"indexTerms is NULL");
 
       int32_t lo = 0;
       int32_t hi = indexTermsLength - 1;
@@ -369,8 +369,8 @@ CL_NS_DEF(index)
           mid = (lo + hi) >> 1;
 
           //Check if is indexTerms[mid] is a valid instance of Term
-          CND_PRECONDITION(&indexTerms[mid] != NULL,"indexTerms[mid] is NULL");
-          CND_PRECONDITION(mid < indexTermsLength,"mid >= indexTermsLength");
+          CND_PRECONDITION(&indexTerms[mid] != NULL,L"indexTerms[mid] is NULL");
+          CND_PRECONDITION(mid < indexTermsLength,L"mid >= indexTermsLength");
 
 		  //Determine if term is before mid or after mid
           delta = term->compareTo(&indexTerms[mid]);
@@ -397,10 +397,10 @@ CL_NS_DEF(index)
   //       indexPointers != NULL
   //Post - The current Term and Terminfo have been repositioned to indexOffset
 
-      CND_PRECONDITION(indexOffset >= 0, "indexOffset contains a negative number");
-      CND_PRECONDITION(indexTerms != NULL,    "indexTerms is NULL");
-      CND_PRECONDITION(indexInfos != NULL,    "indexInfos is NULL");
-      CND_PRECONDITION(indexPointers != NULL, "indexPointers is NULL");
+      CND_PRECONDITION(indexOffset >= 0, L"indexOffset contains a negative number");
+      CND_PRECONDITION(indexTerms != NULL,    L"indexTerms is NULL");
+      CND_PRECONDITION(indexInfos != NULL,    L"indexInfos is NULL");
+      CND_PRECONDITION(indexPointers != NULL, L"indexPointers is NULL");
 
 	  SegmentTermEnum* enumerator =  getEnum();
 	  enumerator->seek(

@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
  * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
  *
  * Distributable under the terms of either the Apache License (Version 2.0) or
  * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -28,7 +28,7 @@ private:
     size_t          clausesCount;
     bool            bDeleteClauses;
 
-    wchar_t *         field;
+    std::wstring    field;
 
 protected:
     SpanOrQuery( const SpanOrQuery& clone );
@@ -45,7 +45,6 @@ public:
         this->bDeleteClauses = bDeleteClauses;
         this->clausesCount = last - first;
         this->clauses = _CL_NEWARRAY( SpanQuery *, clausesCount );
-        this->field = NULL;
 
         // copy clauses array into an array and check fields
         for( size_t i = 0; first != last; first++, i++ )
@@ -55,7 +54,7 @@ public:
             {
                 setField( clause->getField() );
             }
-            else if( 0 != wcscmp( clause->getField(), field ))
+            else if( 0 != wcscmp( clause->getField(), field.c_str() ))
             {
                 _CLTHROWA( CL_ERR_IllegalArgument, "Clauses must have same field." );
             }
@@ -67,8 +66,8 @@ public:
 
     CL_NS(search)::Query * clone() const;
 
-    static const char * getClassName();
-	const char * getObjectName() const;
+    static const std::wstring getClassName();
+	const std::wstring getObjectName() const;
 
     /** Return the clauses whose spans are matched.
      * CLucene: pointer to the internal array
@@ -89,7 +88,7 @@ public:
     CL_NS(search)::Query * rewrite( CL_NS(index)::IndexReader * reader );
 
     using Query::toString;
-    wchar_t* toString( const wchar_t* field ) const;
+    std::wstring toString( const wchar_t* field ) const;
     bool equals( Query* other ) const;
     size_t hashCode() const;
 

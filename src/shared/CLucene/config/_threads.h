@@ -1,7 +1,6 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -11,8 +10,10 @@
 #include <windows.h>
 #include <process.h>
 
-namespace lucene {
-    namespace util {
+namespace lucene
+{
+    namespace util
+    {
 
         struct CLuceneThreadIdCompare
         {
@@ -22,9 +23,9 @@ namespace lucene {
                 min_buckets = 8
             };	// min_buckets = 2 ^^ N, 0 < N
 
-            constexpr bool operator()(const uint64_t & _Left, const uint64_t & _Right) const
+            constexpr bool operator()(const uint64_t & Left, const uint64_t & Right) const
             {	// apply operator< to operands
-                return (_Left < _Right);
+                return Left < Right;
             }
         };
 

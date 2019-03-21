@@ -1,14 +1,11 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
 ------------------------------------------------------------------------------*/
-#ifndef _lucene_repl_wchar_h
-#define _lucene_repl_wchar_h
-
+#pragma once
 #include <stdarg.h>
 
 #ifdef _CL_HAVE_STRING_H
@@ -27,11 +24,10 @@ CLUCENE_SHARED_EXPORT size_t lucene_utf8towc  (wchar_t& ret, const char *s);
 CLUCENE_SHARED_EXPORT size_t lucene_utf8towcs(wchar_t *, const char *,  size_t maxslen);
 CLUCENE_SHARED_EXPORT size_t lucene_wctoutf8  (char * ret, const wchar_t  str);
 CLUCENE_SHARED_EXPORT size_t lucene_wcstoutf8 (char *,  const wchar_t *, size_t maxslen);
-#ifdef _ASCII
-#define lucene_wcstoutf8string(str,strlen) str
-#else
-CLUCENE_SHARED_EXPORT std::string lucene_wcstoutf8string(const wchar_t* str, size_t strlen);
-#endif
+
+CLUCENE_SHARED_EXPORT std::string lucene_wcstoutf8s(const std::wstring & str);
+CLUCENE_SHARED_EXPORT std::string lucene_wcstoutf8string(const wchar_t* str, size_t strlen=-1);
+
 CLUCENE_SHARED_EXPORT size_t lucene_utf8charlen(const unsigned char p); //< the number of characters that this first utf8 character will expect
 
 //string function replacements
@@ -84,4 +80,3 @@ CLUCENE_SHARED_EXPORT size_t lucene_utf8charlen(const unsigned char p); //< the 
 //todo: if _CL_HAVE_SNPRINTF_BUG fails(snprintf overflow),we should use our own
 //function. but we don't have it currently, and our functions are dubious anyway...
 
-#endif //end of _lucene_repl_wchar_h

@@ -35,8 +35,8 @@
 
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -72,10 +72,10 @@ static unsigned char PADDING[64] =
 
 
 // PrintMD5: Converts a completed md5 digest into a char* string.
-char* PrintMD5(uint8_t md5Digest[16])
+wchar_t * PrintMD5(uint8_t md5Digest[16])
 {
-	char chBuffer[256];
-	char chEach[10];
+	wchar_t chBuffer[256];
+	wchar_t chEach[10];
 	int nCount;
 
 	memset(chBuffer,0,256);
@@ -83,18 +83,18 @@ char* PrintMD5(uint8_t md5Digest[16])
 
 	for (nCount = 0; nCount < 16; nCount++)
 	{
-		cl_sprintf(chEach, 10, "%02x", md5Digest[nCount]);
-		strncat(chBuffer, chEach, sizeof(chEach));
+		swprintf_s(chEach, L"%02x", md5Digest[nCount]);
+		wcsncat_s(chBuffer, chEach, sizeof(chEach));
 	}
 
-	return strdup(chBuffer);
+	return _wcsdup(chBuffer);
 }
 
 // MD5String: Performs the MD5 algorithm on a char* string, returning
 // the results as a char*.
-char* MD5String(char* szString)
+wchar_t * MD5String(wchar_t * szString)
 {
-	int nLen = strlen(szString);
+	int nLen = wcslen(szString);
 	md5 alg;
 
 	alg.Update((unsigned char*)szString, (unsigned int)nLen);
@@ -106,7 +106,7 @@ char* MD5String(char* szString)
 
 // MD5File: Performs the MD5 algorithm on a file (binar or text),
 // returning the results as a char*.  Returns NULL if it fails.
-char* MD5File(char* szFilename)
+wchar_t * MD5File(wchar_t * szFilename)
 {
 	FILE* file;
 	md5 alg;
@@ -117,7 +117,7 @@ char* MD5File(char* szFilename)
 	{
 		memset(chBuffer, 0, 1024);
 
-		if ((file = fopen (szFilename, "rb")) != NULL)
+		if ((file = _wfopen (szFilename, L"rb")) != NULL)
 		{
 			while ((nLen = fread (chBuffer, 1, 1024, file)))
 				alg.Update(chBuffer, nLen);
@@ -309,7 +309,7 @@ void md5::Encode(uint8_t* dest, uint32_t* src, uint32_t nLength)
 {
 	uint32_t i, j;
 
-	CND_PRECONDITION(nLength % 4 == 0,"nLength % 4 != 0")
+	CND_PRECONDITION(nLength % 4 == 0,L"nLength % 4 != 0")
 
 	for (i = 0, j = 0; j < nLength; i++, j += 4)
 	{
@@ -327,7 +327,7 @@ void md5::Decode(uint32_t* dest, uint8_t* src, uint32_t nLength)
 {
 	uint32_t i, j;
 
-	CND_PRECONDITION(nLength % 4 == 0, "nLength % 4 != 0");
+	CND_PRECONDITION(nLength % 4 == 0, L"nLength % 4 != 0");
 
 	for (i = 0, j = 0; j < nLength; i++, j += 4)
 	{

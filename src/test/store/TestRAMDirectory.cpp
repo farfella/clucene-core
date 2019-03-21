@@ -32,7 +32,7 @@
  */
 
 static int docsToAdd = 500;
-static char indexDir[CL_MAX_PATH] = "";
+static wchar_t indexDir[CL_MAX_PATH] = L"";
 
 struct ThreadData
 {
@@ -45,21 +45,21 @@ struct ThreadData
 // setup the index
 void testRAMDirectorySetUp(CuTest *tc) {
 
-    if (strlen(cl_tempDir) + 13 > CL_MAX_PATH)
+    if (wcslen (cl_tempDir) +13 > CL_MAX_PATH)
         CuFail(tc, _T("Not enough space in indexDir buffer"));
 
-    sprintf(indexDir, "%s/RAMDirIndex", cl_tempDir);
+    swprintf(indexDir, L"%s/RAMDirIndex", cl_tempDir);
     WhitespaceAnalyzer analyzer;
     IndexWriter * writer = new IndexWriter(indexDir, &analyzer, true);
 
     // add some documents
-    wchar_t * text;
+    std::wstring text;
     for (int i = 0; i < docsToAdd; i++) {
         Document doc;
         text = English::IntToEnglish(i);
-        doc.add(*new Field(_T("content"), text, Field::STORE_YES | Field::INDEX_UNTOKENIZED));
+        doc.add(*new Field(_T("content"), text.c_str(), Field::STORE_YES | Field::INDEX_UNTOKENIZED));
         writer->addDocument(&doc);
-        _CLDELETE_ARRAY(text);
+
     }
 
     CuAssertEquals(tc, docsToAdd, writer->docCount(), _T("document count"));
@@ -126,14 +126,14 @@ void indexDocs(void* _data)
 {
     ThreadData * data = (ThreadData *)_data;
     int cnt = 0;
-    wchar_t * text;
+    std::wstring text;
     for (int j = 1; j < docsPerThread; j++)
     {
         Document doc;
         text = English::IntToEnglish(data->num*docsPerThread + j);
-        doc.add(*new Field(_T("sizeContent"), text, Field::STORE_YES | Field::INDEX_UNTOKENIZED));
+        doc.add(*new Field(_T("sizeContent"), text.c_str(), Field::STORE_YES | Field::INDEX_UNTOKENIZED));
         data->writer->addDocument(&doc);
-        _CLDELETE_ARRAY(text);
+
         {
             SCOPED_LOCK_MUTEX(data->dir->THIS_LOCK);
             CuAssertTrue(data->tc, data->dir->sizeInBytes == data->dir->getRecomputedSizeInBytes());

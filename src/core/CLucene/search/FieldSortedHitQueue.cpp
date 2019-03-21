@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -111,7 +111,7 @@ ScoreDocComparator* FieldSortedHitQueue::comparatorString (IndexReader* reader, 
 	FieldCacheAuto* fa = FieldCache::DEFAULT()->getStringIndex (reader, field);
 	//CLStringIntern::unintern(field);
 
-	CND_PRECONDITION(fa->contentType==FieldCacheAuto::STRING_INDEX,"Content type is incorrect");
+	CND_PRECONDITION(fa->contentType==FieldCacheAuto::STRING_INDEX,L"Content type is incorrect");
 	fa->ownContents = false;
     return _CLNEW ScoreDocComparators::String(fa->stringIndex, fa->contentLen);
 }
@@ -122,7 +122,7 @@ ScoreDocComparator* FieldSortedHitQueue::comparatorInt (IndexReader* reader, con
     FieldCacheAuto* fa =  FieldCache::DEFAULT()->getInts (reader, field);
 	//CLStringIntern::unintern(field);
 
-	CND_PRECONDITION(fa->contentType==FieldCacheAuto::INT_ARRAY,"Content type is incorrect");
+	CND_PRECONDITION(fa->contentType==FieldCacheAuto::INT_ARRAY,L"Content type is incorrect");
     return _CLNEW ScoreDocComparators::Int32(fa->intArray, fa->contentLen);
   }
 
@@ -132,7 +132,7 @@ ScoreDocComparator* FieldSortedHitQueue::comparatorInt (IndexReader* reader, con
     FieldCacheAuto* fa = FieldCache::DEFAULT()->getFloats (reader, field);
 	//CLStringIntern::unintern(field);
 
-	CND_PRECONDITION(fa->contentType==FieldCacheAuto::FLOAT_ARRAY,"Content type is incorrect");
+	CND_PRECONDITION(fa->contentType==FieldCacheAuto::FLOAT_ARRAY,L"Content type is incorrect");
 	return _CLNEW ScoreDocComparators::Float (fa->floatArray, fa->contentLen);
   }
 //static

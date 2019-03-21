@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
  * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
  *
  * Distributable under the terms of either the Apache License (Version 2.0) or
  * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -212,8 +212,8 @@ class CLUCENE_EXPORT IndexWriter:LUCENE_BASE {
 
   /** If non-null, information about merges will be printed to this.
    */
-  std::ostream* infoStream;
-  static std::ostream* defaultInfoStream;
+  std::wostream* infoStream;
+  static std::wostream* defaultInfoStream;
 
 
 
@@ -349,7 +349,7 @@ public:
   /**
    * Name of the write lock in the index.
    */
-  static const char* WRITE_LOCK_NAME; //"write.lock";
+  static const wchar_t * WRITE_LOCK_NAME; //"write.lock";
 
   /**
    * @deprecated
@@ -474,7 +474,7 @@ public:
    *  <code>false</code> or if there is any other low-level
    *  IO error
    */
-  explicit IndexWriter(const char* path, CL_NS(analysis)::Analyzer* a, const bool create);
+  explicit IndexWriter(const wchar_t * path, CL_NS(analysis)::Analyzer* a, const bool create);
 
   /**
    * Constructs an IndexWriter for the index in <code>d</code>.
@@ -583,27 +583,27 @@ public:
   CL_NS(analysis)::Analyzer* getAnalyzer();
 
   // synchronized
-  std::string newSegmentName();
+  std::wstring newSegmentName();
 
   /**
    * Prints a message to the infoStream (if non-null),
    * prefixed with the identifying information for this
    * writer and the thread that's calling it.
    */
-  void message(std::string message);
+  void message(std::wstring message);
 
   /**
    * Returns the current default infoStream for newly
    * instantiated IndexWriters.
    * @see #setDefaultInfoStream
    */
-  static std::ostream* getDefaultInfoStream();
+  static std::wostream* getDefaultInfoStream();
 
   /**
    * Returns the current infoStream in use by this writer.
    * @see #setInfoStream
    */
-  std::ostream* getInfoStream();
+  std::wostream* getInfoStream();
 
   /**
    * Returns the number of buffered deleted terms that will
@@ -634,13 +634,13 @@ public:
    * by a newly instantiated IndexWriter.
    * @see #setInfoStream
    */
-  static void setDefaultInfoStream(std::ostream* infoStream);\
+  static void setDefaultInfoStream(std::wostream* infoStream);
 
   /** If non-null, information about merges, deletes and a
    * message when maxFieldLength is reached will be printed
    * to this.
    */
-  void setInfoStream(std::ostream* infoStream);
+  void setInfoStream(std::wostream* infoStream);
 
   /**
    * <p>Determines the minimal number of delete terms required before the buffered
@@ -759,7 +759,7 @@ public:
    */
   void setDefaultWriteLockTimeout(int64_t writeLockTimeout);
 
-  std::string segString();
+  std::wstring segString();
 
   /**
    * Closes the index with or without waiting for currently
@@ -1123,9 +1123,9 @@ private:
    * single segment. */
   void mergeSegments(const uint32_t minSegment, const uint32_t end);
 
-  void deleteFiles(std::vector<std::string>& files);
-  void readDeleteableFiles(std::vector<std::string>& files);
-  void writeDeleteableFiles(std::vector<std::string>& files);
+  void deleteFiles(std::vector<std::wstring>& files);
+  void readDeleteableFiles(std::vector<std::wstring>& files);
+  void writeDeleteableFiles(std::vector<std::wstring>& files);
 
   /*
    * Some operating systems (e.g. Windows) don't permit a file to be deleted
@@ -1134,8 +1134,8 @@ private:
    * process, and queue the file for subsequent deletion.
    */
   void deleteSegments(CL_NS(util)::CLVector<SegmentReader*>* segments);
-  void deleteFiles(std::vector<std::string>& files, CL_NS(store)::Directory* directory);
-  void deleteFiles(std::vector<std::string>& files, std::vector<std::string>& deletable);
+  void deleteFiles(std::vector<std::wstring>& files, CL_NS(store)::Directory* directory);
+  void deleteFiles(std::vector<std::wstring>& files, std::vector<std::wstring>& deletable);
 
   /**
    * Casts current mergePolicy to LogMergePolicy, and throws

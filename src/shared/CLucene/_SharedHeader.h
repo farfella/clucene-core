@@ -1,7 +1,6 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -36,15 +35,11 @@
 #define cl_max(a,b) ((a)>(b) ? (a): (b))
 #define cl_max3(a,b,c) ((a)>(b) ? ((a)>(c) ? (a) : (c)) : ((b)>(c) ? (b) : (c)))
 
-#ifdef _CL_HAVE_SAFE_CRT
-	#define cl_sprintf sprintf_s
-	#define cl_stprintf swprintf_s
-	#define cl_strcpy(Dst,Src,DstLen) strcpy_s(Dst,DstLen,Src)
-#else
-	#define cl_sprintf _snprintf
-	#define cl_stprintf _snwprintf
-	#define cl_strcpy(Dst,Src,DstLen) strcpy(Dst,Src)
-#endif
+
+#define cl_sprintf sprintf_s
+#define cl_stprintf swprintf_s
+#define cl_strcpy(Dst,Src,DstLen) strcpy_s(Dst,DstLen,Src)
+
 
 
 ///a blank string...
@@ -54,7 +49,8 @@ CLUCENE_SHARED_EXPORT extern const char* _LUCENE_BLANK_ASTRING;
 #define LUCENE_BLANK_ASTRING _LUCENE_BLANK_ASTRING
 
 #if defined(_WIN32) || defined(_WIN64)
-    #define PATH_DELIMITERA "\\"
+    //#define PATH_DELIMITERA "\\"
+    #define PATH_DELIMITERW L"\\"
 #else
     #define PATH_DELIMITERA "/"
 #endif

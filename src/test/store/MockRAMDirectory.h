@@ -59,13 +59,13 @@ public:
 	};
 
 	MockRAMDirectory();
-	MockRAMDirectory(const char* dir);
+	MockRAMDirectory(const wchar_t * dir);
 	MockRAMDirectory(Directory* dir);
 	virtual ~MockRAMDirectory();
-	virtual IndexOutput* createOutput(const char* name);
-	virtual bool openInput(const char* name, IndexInput*& ret, CLuceneError& error, int32_t bufferSize = -1);
+	virtual IndexOutput* createOutput(wchar_t * name);
+	virtual bool openInput(wchar_t * name, IndexInput*& ret, CLuceneError& error, int32_t bufferSize = -1);
 	virtual void close();
-	virtual bool deleteFile(const char* name, const bool throwError=true);
+	virtual bool deleteFile(wchar_t * name, const bool throwError=true);
 
 	/**
 	 * Emulate windows whereby deleting an open file is not
@@ -105,12 +105,12 @@ public:
 	void failOn(Failure* fail);
 	void maybeThrowDeterministicException();
 
-	std::map<std::string, int32_t>& getOpenFiles();
+	std::map<std::wstring, int32_t>& getOpenFiles();
 
 	DEFINE_MUTABLE_MUTEX(openFiles_mutex);
 
 private:
-	std::map<std::string, int32_t> openFiles;
+	std::map<std::wstring, int32_t> openFiles;
 	std::vector<Failure*> failures;
 	bool noDeleteOpenFile;
 	int64_t maxUsedSize;
@@ -159,14 +159,14 @@ class MockRAMInputStream : public RAMInputStream {
 
 public:
 	MockRAMInputStream(const MockRAMInputStream& clone);
-	MockRAMInputStream(MockRAMDirectory* d, const char* n, MockRAMFile* f);
+	MockRAMInputStream(MockRAMDirectory* d, const wchar_t * n, MockRAMFile* f);
 	void close(void);
 
 	DEFINE_MUTABLE_MUTEX(openFiles_mutex);
 
 private:
 	MockRAMDirectory* dir;
-	std::string name;
+	std::wstring name;
 	bool isClone;
 };
 

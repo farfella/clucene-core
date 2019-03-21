@@ -19,7 +19,7 @@ MockRAMDirectory::MockRAMDirectory() :
 	// empty
 }
 
-MockRAMDirectory::MockRAMDirectory(const char* dir) :
+MockRAMDirectory::MockRAMDirectory(const wchar_t * dir) :
 	RAMDirectory(dir),
 	noDeleteOpenFile(true), maxSize(0) {
 	// empty
@@ -38,7 +38,7 @@ MockRAMDirectory::~MockRAMDirectory() {
 	}
 }
 
-IndexOutput* MockRAMDirectory::createOutput(const char* name) {
+IndexOutput* MockRAMDirectory::createOutput(wchar_t * name) {
 	MockRAMFile* file = new MockRAMFile(this);
 
 	{
@@ -53,9 +53,9 @@ IndexOutput* MockRAMDirectory::createOutput(const char* name) {
 
 	SCOPED_LOCK_MUTEX(files_mutex);
 
-	MockRAMFile* existing = static_cast<MockRAMFile*>(files->get((char*)name));
+	MockRAMFile* existing = static_cast<MockRAMFile*>(files->get(name));
 
-	if (existing != NULL && strcmp(name, "segments.gen") != 0) {
+	if (existing != NULL && wcscmp(name, L"segments.gen") != 0) {
 		char buffer[200];
 		_snprintf(buffer, 200, "MockRAMDirectory: file %s already exist", name);
 		_CLTHROWA(CL_ERR_IO, buffer);
@@ -66,15 +66,15 @@ IndexOutput* MockRAMDirectory::createOutput(const char* name) {
 			existing->setDirectory(NULL);
 		}
 
-	    files->put(_strdup(name), file);
+	    files->put(_wcsdup(name), file);
 	}
 
 	return _CLNEW MockRAMOutputStream(this, file);
 }
 
-bool MockRAMDirectory::openInput(const char* name, IndexInput*& ret, CLuceneError& error, int32_t buffferSize) {
+bool MockRAMDirectory::openInput(wchar_t * name, IndexInput*& ret, CLuceneError& error, int32_t buffferSize) {
 	SCOPED_LOCK_MUTEX(files_mutex);
-	MockRAMFile* file = static_cast<MockRAMFile*>(files->get((char*)name));
+	MockRAMFile* file = static_cast<MockRAMFile*>(files->get(name));
 
 	if (file == NULL) {
 		char buffer[200];
@@ -87,11 +87,11 @@ bool MockRAMDirectory::openInput(const char* name, IndexInput*& ret, CLuceneErro
 		if (openFiles.find(name) != openFiles.end()) {
 			++openFiles[name];
 		} else {
-			openFiles.insert(std::make_pair<std::string, int32_t>(name, 1));
+			openFiles.insert(std::make_pair<std::wstring, int32_t>(name, 1));
 		}
 	}
 
-	ret = _CLNEW MockRAMInputStream(this, name, file);
+	ret = new MockRAMInputStream(this, name, file);
 	return true;
 }
 
@@ -104,7 +104,7 @@ void MockRAMDirectory::close() {
 	}
 }
 
-bool MockRAMDirectory::deleteFile(const char* name, const bool throwError) {
+bool MockRAMDirectory::deleteFile(wchar_t * name, const bool throwError) {
 	SCOPED_LOCK_MUTEX(openFiles_mutex);
 	if (noDeleteOpenFile && openFiles.find(name) != openFiles.end() && throwError) {
 		char buffer[200];
@@ -152,7 +152,7 @@ bool MockRAMDirectory::getNoDeleteOpenFile() const {
 	return noDeleteOpenFile;
 }
 
-std::map<std::string, int32_t>& MockRAMDirectory::getOpenFiles() {
+std::map<std::wstring, int32_t>& MockRAMDirectory::getOpenFiles() {
 	return openFiles;
 }
 
@@ -300,7 +300,7 @@ MockRAMInputStream::MockRAMInputStream(const MockRAMInputStream& clone) :
 	name = clone.name;
 }
 
-MockRAMInputStream::MockRAMInputStream(MockRAMDirectory* d, const char* n, MockRAMFile* f) :
+MockRAMInputStream::MockRAMInputStream(MockRAMDirectory* d, const wchar_t * n, MockRAMFile* f) :
 	RAMInputStream(f),
 	dir(d),
 	name(n),

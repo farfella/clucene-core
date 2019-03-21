@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 * 
 * Distributable under the terms of either the Apache License (Version 2.0) or 
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -79,7 +79,7 @@ CL_NS_USE(util)
 	//Pre  - path != NULL
 	//Post - if the file could not be opened  an exception is thrown.
 
-	  CND_PRECONDITION(path != NULL, "path is NULL");
+	  CND_PRECONDITION(path != NULL, L"path is NULL");
 
     Internal* _internal = _CLNEW Internal;
 
@@ -223,18 +223,18 @@ CL_NS_USE(util)
 #if defined(_CL_HAVE_FUNCTION_MAPVIEWOFFILE)
 		if ( _internal->data != NULL ){
 			if ( ! UnmapViewOfFile(_internal->data) ){
-				CND_PRECONDITION( false, "UnmapViewOfFile(data) failed"); //todo: change to rich error
+				CND_PRECONDITION( false,L"UnmapViewOfFile(data) failed"); //todo: change to rich error
 			}
 		}
 
 		if ( _internal->mmaphandle != NULL ){
 			if ( ! CloseHandle(_internal->mmaphandle) ){
-				CND_PRECONDITION( false, "CloseHandle(mmaphandle) failed");
+				CND_PRECONDITION( false, L"CloseHandle(mmaphandle) failed");
 			}
 		}
 		if ( _internal->fhandle != NULL ){
 			if ( !CloseHandle(_internal->fhandle) ){
-				CND_PRECONDITION( false, "CloseHandle(fhandle) failed");
+				CND_PRECONDITION( false, L"CloseHandle(fhandle) failed");
 			}
 		}
 		_internal->mmaphandle = NULL;

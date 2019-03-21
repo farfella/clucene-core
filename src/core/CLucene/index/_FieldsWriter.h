@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -37,7 +37,7 @@ public:
 	LUCENE_STATIC_CONSTANT(uint8_t, FIELD_IS_BINARY = 0x2);
 	LUCENE_STATIC_CONSTANT(uint8_t, FIELD_IS_COMPRESSED = 0x4);
 
-	FieldsWriter(CL_NS(store)::Directory* d, const char* segment, FieldInfos* fn);
+	FieldsWriter(CL_NS(store)::Directory* d, const wchar_t * segment, FieldInfos* fn);
 	FieldsWriter(CL_NS(store)::IndexOutput* fdx, CL_NS(store)::IndexOutput* fdt, FieldInfos* fn);
 	~FieldsWriter();
 

@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -61,8 +61,7 @@ void testTermVectors(CuTest *tc) {
 	  //test mem leaks with vectors
       CL_NS(search)::Explanation expl;
 	    tv_searcher->explain(&query, hits->id(50), &expl);
-      wchar_t* tmp = expl.toString();
-      _CLDELETE_CARRAY(tmp);
+      std::wstring tmp = expl.toString();
 
       _CLDELETE(hits);
 

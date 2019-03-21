@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -19,8 +19,8 @@ void StoreTest(CuTest *tc,int32_t count, int mode){
 	uint64_t veryStart = Misc::currentTimeMillis();
 	uint64_t start = Misc::currentTimeMillis();
 
-	char fsdir[CL_MAX_PATH];
-	_snprintf(fsdir, CL_MAX_PATH, "%s/%s",cl_tempDir, "test.store");
+	wchar_t fsdir[CL_MAX_PATH];
+	_snwprintf(fsdir, CL_MAX_PATH, L"%s/%s",cl_tempDir, L"test.store");
 	Directory* store = NULL;
 	if ( mode == 1 )
 	  store = _CLNEW RAMDirectory();
@@ -29,10 +29,10 @@ void StoreTest(CuTest *tc,int32_t count, int mode){
 	  ((FSDirectory*)store)->setUseMMap(mode == 3);
 	}
 	int32_t LENGTH_MASK = 0xFFF;
-	char name[260];
+	wchar_t name[260];
 
 	for (i = 0; i < count; i++) {
-		_snprintf(name,260,"%d.dat",i);
+		_snwprintf(name,260,L"%d.dat",i);
 
 		int32_t length = rand() & LENGTH_MASK;
 		uint8_t b = (uint8_t)(rand() & 0x7F);
@@ -59,7 +59,7 @@ void StoreTest(CuTest *tc,int32_t count, int mode){
 	start = Misc::currentTimeMillis();
 
 	for (i = 0; i < count; i++) {
-		_snprintf(name,260,"%d.dat",i);
+		_snwprintf(name,260,L"%d.dat",i);
 		size_t length = rand() & LENGTH_MASK;
 		uint8_t b = (uint8_t)(rand() & 0x7F);
 		IndexInput* file = store->openInput(name);
@@ -85,7 +85,7 @@ void StoreTest(CuTest *tc,int32_t count, int mode){
 	start = Misc::currentTimeMillis();
 
 	for (i = 0; i < count; i++) {
-		_snprintf(name,260,"%d.dat",i);
+		_snwprintf(name,260,L"%d.dat",i);
 		store->deleteFile(name);
 	}
 
@@ -93,9 +93,9 @@ void StoreTest(CuTest *tc,int32_t count, int mode){
 	CuMessageA(tc, "%d total milliseconds \n", (int32_t)(Misc::currentTimeMillis() - veryStart));
 
 	//test makeLock::toString
-	CL_NS(store)::LuceneLock* lf = store->makeLock("testlock");
-	std::string ts = lf->toString();
-	CLUCENE_ASSERT( ts.compare("fail") != 0 );
+	CL_NS(store)::LuceneLock* lf = store->makeLock(L"testlock");
+	std::wstring ts = lf->toString();
+	CLUCENE_ASSERT( ts.compare(L"fail") != 0 );
   _CLDELETE(lf);
 
 	store->close();

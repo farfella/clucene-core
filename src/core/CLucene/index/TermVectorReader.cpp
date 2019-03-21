@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 * Copyright (C) 2003-2006 Ben van Klinken and the CLucene Team
+
 * Updated by https://github.com/farfella/.
- Updated by https://github.com/farfella/.
 *
 * Distributable under the terms of either the Apache License (Version 2.0) or
 * the GNU Lesser General Public License, as specified in the COPYING file.
@@ -16,29 +16,29 @@
 CL_NS_USE(util)
 CL_NS_DEF(index)
 
-TermVectorsReader::TermVectorsReader(CL_NS(store)::Directory* d, const char* segment, FieldInfos* fieldInfos,
+TermVectorsReader::TermVectorsReader(CL_NS(store)::Directory* d, const wchar_t * segment, FieldInfos* fieldInfos,
 									 int32_t readBufferSize, int32_t docStoreOffset, int32_t size):
 	fieldInfos(NULL), tvx(NULL), tvd(NULL), tvf(NULL), _size(0), docStoreOffset(0)
 	{
 
 	bool success = false;
 
-	char fbuf[CL_MAX_NAME];
-	strcpy_s(fbuf,segment);
-	strcat_s(fbuf,".");
-	char* fpbuf=fbuf+strlen(fbuf);
+	wchar_t fbuf[CL_MAX_NAME];
+	wcscpy_s(fbuf,segment);
+	wcscat_s(fbuf,L".");
+	wchar_t * fpbuf=fbuf+wcslen(fbuf);
 
-	strcpy(fpbuf,IndexFileNames::VECTORS_INDEX_EXTENSION);
+	wcscpy(fpbuf,IndexFileNames::VECTORS_INDEX_EXTENSION);
 	try {
 		if (d->fileExists(fbuf)) {
 			tvx = d->openInput(fbuf, readBufferSize);
 			checkValidFormat(tvx);
 
-			strcpy(fpbuf,IndexFileNames::VECTORS_DOCUMENTS_EXTENSION);
+			wcscpy(fpbuf,IndexFileNames::VECTORS_DOCUMENTS_EXTENSION);
 			tvd = d->openInput(fbuf, readBufferSize);
 			tvdFormat = checkValidFormat(tvd);
 
-			strcpy(fpbuf,IndexFileNames::VECTORS_FIELDS_EXTENSION);
+			wcscpy(fpbuf,IndexFileNames::VECTORS_FIELDS_EXTENSION);
 			tvf = d->openInput(fbuf, readBufferSize);
 			tvfFormat = checkValidFormat(tvf);
 			if (-1 == docStoreOffset) {
@@ -49,7 +49,7 @@ TermVectorsReader::TermVectorsReader(CL_NS(store)::Directory* d, const char* seg
 				this->_size = size;
 				// Verify the file is long enough to hold all of our
 				// docs
-				CND_CONDITION( ((int64_t) (tvx->length() / 8)) >= size + docStoreOffset , "file is not long enough to hold all of our docs");
+				CND_CONDITION( ((int64_t) (tvx->length() / 8)) >= size + docStoreOffset , L"file is not long enough to hold all of our docs");
 			}
 		}
 
@@ -93,13 +93,13 @@ int32_t TermVectorsReader::checkValidFormat(CL_NS(store)::IndexInput* in){
 	int32_t format = in->readInt();
 	if (format > TermVectorsReader::FORMAT_VERSION)
 	{
-		CL_NS(util)::StringBuffer err;
+		std::wstring err;
 		err.append(L"Incompatible format version: ");
-		err.appendInt(format);
+		err.append(std::to_wstring(format));
 		err.append(L" expected ");
-		err.appendInt(TermVectorsReader::FORMAT_VERSION);
+		err.append(std::to_wstring(TermVectorsReader::FORMAT_VERSION));
 		err.append(L" or less");
-		_CLTHROWT(CL_ERR_CorruptIndex,err.getBuffer());
+		_CLTHROWT(CL_ERR_CorruptIndex,err.c_str());
 	}
 	return format;
 }
